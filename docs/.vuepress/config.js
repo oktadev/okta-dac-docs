@@ -3,19 +3,80 @@ module.exports = {
   description: "Identity Management for Multi-Tenant Applications",
 
   themeConfig: {
+    repo: 'udplabs/mta-docs',
+    logo: 'https://www.okta.com/sites/all/themes/Okta/images/logos/developer/Dev_Logo-02_Large.png',
     lastUpdated: 'Last Updated',
     // defaults to false, set to true to enable
     editLinks: true,
     // custom text for edit link. Defaults to "Edit this page"
-    editLinkText: 'Help us improve this page!',
-    nav: [
-      { text: "Home", link: "/" },
-      { text: "Guide", link: "/guide/" },
-      { text: "Demo", link: "https://okta-mta.idp.rocks" }
-    ],
-    sidebar: [
-      '/',
-      '/guide',
-    ]
-  }
+    editLinkText: 'Edit this page on GitHub',
+    docsDir: 'docs',
+    smoothScroll: true,
+    nav: require('./nav/en'),
+    sidebar: {
+      '/guide/': getGuideSidebar(),
+    }
+  },
+  plugins: [
+    ['@vuepress/back-to-top', true],
+    ['@vuepress/pwa', {
+      serviceWorker: true,
+      updatePopup: true
+    }],
+    ['@vuepress/medium-zoom', true],
+    ['@vuepress/google-analytics', {
+      ga: 'UA-128189152-1'
+    }],
+    ['container', {
+      type: 'vue',
+      before: '<pre class="vue-container"><code>',
+      after: '</code></pre>'
+    }],
+    ['container', {
+      type: 'upgrade',
+      before: info => `<UpgradePath title="${info}">`,
+      after: '</UpgradePath>'
+    }],
+    ['flowchart']
+  ],
+  extraWatchFiles: [
+    '.vuepress/nav/en.js',
+    '.vuepress/nav/zh.js'
+  ]
 };
+
+function getGuideSidebar() {
+  return [
+    'setup'
+  ]
+}
+
+/*function getGuideSidebar (groupA, groupB) {
+  return [
+    {
+      title: groupA,
+      collapsable: false,
+      children: [
+        '',
+        'getting-started',
+        'directory-structure',
+        'basic-config',
+        'assets',
+        'markdown',
+        'using-vue',
+        'i18n',
+        'deploy'
+      ]
+    },
+    {
+      title: groupB,
+      collapsable: false,
+      children: [
+        'frontmatter',
+        'permalinks',
+        'markdown-slot',
+        'global-computed'
+      ]
+    }
+  ]
+}*/
