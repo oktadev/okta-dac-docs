@@ -1,14 +1,30 @@
 module.exports = [
-    {
-      text: 'Guide',
-      link: '/guide/'
+  {
+    text: "Login",
+    link: "/login/",
+    meta: {
+      requiresAuth: false,
     },
-    {
-      text: 'API Reference',
-      link: '/api/'
+  },
+  {
+    text: "Guide",
+    link: "/guide/",
+    meta: {
+      requiresAuth: true,
     },
-    { 
-      text: "Demo", 
-      link: "https://okta-mta.idp.rocks" 
-    }
-  ]
+  },
+  {
+    text: "API Reference",
+    link: "/api/",
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    text: "Demo",
+    link: "https://okta-mta.idp.rocks",
+    meta: {
+      requiresAuth: false,
+    },
+  },
+];

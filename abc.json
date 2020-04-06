@@ -1,0 +1,117 @@
+{
+  "title": "Okta Multi Tenant Admin",
+  "description": "Identity Management for Multi-Tenant Applications",
+  "base": "/",
+  "pages": [
+    {
+      "title": "Home",
+      "frontmatter": {
+        "home": true,
+        "actionText": "Get Started →",
+        "actionLink": "/guide/",
+        "features": [
+          {
+            "title": "Delegate Administration",
+            "details": "Utilize Okta's \"delegated\" admin capabilities to manage tenants."
+          },
+          {
+            "title": "Re-use Identity Providers",
+            "details": "Configure IdPs if you already have one to authenticate users."
+          },
+          {
+            "title": "Configure Entitlements",
+            "details": "Assign applications `en masse` or to specific users."
+          }
+        ],
+        "footer": "<TBD> Copyright Info"
+      },
+      "regularPath": "/",
+      "relativePath": "README.md",
+      "key": "v-38c1ae63",
+      "path": "/",
+      "lastUpdated": "3/17/2020, 1:52:56 PM"
+    },
+    {
+      "title": "API Reference",
+      "frontmatter": { "sidebarDepth": 3, "sidebar": "auto" },
+      "regularPath": "/api/",
+      "relativePath": "api/README.md",
+      "key": "v-7e9c114d",
+      "path": "/api/",
+      "headers": [
+        { "level": 2, "title": "API Config", "slug": "api-config" },
+        { "level": 3, "title": "base", "slug": "base" }
+      ],
+      "lastUpdated": "3/17/2020, 9:37:53 PM"
+    },
+    {
+      "title": "Setup",
+      "frontmatter": {},
+      "regularPath": "/guide/setup.html",
+      "relativePath": "guide/setup.md",
+      "key": "v-8fdac750",
+      "path": "/guide/setup.html",
+      "headers": [
+        { "level": 2, "title": "Okta Org Setup", "slug": "okta-org-setup" }
+      ],
+      "lastUpdated": "3/17/2020, 9:37:53 PM"
+    },
+    {
+      "title": "Guide",
+      "frontmatter": {
+        "title": "Guide",
+        "meta": [{ "name": "keywords" }, { "content": "my SEO keywords" }]
+      },
+      "regularPath": "/guide/",
+      "relativePath": "guide/README.md",
+      "key": "v-0c57ff49",
+      "path": "/guide/",
+      "lastUpdated": "3/19/2020, 4:53:48 PM"
+    },
+    {
+      "title": "Logging In",
+      "frontmatter": {},
+      "regularPath": "/implicit/callback/",
+      "relativePath": "implicit/callback/index.md",
+      "key": "v-26e99251",
+      "path": "/implicit/callback/"
+    }
+  ],
+  "themeConfig": {
+    "repo": "udplabs/mta-docs",
+    "logo": "https://www.okta.com/sites/all/themes/Okta/images/logos/developer/Dev_Logo-02_Large.png",
+    "lastUpdated": "Last Updated",
+    "editLinks": true,
+    "editLinkText": "Edit this page on GitHub",
+    "docsDir": "docs",
+    "smoothScroll": true,
+    "nav": [
+      {
+        "text": "Guide",
+        "link": "/guide/",
+        "meta": { "requiresAuth": true },
+        "type": "link",
+        "items": []
+      },
+      {
+        "text": "API Reference",
+        "link": "/api/",
+        "meta": { "requiresAuth": true },
+        "type": "link",
+        "items": []
+      },
+      {
+        "text": "Demo",
+        "link": "https://okta-mta.idp.rocks",
+        "meta": { "requiresAuth": false },
+        "type": "link",
+        "items": []
+      }
+    ],
+    "sidebar": { "/guide/": ["setup"] },
+    "algolia": {
+      "apiKey": "191db45e6f87475d6a1256d5a4298324",
+      "indexName": "udplabs_mta-docs"
+    }
+  }
+}
