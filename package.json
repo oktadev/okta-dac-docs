@@ -6,6 +6,7 @@
     "build": "vuepress build docs"
   },
   "dependencies": {
+    "regenerator-runtime": "^0.13.5",
     "vuepress": "1.4.1"
   }
 }

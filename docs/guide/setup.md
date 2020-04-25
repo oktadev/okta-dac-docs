@@ -1,3 +1,0 @@
-# Setup
-
-## Okta Org Setup
