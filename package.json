@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "build": "cp docs/.vuepress/public/tf/sample.tf docs/guide/tf/sample.hcl ; vuepress build docs"
   },
   "dependencies": {
     "regenerator-runtime": "^0.13.5",

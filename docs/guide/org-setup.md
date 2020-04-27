@@ -2,7 +2,12 @@
 
 ## Terraform
 A [terraform](https://www.terraform.io/docs/providers/okta/index.html) script has been provided to automatically configure your Okta Org. 
-* Click to [view](./sample.tf) or [download](./sample.tf) the script
+
+::: details Click to view the script
+<<< @/docs/guide/tf/sample.hcl
+:::
+
+[Click here](/tf/sample.hcl) to download.
 
 If you're more comfortable setting it up manually, carefully follow the instructions in this [next](#org-setup) section.
 

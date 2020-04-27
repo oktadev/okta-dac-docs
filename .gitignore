@@ -3,4 +3,5 @@ Thumbs.db
 *.log
 node_modules/
 docs/.vuepress/dist
+docs/guide/tf
 package-lock.json

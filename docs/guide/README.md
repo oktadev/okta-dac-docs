@@ -12,14 +12,14 @@ This section describes the Architecture
 
 ## Architecture
 ### Groups
-Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. One key feature of Okta Groups is that the API supports [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) with ***startsWith***. 
+Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. One key feature of Okta Groups is that the API supports [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) with ***startsWith***, which allows us to support our architecture. We illustrate with some examples, below.
 
-***Example 1: Group Hierarchy***
+**Example 1: Group Hierarchy**
 
 Okta can support nested groups (or group hierarchy) by applying namespacing to the group name. For example, a hierarchy looking like the following:
 ![alt text](./images/groups-example1.png)
+Can be *flattened* and represented with the following group naming convention:
 
-Can be represented with the following group naming convention:
 | Group Name |
 | ---------- |
 | okta.com   |
@@ -29,26 +29,27 @@ Can be represented with the following group naming convention:
 | okta.com/byob |
 | okta.com/byob/users |
 
+**Example 2: Group Types**
 
-***Example 2: Group Types***
-
-Okta can support having group types by naming convention...Prefix group names with the group type:
+Okta can support having group types by naming convention by prefixing group names with the group type:
 | Type       | Group      | Naming Convention |
 | ---------- | ---------- | ----------------- |
 | role       |  readonly  |  role_readonly    |
 | role       |  admin     |  role_admin       |
 | ou         |  sales     |  ou_sales         |
 | ou         | engineering|  ou_engineering   |
-* In order to list all the groups of a single type, simply use the search groups API with `search string = group type`
+* In order to list all the groups of a single type, use the search groups API with `search string = group type`
     ```
     GET https://${yourOktaDomain}/api/v1/Groups?q=${groupType}
     ```
-* In order to search for a group by name, within a type, simply prefix the search string with the group type
+* In order to search for a group by name (within a group type) simply prefix the search string with the group type
     ```
     GET https://${yourOktaDomain}/api/v1/Groups?q=${groupType}startsWith
     ```
 
-In this project, we employ the ***Example 2*** design pattern to create 2 classes of users – 1) Admins, and 2) Users – By prefixing group names with either **ADMINS_** and **USERS_**, respectively.
+**Okta Multi Tenant Admin Usage:**
+
+In this project, we employ the *Example 2* design pattern to create 2 classes of users – 1) Admins, and 2) Users – By prefixing group names with either **ADMINS_** and **USERS_**, respectively.
 
 ![alt text](./images/dac-map.png)
 
