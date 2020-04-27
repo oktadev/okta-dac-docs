@@ -3,5 +3,5 @@ Thumbs.db
 *.log
 node_modules/
 docs/.vuepress/dist
-docs/guide/tf
+docs/guide/*.hcl
 package-lock.json
