@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - lts/*
 before_install:
-  - cp docs/.vuepress/public/tf/sample.tf ./docs/guide/tf/sample.hcl
+  - cp docs/.vuepress/public/tf/sample.tf docs/guide/tf/sample.hcl
 install:
   - npm install # npm ci
 script:
