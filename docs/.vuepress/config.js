@@ -63,8 +63,10 @@ function getGuideSidebar() {
             title: 'Guide',
             collapsable: false,
             children: [
-              '',
-              'org-setup'
+                '',
+                'org-setup',
+                'architecture',
+                'api-design'
             ]
         }        
     ];
