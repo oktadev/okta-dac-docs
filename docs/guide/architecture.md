@@ -13,7 +13,7 @@ Although Groups in Okta are flat in structure and only store name and descriptio
 Okta can support nested groups (or group hierarchy) by applying namespacing to the group name. For example, a hierarchy looking like the following:
 ![alt text](./images/dac-groups-example1.png)
 
-Can be *flattened* and represented with the following group naming convention:
+can be *flattened* and represented with the following group naming convention:
 
 | Group Name |
 | ---------- |
@@ -55,7 +55,7 @@ Each customer's user is a member of their respective `USERS_` group. If the user
 ![alt text](./images/dac-map.png)
 
 ## Group Admin Role
-Okta supports **delegated admin** functionality by allowing users to hold the [Group Admin Role](https://help.okta.com/en/prod/Content/Topics/Security/admin-role-groupadmin.htm) role. This functionality allows specific groups to be designated to specific Group Admins; And will restrict the Group Admins to only be able to view and perform updates those specifc groups (and the users in them).
+Okta supports **delegated admin** functionality by allowing users to hold the [Group Admin Role](https://help.okta.com/en/prod/Content/Topics/Security/admin-role-groupadmin.htm) role. This functionality allows specific groups to be designated to specific Group Admins; And will restrict the Group Admins to only be able to view and perform updates to those specifc groups (and the users in them).
 
 Read more about the different [Administrator Roles](https://help.okta.com/en/prod/Content/Topics/Security/Administrators.htm) in Okta to get a better understanding of how we leveraged the Group Admin role.
 
