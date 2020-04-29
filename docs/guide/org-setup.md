@@ -1,4 +1,4 @@
-# Setup
+# Installation
 
 ## Terraform
 We use the [Okta Terraform Provider](https://www.terraform.io/docs/providers/okta/index.html) to automatically configure the Okta Org. A script as been provided for you. Click the download link below to get it.

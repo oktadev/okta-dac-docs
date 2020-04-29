@@ -1,3 +1,7 @@
+---
+sidebarDepth: 3
+---
+
 # Architecture
 ## Okta Basics: Users, Groups, Applications
 
@@ -43,14 +47,23 @@ Okta can support having group types by naming convention by prefixing group name
     GET https://${yourOktaDomain}/api/v1/Groups?q=${groupType}startsWith
     ```
 ---
-### okta-dac:
+### okta-dac design
 
 In the okta-dac project, we implement the *Example 2* design pattern to create 2 classes of users – 1) Admins, and 2) Users – By prefixing group names with either **ADMINS_** and **USERS_**, respectively. 
 
 The string following the prefix refers to the tenant name. For example, if we have 2 customers, `tenant1` and `tenant2` in our SaaS application, we'll have 2 sets of groups: `ADMINS_tenant1`, `ADMINS_tenant2` and `USERS_tenant1`, `USERS_tenant2` in Okta. 
 
-Each customer's user is a member of their respective `USERS_` group. If the user is also a Tenant Admin, they'll be assigned to the `ADMINS_` group.
+Each customer's user is a member of their respective `USERS_` group. If the user is also a Tenant Admin, they'll be assigned to the `ADMINS_` group. 
 
+With our naming convention in place, we've coerced our Okta org into a structure looking like a typical SaaS application:
+
+![alt text](./images/multitenant.png)
+
+At this point, we introduce the concept of the `SUPERUSERS` role, which allows access to the [**okta-dac superuser UI**](/guide/#superuser). We model this by creating a SUPERUSERS group in our Okta Org, as illustrated in the diagram above. Users in this group have this role, and have the ability to create tenants. 
+
+#### Tenant Applications
+
+### Summary
 
 ![alt text](./images/dac-map.png)
 
@@ -65,9 +78,9 @@ Read more about the different [Administrator Roles](https://help.okta.com/en/pro
 ### What is an Okta session?
 
 With an existing session, we can **fetch the bearer token** using the [Okta Auth JavaScript SDK](https://github.com/okta/okta-auth-js). Upon logging into the __Delgated Admin Console__ app, the first component we land on is the Home.vue component. This would be a good place to fetch the token. 
-```js{19}
-// src/views/Home.vue
 
+In `src/views/Home.vue` we run the following on created:
+```js
 const authJs = new AuthJS({
     issuer: this.$config.oidc.issuer.split("oauth2")[0],
     clientId: this.$config.oidc.client_id,
@@ -89,7 +102,6 @@ if (exists) {
         // vuex
         this.$store.commit("setO4oToken", accessToken.accessToken);
         this.$store.subscribe((mutation, state) => { console.log("Got mutation", mutation.type); });
-
     } catch (e) {
         console.log(e);
     }
@@ -108,14 +120,59 @@ How we configured Okta
 ### Embedding the `groups` claim
 How we configured Okta
 
+::: details Click to view the sample JWT payload
+```json
+{
+  "sub": "00upkrte35fGaTMJi0h7",
+  "ver": 1,
+  "iss": "https://byobrand.oktapreview.com/oauth2/default",
+  "aud": "0oaph3ep6uKllifkG0h7",
+  "iat": 1588116050,
+  "exp": 1588119650,
+  "jti": "ID.9bXZ7w_fzcl0vR3oSTGpBWPRl6X7220uJ_3ciqpYfoY",
+  "amr": [
+    "pwd"
+  ],
+  "idp": "00op8q9xatOpYa5MK0h7",
+  "nonce": "nonce",
+  "auth_time": 1000,
+  "at_hash": "preview_at_hash",
+  "tenants": [
+    "0oapi0vtwxmVdOywi0h7:boeing:00gpi18cf4SkPByz40h7:00gpi18ofd1rZfwTC0h7"
+  ],
+  "groups": [
+    "USERS_boeing",
+    "Everyone",
+    "ADMINS_boeing",
+    "APPUSERS_boeing_0oaq1xvxlfoEEbii40h7",
+    "APPUSERS_boeing_0oaphr8z83xlSeZAg0h7"
+  ]
+}
+```
+:::
+
+
 ### Custom Authorizer
 
 In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of:
 ```js
+// Tenant admins can read/manage their own idp settings
+const tenants = jwt.claims.tenants;
+if (tenants && tenants.length > 0) {
+    policy.allowMethod(AuthPolicy.HttpVerb.GET, '/admin/idps');
+    tenants.forEach((tenant)=>{
+        const parts = tenant.split(':');
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/admin/idps/' + parts[0]);
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/admin/idps/' + parts[0] + '/metadata.xml');
+        policy.allowMethod(AuthPolicy.HttpVerb.PUT, '/admin/idps/' + parts[0]);
+    });            
+}
+
+// Tenant admins can read and update their own tenant info
 jwt.claims.groups.forEach(grp=>{
     if (grp.startsWith('ADMINS_')) {
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, "/admin/api/v1/tenants/" + grp.split('_')[1]);
-        policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/admin/api/v1/tenants/" + grp.split('_')[1] + "/admins/*");
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, "/admin/tenants/" + grp.split('_')[1]);
+        policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/admin/tenants/" + grp.split('_')[1] + "/admins/*");
     }
 });
 ```

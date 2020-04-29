@@ -64,9 +64,9 @@ function getGuideSidebar() {
             collapsable: false,
             children: [
                 '',
-                'org-setup',
                 'architecture',
-                'api-design'
+                'api-design',
+                'org-setup'
             ]
         }        
     ];
