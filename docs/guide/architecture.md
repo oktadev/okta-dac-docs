@@ -3,6 +3,11 @@ sidebarDepth: 3
 ---
 
 # Architecture
+The okta-dac SaaS application is modeled entirely out of Okta entities – without any need for an external database – keeping Okta as the source of truth.
+![alt text](./images/dac-map.png)
+
+In this section, we discuss the conventions used to model out okta-dac. But first we need a basic understanding of Okta:
+
 ## Okta Basics: Users, Groups, Applications
 
 An Okta Org supports having only one directory of users, who belong to one or more groups. Groups in Okta are flat, but users can belong to any number of groups. Users are *assigned* to applications. And groups can also be assigned to applications (When a group is assigned to an application, all users of the group are assigned to the application). The user object can store any number of custom attributes. Groups can store a name and description. 
@@ -62,10 +67,11 @@ With our naming convention in place, we've coerced our Okta org into a structure
 At this point, we introduce the concept of the `SUPERUSERS` role, which allows access to the [**okta-dac superuser UI**](/guide/#superuser). We model this by creating a SUPERUSERS group in our Okta Org, as illustrated in the diagram above. Users in this group have this role, and have the ability to create tenants. 
 
 #### Tenant Applications
+Each tenant will of course have access to the suite of applications the SaaS provides, but not every tenant will have every application in the suite of products. We model this by setting up the `APPUSERS` group. For every app that a tenant is entitled to, a group `APPUSERS_{tenant}_{appId}` will be created.
 
-### Summary
+![alt text](./images/appusers.png)
 
-![alt text](./images/dac-map.png)
+These groups are assigned to their respective apps. In okta-dac, assigning a user to an app is done by simply adding the user to the APPUSERS group.
 
 ## Group Admin Role
 Okta supports **delegated admin** functionality by allowing users to hold the [Group Admin Role](https://help.okta.com/en/prod/Content/Topics/Security/admin-role-groupadmin.htm) role. This functionality allows specific groups to be designated to specific Group Admins; And will restrict the Group Admins to only be able to view and perform updates those specifc groups (and the users in them).
