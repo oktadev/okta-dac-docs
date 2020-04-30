@@ -3,10 +3,6 @@ sidebarDepth: 3
 ---
 
 # Architecture
-The okta-dac SaaS application is modeled entirely out of Okta entities – without any need for an external database – keeping Okta as the source of truth.
-![alt text](./images/dac-map.png)
-
-In this section, we discuss the conventions used to model out okta-dac. But first we need a basic understanding of Okta:
 
 ## Okta Basics: Users, Groups, Applications
 
@@ -60,32 +56,36 @@ The string following the prefix refers to the tenant name. For example, if we ha
 
 Each customer's user is a member of their respective `USERS_` group. If the user is also a Tenant Admin, they'll be assigned to the `ADMINS_` group. 
 
-With our naming convention in place, we've coerced our Okta org into a structure looking like a typical SaaS application:
+With our naming convention in place, we've coerced our Okta org into a structure that our SaaS application needs:
 
 ![alt text](./images/multitenant.png)
 
-At this point, we introduce the concept of the `SUPERUSERS` role, which allows access to the [**okta-dac superuser UI**](/guide/#superuser). We model this by creating a SUPERUSERS group in our Okta Org, as illustrated in the diagram above. Users in this group have this role, and have the ability to create tenants. 
+At this point, lets introduce the concept of the `SUPERUSERS` role, which allows access to the [**okta-dac superuser UI**](/guide/#superuser). We model this by creating a SUPERUSERS group in our Okta Org, as illustrated in the diagram above. Users in this group have the ability to create tenants. 
 
 #### Tenant Applications
-Each tenant will of course have access to the suite of applications the SaaS provides, but not every tenant will have every application in the suite of products. We model this by setting up the `APPUSERS` group. For every app that a tenant is entitled to, a group `APPUSERS_{tenant}_{appId}` will be created.
+Each tenant will of course have access to the suite of applications the SaaS provides, but not every tenant will have every application in the suite of products. We'll model this by setting up the `APPUSERS` group: For every app that a tenant is entitled to, a group `APPUSERS_{tenant}_{appId}` is created. These groups are assigned to the respective app. And in okta-dac, when we assign a user to an app using the UI, behind the scenes we use the Okta API to add the user to the group.
 
 ![alt text](./images/appusers.png)
 
-These groups are assigned to their respective apps. In okta-dac, assigning a user to an app is done by simply adding the user to the APPUSERS group.
-
 ## Group Admin Role
-Okta supports **delegated admin** functionality by allowing users to hold the [Group Admin Role](https://help.okta.com/en/prod/Content/Topics/Security/admin-role-groupadmin.htm) role. This functionality allows specific groups to be designated to specific Group Admins; And will restrict the Group Admins to only be able to view and perform updates those specifc groups (and the users in them).
+Okta natively supports **delegated admin** functionality at the group level via the [Group Admin Role](https://help.okta.com/en/prod/Content/Topics/Security/admin-role-groupadmin.htm). You can configure rules in Okta to allow users of a group permissions to read and manage a list of specific groups. Using this functionality, we configure `ADMINS_tenant` groups as the group admins for `USERS_tenant` and `APPUSERS_tenant` groups. 
 
-Read more about the different [Administrator Roles](https://help.okta.com/en/prod/Content/Topics/Security/Administrators.htm) in Okta to get a better understanding of how we leveraged the Group Admin role.
+As Tenant Admins are part of their `ADMINS_tenant` group, they can then read and manage users in the `USERS_tenant` group. And they can assign/unassign apps for their users by being able to add/remove `USERS_tenant` users to/from `APPUSERS_tenant`.
+
+|Read more about the different [Administrator Roles](https://help.okta.com/en/prod/Content/Topics/Security/Administrators.htm) in Okta to get a better understanding of how we leveraged the Group Admin role|
+| :--- |
 
 ## OAuth for Okta
-### What is [OAuth for Okta](https://developer.okta.com/docs/guides/implement-oauth-for-okta/overview/)?
+### OAuth for Okta
+What is [OAuth for Okta](https://developer.okta.com/docs/guides/implement-oauth-for-okta/overview/)?
 
-### What is an Okta session?
+### Okta session
+What is the Okta session and how did we get it?
+
 
 With an existing session, we can **fetch the bearer token** using the [Okta Auth JavaScript SDK](https://github.com/okta/okta-auth-js). Upon logging into the __Delgated Admin Console__ app, the first component we land on is the Home.vue component. This would be a good place to fetch the token. 
 
-In `src/views/Home.vue` we run the following on created:
+In `src/views/Home.vue` we do the following on created:
 ```js
 const authJs = new AuthJS({
     issuer: this.$config.oidc.issuer.split("oauth2")[0],
@@ -159,6 +159,7 @@ How we configured Okta
 
 
 ### Custom Authorizer
+
 
 In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of:
 ```js
