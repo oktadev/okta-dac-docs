@@ -23,7 +23,13 @@ Serverless is used to setup AWS.
 
 See installation instructions here for your operating system: <https://www.serverless.com/framework/docs/getting-started/>
 
-## Programmatic Access to AWS
+## Install AWS CLI
+
+AWS CLI will be used by serverless to deploy to AWS
+
+See installation instructions here for your operating system: <https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html>
+
+## Enable Programmatic Access to AWS
 
 To enable programmatic access to AWS within terraform and serverless, you will need to create an IAM user with sufficient admin privileges.
 
@@ -63,7 +69,27 @@ Once the user is created, you can download the csv with the `Access Key ID` and 
 
 ![AWS IAM - Credentials](./images/aws-iam-user-credentials.png)
 
-## Programmatic Access to Okta
+## Create Named Profile in AWS CLI
+
+The terraform and serverless scripts will use credentials defined in the named profile `serverless-okta`.
+
+Follow the steps to configure the profile <https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html> using the credentials - `Access Key ID` and `Secret access key` from the previous step.
+
+```
+serverless config credentials --provider aws --key  <AWS_ACCESS_KEY_ID> --secret <AWS_SECRET_ACCESS_KEY> --profile serverless-okta
+```
+
+You can verify the presence of the named profile in the `.aws/credentials` file.
+
+```
+more ~/.aws/credentials
+```
+
+See the terminal console output below:
+
+![AWS Named Profile - Credentials](./images/aws-cli-profile.png)
+
+## Enable Programmatic Access to Okta
 
 To enable programmatic access to Okta within Terraform, you need to do the following:
 
