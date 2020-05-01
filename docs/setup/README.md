@@ -80,21 +80,3 @@ Create a Token. You can name the token `Terraform Token`.
 Make sure to copy the created token. This will be used in terraform.
 
 ![Okta Security - Token Created](./images/okta-token-created.png)
-
-### Superuser
-
-About the Superuser role
-
-<!-- ![alt text](./images/dac-superuser.png) -->
-
-### Tenant Admin
-
-About the Tenant Admin role
-
-<!-- ![alt text](./images/dac-demo.gif) -->
-
-## End-user Dashboard
-
-This section discusses the End-User Dashboard
-
-<!-- ![alt text](./images/byob-demo.gif) -->

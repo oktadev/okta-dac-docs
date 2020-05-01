@@ -15,12 +15,12 @@ module.exports = {
     nav: require("./nav/en"),
     sidebar: {
       "/guide/": getGuideSidebar(),
-      "/installation/": getInstallationSidebar(),
+      "/setup/": getSetupSidebar(),
     },
-    algolia: {
+    /*algolia: {
       apiKey: "191db45e6f87475d6a1256d5a4298324",
       indexName: "udplabs_mta-docs",
-    },
+    },*/
   },
   plugins: [
     ["@vuepress/back-to-top", true],
@@ -69,10 +69,10 @@ function getGuideSidebar() {
   ];
 }
 
-function getInstallationSidebar() {
+function getSetupSidebar() {
   return [
     {
-      title: "Installation",
+      title: "Setup",
       collapsable: false,
       children: [""],
     },
