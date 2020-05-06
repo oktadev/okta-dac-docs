@@ -11,14 +11,14 @@ An Okta Org supports having only one directory of users, who belong to one or mo
 ![alt text](./images/okta-entities.png)
 
 ## Groups
-Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. One key feature of Okta Groups is that the API supports [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) with ***startsWith***, which allows us to support our architecture. We illustrate with some examples, below.
+Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. One key feature of Okta groups which enables this is the groups API [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) that supports ***startsWith***. Lets illustrate with a couple examples, below.
 
 ### Example 1: Group Hierarchy
 
-Okta can support nested groups (or group hierarchy) by applying namespacing to the group name. For example, a hierarchy looking like the following:
+You can implement nested groups (or group hierarchy) by applying hierarchical namespacing to the group name. For example, a hierarchy looking like the following:
 ![alt text](./images/dac-groups-example1.png)
 
-Can be *flattened* and represented with the following group naming convention:
+Can be *flattened* and represented with the following naming convention:
 
 | Group Name |
 | ---------- |
@@ -32,7 +32,7 @@ Can be *flattened* and represented with the following group naming convention:
 ---
 ### Example 2: Group Types
 
-Okta can support having group types by naming convention by prefixing group names with the group type:
+You can implement group types by prefixing group names with the group type:
 | Type       | Group      | Naming Convention |
 | ---------- | ---------- | ----------------- |
 | role       |  readonly  |  role_readonly    |
@@ -50,13 +50,11 @@ Okta can support having group types by naming convention by prefixing group name
 ---
 ### okta-dac design
 
-In the okta-dac project, we implement the *Example 2* design pattern to create 2 classes of users – 1) Admins, and 2) Users – By prefixing group names with either **ADMINS_** and **USERS_**, respectively. 
+In the okta-dac project, we use the *Example 2* design pattern to create 2 types of user groups – 1) Admins, and 2) Users – by prefixing group names with either **ADMINS_** and **USERS_**, respectively. The string following the prefix refers to the tenant name. 
 
-The string following the prefix refers to the tenant name. For example, if we have 2 customers, `tenant1` and `tenant2` in our SaaS application, we'll have 2 sets of groups: `ADMINS_tenant1`, `ADMINS_tenant2` and `USERS_tenant1`, `USERS_tenant2` in Okta. 
+For example, if we have 2 customers, `tenant1` and `tenant2` in our SaaS application, we'll have 2 sets of groups: `ADMINS_tenant1`, `ADMINS_tenant2` and `USERS_tenant1`, `USERS_tenant2`. Each customer's user is a member of their respective `USERS_` group. If the user is also a Tenant Admin, they'll be assigned to the `ADMINS_` group. 
 
-Each customer's user is a member of their respective `USERS_` group. If the user is also a Tenant Admin, they'll be assigned to the `ADMINS_` group. 
-
-With our naming convention in place, we've coerced our Okta org into a structure that our SaaS application needs:
+With this naming convention in place, we've coerced our Okta org into a structure that our SaaS application needs:
 
 ![alt text](./images/multitenant.png)
 
@@ -77,7 +75,7 @@ As Tenant Admins are part of their `ADMINS_tenant` group, they can then read and
 
 ## OAuth for Okta
 ### OAuth for Okta
-What is [OAuth for Okta](https://developer.okta.com/docs/guides/implement-oauth-for-okta/overview/)?
+With [OAuth for Okta](https://developer.okta.com/docs/guides/implement-oauth-for-okta/overview/), you are able to interact with Okta APIs using scoped OAuth 2.0 access tokens. Each access token enables the bearer to perform specific actions on specific Okta endpoints, with that ability controlled by which scopes the access token contains.
 
 ### Okta session
 What is the Okta session and how did we get it?
@@ -98,7 +96,6 @@ if (exists) {
     try {
         const res = await authJs.token.getWithoutPrompt({
             scopes: [
-                "openid",
                 "okta.users.manage",
                 "okta.groups.manage"
             ]
@@ -121,11 +118,17 @@ if (exists) {
 [API Access Management](https://developer.okta.com/docs/concepts/api-access-management/) overview
 
 ### Embedding the `tenants` claim
-How we configured Okta
+The `APPLICATION_ENTITLEMENT_POLICY` feature flag, when enabled allows configuration of app profile attributes that are tied to a Group. Meaning, when you set the value of the attribute, you set it to the Group assigned to the app, as opposed to directly setting it against a user. All users whom are members of the group will have the same value for said attribute.
+
+| Refer to the [setup]() section |
+| :--- |
+
+We populate it with a special format: `${tenantId}:${tenantName}:${usersGroupId}`
 
 ### Embedding the `groups` claim
 How we configured Okta
 
+### Sample JWT
 ::: details Click to view the sample JWT payload
 ```json
 {
@@ -144,7 +147,7 @@ How we configured Okta
   "auth_time": 1000,
   "at_hash": "preview_at_hash",
   "tenants": [
-    "0oapi0vtwxmVdOywi0h7:boeing:00gpi18cf4SkPByz40h7:00gpi18ofd1rZfwTC0h7"
+    "0oapi0vtwxmVdOywi0h7:boeing:00gpi18cf4SkPByz40h7"
   ],
   "groups": [
     "USERS_boeing",
@@ -183,3 +186,5 @@ jwt.claims.groups.forEach(grp=>{
     }
 });
 ```
+
+## Inbound Federation

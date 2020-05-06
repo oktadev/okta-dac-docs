@@ -4,11 +4,11 @@ actionText: Get Started →
 actionLink: /guide/
 features:
   - title: Delegate Administration
-    details: Utilize Okta's "delegated" admin capabilities to manage tenants.
+    details: Utilize Okta's "delegated" admin capabilities to manage tenants in a multitenant SaaS application.
   - title: Re-use Identity Providers
-    details: Configure IdPs if you already have one to authenticate users.
+    details: Enable customers that have their own IdPs to self configure their tenant for IdP authentication.
   - title: Configure Entitlements
-    details: Assign applications `en masse` or to specific users.
+    details: Enable customers to self-manage users in their own tenants.
 footer: <TBD> Copyright Info
 ---
 

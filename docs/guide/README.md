@@ -31,6 +31,10 @@ About the Tenant Admin role
 
 ![alt text](./images/dac-demo.gif)
 
+#### Manage Users
+
+#### Configure IdP
+
 ## End-user Dashboard
 This section discusses the End-User Dashboard
 
