@@ -4,4 +4,5 @@ Thumbs.db
 node_modules/
 docs/.vuepress/dist
 docs/guide/*.hcl
+docs/setup/*.hcl
 package-lock.json

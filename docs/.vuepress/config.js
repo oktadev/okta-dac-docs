@@ -16,6 +16,7 @@ module.exports = {
     sidebar: {
       "/guide/": getGuideSidebar(),
       "/setup/": getSetupSidebar(),
+      "/api/": getApiReferenceSidebar(),
     },
     /*algolia: {
       apiKey: "191db45e6f87475d6a1256d5a4298324",
@@ -74,7 +75,20 @@ function getSetupSidebar() {
     {
       title: "Setup",
       collapsable: false,
-      children: [""],
+      children: ["", "terraform"],
     },
   ];
 }
+
+function getApiReferenceSidebar() {
+    return [
+      {
+        title: "API Reference",
+        collapsable: false,
+        children: [
+            "", "o4o"
+        ],
+      },
+    ];
+  }
+  
