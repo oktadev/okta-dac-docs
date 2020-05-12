@@ -1,4 +1,5 @@
 ---
+sidebarDepth: 3
 title: About
 # We can even add meta tags to the page! This sets the keywords meta tag.
 # <meta name="keywords" content="my SEO keywords"/>
@@ -22,20 +23,35 @@ Using native Okta capabilities, we:
 This section discusses the Admin App
 
 ### Superuser
-About the Superuser role
+The Okta org must be configured to have a __SUPERUSERS__ group. Any user assigned to this group will see the superuser admin UI upon logging in to DAC:
 
 ![alt text](./images/dac-superuser.png)
 
-### Tenant Admin
-About the Tenant Admin role
+__Superusers:__
+* Add new Tenants
+* Create the Tenants' first user (the first [Tenant Admin](#tenant-admin))
+* Designate which Apps the Tenant can access
+* Designate email Domains that belong to the Tenant
 
+### Tenant Admin
 ![alt text](./images/dac-demo.gif)
 
-#### Manage Users
-
-#### Configure IdP
+The Tenant Admin role allows users to self manage their tenants:
+* Manage Users
+    * Add Users
+    * Update users' profile
+    * Update user statuses (Activate, Deactivate, Suspend, etc.)
+    * Assign Tenant Admin roles to other users
+    * Assign/Unassign Applications to users
+* Self-configure an IdP for SAML Authentication
+* Self-verify email Domains
 
 ## End-user Dashboard
-This section discusses the End-User Dashboard
-
 ![alt text](./images/byob-demo.gif)
+
+The End-user Dashboard is the companion app to okta-dac. Users login to this application to:
+* Access SSO Applications assigned to them
+* Manage their own profile:
+    * Update profile
+    * Change password
+    * Enroll/unenroll other factors

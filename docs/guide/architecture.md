@@ -120,7 +120,7 @@ if (exists) {
 ### Embedding the `tenants` claim
 The `APPLICATION_ENTITLEMENT_POLICY` feature flag, when enabled allows configuration of app profile attributes that are tied to a Group. Meaning, when you set the value of the attribute, you set it to the Group assigned to the app, as opposed to directly setting it against a user. All users whom are members of the group will have the same value for said attribute.
 
-| Refer to the [setup]() section |
+| Refer to the [setup](org-setup.html#configuration) section |
 | :--- |
 
 We populate it with a special format: `${tenantId}:${tenantName}:${usersGroupId}`
@@ -147,14 +147,14 @@ How we configured Okta
   "auth_time": 1000,
   "at_hash": "preview_at_hash",
   "tenants": [
-    "0oapi0vtwxmVdOywi0h7:boeing:00gpi18cf4SkPByz40h7"
+    "0oapi0vtwxmVdOywi0h7:spidermonkey:00gpi18cf4SkPByz40h7"
   ],
   "groups": [
-    "USERS_boeing",
+    "USERS_spidermonkey",
     "Everyone",
-    "ADMINS_boeing",
-    "APPUSERS_boeing_0oaq1xvxlfoEEbii40h7",
-    "APPUSERS_boeing_0oaphr8z83xlSeZAg0h7"
+    "ADMINS_spidermonkey",
+    "APPUSERS_spidermonkey_0oaq1xvxlfoEEbii40h7",
+    "APPUSERS_spidermonkey_0oaphr8z83xlSeZAg0h7"
   ]
 }
 ```
@@ -166,25 +166,44 @@ How we configured Okta
 
 In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of:
 ```js
+// Everyone can read apps
+policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps");
+policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps/*");
+
 // Tenant admins can read/manage their own idp settings
 const tenants = jwt.claims.tenants;
 if (tenants && tenants.length > 0) {
-    policy.allowMethod(AuthPolicy.HttpVerb.GET, '/admin/idps');
+    policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps');
     tenants.forEach((tenant)=>{
         const parts = tenant.split(':');
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/admin/idps/' + parts[0]);
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/admin/idps/' + parts[0] + '/metadata.xml');
-        policy.allowMethod(AuthPolicy.HttpVerb.PUT, '/admin/idps/' + parts[0]);
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps/' + parts[0]);
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps/' + parts[0] + '/metadata.xml');
+        policy.allowMethod(AuthPolicy.HttpVerb.PUT, '/idps/' + parts[0]);
     });            
 }
 
-// Tenant admins can read and update their own tenant info
-jwt.claims.groups.forEach(grp=>{
-    if (grp.startsWith('ADMINS_')) {
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, "/admin/tenants/" + grp.split('_')[1]);
-        policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/admin/tenants/" + grp.split('_')[1] + "/admins/*");
-    }
-});
+if (jwt.claims.groups && jwt.claims.groups.includes('SUPERUSERS')) {
+    // Only superusers can manage tenants
+    policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants");
+    policy.allowMethod(AuthPolicy.HttpVerb.POST, "/tenants");
+    policy.allowMethod(AuthPolicy.HttpVerb.ALL, "/tenants/*");
+    // read admins
+    policy.allowMethod(AuthPolicy.HttpVerb.GET, "/admins/*");
+    // update app profile
+    policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/apps/*");
+} else {
+    jwt.claims.groups.forEach(grp=>{
+        if (grp.startsWith('ADMINS_')) {
+            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1]);
+            policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/tenants/" + grp.split('_')[1] + "/admins/*");
+            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1] + "/domains");
+            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1] + "/domains/*");
+            policy.allowMethod(AuthPolicy.HttpVerb.POST, "/tenants/" + grp.split('_')[1] + "/domains");
+            policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/tenants/" + grp.split('_')[1] + "/domains/*");
+            policy.allowMethod(AuthPolicy.HttpVerb.DELETE, "/tenants/" + grp.split('_')[1] + "/domains/*");
+        }
+    });
+}
 ```
 
 ## Inbound Federation

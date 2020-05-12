@@ -6,4 +6,4 @@ We use the [Okta Terraform Provider](https://www.terraform.io/docs/providers/okt
 :::
 * [Click here](/tf/sample.tf) to download.
 
-If you're more comfortable setting it up manually, carefully follow the instructions in this [next](#org-setup) section.
+If you're more comfortable setting it up manually, carefully follow the instructions in this [section](/guide/org-setup.html#configuration) section.
