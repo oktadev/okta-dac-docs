@@ -9,7 +9,7 @@ meta:
 ---
 
 # Introduction
-This is the design architecture documentation for the "__Delegated Admin Console__" aka [okta-dac](https://github.com/udplabs/okta-dac) open source project *and its companion project, "__End-user Dashboard__" aka [byob-dashboard](https://github.com/oktadeveloper/byob-dashboard)*.
+This is the design architecture documentation for the "__Delegated Admin Console__" aka [okta-dac](https://github.com/oktadeveloper/okta-dac) open source project *and its companion project, "__End-user Dashboard__" aka [byob-dashboard](https://github.com/oktadeveloper/byob-dashboard)*.
 
 Using native Okta capabilities, we:
 1. **Add a "tenant" layer to an Okta Org** using custom setup of [Groups](/guide/architecture.html#groups) and [Roles](/guide/architecture.html#group-admin-role)
