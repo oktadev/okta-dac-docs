@@ -6,12 +6,17 @@ sidebarDepth: 3
 
 ## Okta Basics: Users, Groups, Applications
 
-An Okta Org supports having only one directory of users, who belong to one or more groups. Groups in Okta are flat, but users can belong to any number of groups. Users are *assigned* to applications. And groups can also be assigned to applications (When a group is assigned to an application, all users of the group are assigned to the application). The user object can store any number of custom attributes. Groups can store a name and description. 
+* An Okta Org supports having only one directory of users, who belong to one or more groups. 
+* Groups in Okta are flat, but users can belong to any number of groups. 
+* Users are *assigned* to applications. 
+* Groups can also be assigned to applications (When a group is assigned to an application, all users of the group are assigned to the application). 
+* The user object can store any number of custom attributes. 
+* Groups can store a name and description. 
 
 ![alt text](./images/okta-entities.png)
 
 ## Groups
-Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. One key feature of Okta groups which enables this is the groups API [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) that supports ***startsWith***. Lets illustrate with a couple examples, below.
+Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. **A key feature of Okta groups which allows us to do this is the groups API [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) that supports *startsWith***. Lets illustrate with a couple examples, below.
 
 ### Example 1: Group Hierarchy
 
@@ -40,16 +45,20 @@ You can implement group types by prefixing group names with the group type:
 | ou         |  sales     |  ou_sales         |
 | ou         | engineering|  ou_engineering   |
 * In order to list all the groups of a single type, use the search groups API with `search string = group type`
-    ```
-    GET https://${yourOktaDomain}/api/v1/Groups?q=${groupType}
-    ```
-* In order to search for a group by name (within a group type) simply prefix the search string with the group type
-    ```
-    GET https://${yourOktaDomain}/api/v1/Groups?q=${groupType}startsWith
-    ```
----
-### okta-dac design
 
+
+| GET | `https://${yourOktaDomain}/api/v1/Groups?q=${groupType}` |
+| --- | --- |
+
+* In order to search for a group by name (within a group type) simply prefix the search string with the group type
+
+| GET | `https://${yourOktaDomain}/api/v1/Groups?q=${groupType}startsWith` |
+| --- | --- |
+
+---
+### okta-dac mapping
+
+#### ADMINS_ and USERS_ Groups
 In the okta-dac project, we use the *Example 2* design pattern to create 2 types of user groups – 1) Admins, and 2) Users – by prefixing group names with either **ADMINS_** and **USERS_**, respectively. The string following the prefix refers to the tenant name. 
 
 For example, if we have 2 customers, `tenant1` and `tenant2` in our SaaS application, we'll have 2 sets of groups: `ADMINS_tenant1`, `ADMINS_tenant2` and `USERS_tenant1`, `USERS_tenant2`. Each customer's user is a member of their respective `USERS_` group. If the user is also a Tenant Admin, they'll be assigned to the `ADMINS_` group. 
@@ -58,33 +67,36 @@ With this naming convention in place, we've coerced our Okta org into a structur
 
 ![alt text](./images/multitenant.png)
 
-At this point, lets introduce the concept of the `SUPERUSERS` role, which allows access to the [**okta-dac superuser UI**](/guide/#superuser). We model this by creating a SUPERUSERS group in our Okta Org, as illustrated in the diagram above. Users in this group have the ability to create tenants. 
+#### SUPERUSERS Group
+We mentioned "Superusers" before so lets go over how we modeled this in Okta. As previously described [here](/guide/#superuser), the "Superuser" __role__ allows access to the **okta-dac superuser UI**. We model this by creating a __SUPERUSERS__ group in our Okta Org, as illustrated in the diagram above. By simply adding a user into this group, they experience the Superusers UI when logging into otkta-dac. We [configure Okta](/guide/org-setup.html#_5-add-custom-claims) to include the list of groups memberships in users' JWT; And business logic coded in the okta-dac app interprets the JWT information to determine if the user is a superuser or not.
 
-#### Tenant Applications
+#### APPUSERS_ Groups
 Each tenant will of course have access to the suite of applications the SaaS provides, but not every tenant will have every application in the suite of products. We'll model this by setting up the `APPUSERS` group: For every app that a tenant is entitled to, a group `APPUSERS_{tenant}_{appId}` is created. These groups are assigned to the respective app. And in okta-dac, when we assign a user to an app using the UI, behind the scenes we use the Okta API to add the user to the group.
 
 ![alt text](./images/appusers.png)
 
 ## Group Admin Role
-Okta natively supports **delegated admin** functionality at the group level via the [Group Admin Role](https://help.okta.com/en/prod/Content/Topics/Security/admin-role-groupadmin.htm). You can configure rules in Okta to allow users of a group permissions to read and manage a list of specific groups. Using this functionality, we configure `ADMINS_tenant` groups as the group admins for `USERS_tenant` and `APPUSERS_tenant` groups. 
-
-As Tenant Admins are part of their `ADMINS_tenant` group, they can then read and manage users in the `USERS_tenant` group. And they can assign/unassign apps for their users by being able to add/remove `USERS_tenant` users to/from `APPUSERS_tenant`.
+Okta natively supports **delegated admin** functionality at the group level via the [Group Admin Role](https://help.okta.com/en/prod/Content/Topics/Security/admin-role-groupadmin.htm). You can configure rules in Okta to allow users in a group to gain permissions to read and manage a list of specific groups. Using this functionality, **we configure `ADMINS_tenant` groups as the group admins for `USERS_tenant` and `APPUSERS_tenant` groups**. Thus, the result is the following behavior:
+* Tenant Admins are part of their own `ADMINS_{tenant}` group, so they can then read and manage users in their `USERS_{tenant}` group. 
+* And they can assign/unassign apps for their users by being able to add/remove `USERS_{tenant}` users to/from their `APPUSERS_{tenant}` group.
 
 |Read more about the different [Administrator Roles](https://help.okta.com/en/prod/Content/Topics/Security/Administrators.htm) in Okta to get a better understanding of how we leveraged the Group Admin role|
 | :--- |
 
 ## OAuth for Okta
-### OAuth for Okta
 With [OAuth for Okta](https://developer.okta.com/docs/guides/implement-oauth-for-okta/overview/), you are able to interact with Okta APIs using scoped OAuth 2.0 access tokens. Each access token enables the bearer to perform specific actions on specific Okta endpoints, with that ability controlled by which scopes the access token contains.
 
+The [scopes](https://developer.okta.com/docs/guides/implement-oauth-for-okta/scopes/) that we request are
+* `okta.users.manage` so that we can read, add, and update users
+* `okta.groups.manage` so that we can read and update groups
+
 ### Okta session
-What is the Okta session and how did we get it?
+Okta uses a cookie-based authentication mechanism to maintain a user's authentication [session](https://developer.okta.com/docs/reference/api/sessions/) across web requests.
+* When a user signs into okta-dac, a session is created in Okta and persisted on the browser with a cookie.
+* Leveraging this existing session, we can then **fetch the bearer token** without the need to re-authenticate. We use the [Okta Auth JavaScript SDK](https://github.com/okta/okta-auth-js) `getWithoutPrompt` function to silently get this token. Below is the sample code:
 
-
-With an existing session, we can **fetch the bearer token** using the [Okta Auth JavaScript SDK](https://github.com/okta/okta-auth-js). Upon logging into the __Delgated Admin Console__ app, the first component we land on is the Home.vue component. This would be a good place to fetch the token. 
-
-In `src/views/Home.vue` we do the following on created:
 ```js
+//src/views/Home.vue
 const authJs = new AuthJS({
     issuer: this.$config.oidc.issuer.split("oauth2")[0],
     clientId: this.$config.oidc.client_id,
@@ -110,26 +122,50 @@ if (exists) {
     }
 }
 ```
-
 * [`authJs.session.exists()`](https://github.com/okta/okta-auth-js#sessionexists) checks to see if user has logged-in (i.e. an Okta session exists)
-* [`authJs.token.getWithoutPrompt()`](https://github.com/okta/okta-auth-js#tokengetwithoutpromptoptions) makes an OAuth "authorize" request and authenticates using an existing session.
+* [`authJs.token.getWithoutPrompt()`](https://github.com/okta/okta-auth-js#tokengetwithoutpromptoptions) makes an OAuth [authorize](https://developer.okta.com/docs/reference/api/oidc/#authorize) request with [`&prompt=none`](https://developer.okta.com/docs/reference/api/oidc/#parameter-details). As a session cookie is present in the request, the user does not need to authenticate again.
+
+In okta-dac, a good place to run this piece of code is in `src/views/Home.vue`, during onCreated(). This is because upon logging into the __Delgated Admin Console__ app, the first component we land on is the Home.vue component. 
 
 ## API Access Management
-[API Access Management](https://developer.okta.com/docs/concepts/api-access-management/) overview
+We use [API Access Management](https://developer.okta.com/docs/concepts/api-access-management/), Okta's implementation of the OAuth 2.0 standard, to secure our [composite APIs](/api/#composite-apis), which implement the business logic layer of abstraction that generates our "tenant" structure in the Okta org.
 
 ### Embedding the `tenants` claim
-The `APPLICATION_ENTITLEMENT_POLICY` feature flag, when enabled allows configuration of app profile attributes that are tied to a Group. Meaning, when you set the value of the attribute, you set it to the Group assigned to the app, as opposed to directly setting it against a user. All users whom are members of the group will have the same value for said attribute.
+::: warning NOTE
+The `APPLICATION_ENTITLEMENT_POLICY` feature flag must be enabled for the Okta Org
 
-| Refer to the [setup](org-setup.html#configuration) section |
-| :--- |
+This feature flag, when enabled allows configuration of app profile attributes that are tied to a Group. Meaning, when you set the value of the attribute, you set it to the Group assigned to the app, as opposed to directly setting it against a user. All users whom are members of the group will have the same value for said attribute.
+:::
 
-We populate it with a special format: `${tenantId}:${tenantName}:${usersGroupId}`
+We configure Okta to store a Group Attribute called "Tenants" and display its value in a custom claim called `tenants`. See:
+* Custom App Profile Attribute. [Config steps](org-setup.html#_4-add-custom-app-profile-attribute).
+* The `tenants` custom claim. [Config steps](org-setup.html#_6-add-custom-claims).
+
+We populate `tenants` using a special format: `${tenantId}:${tenantName}:${usersGroupId}`. This is handled by our [Add Tenant](/api/#add-tenant) API code: 
+
+```js{5}
+await axios.put(
+    orgUrl + '/api/v1/apps/' + clientId + '/groups/' + groupId, {
+        profile: {
+            tenants: [
+                tenantId + ":" + tenantName + ':' + usersGroupId
+            ]
+        }
+    },
+    headers
+);
+```
+* *We update the "profile" of the AppGroup using __`PUT`__`/apps/{id}/groups/{id}`*
+
+Embedding this value in the JWT allows the UI quick access to the tenant name and id, and its associated USERS_ group id without making additional requests.
 
 ### Embedding the `groups` claim
-How we configured Okta
+We configure Okta to return the `groups` custom claim. See [steps](org-setup.html#_6-add-custom-claims). This allows the okta-dac to:
+* Differentiate Superusers from Tenant Admins. 
+* For Tenant Admins, which are their Tenants.
+* And which apps are available for their Tenants.
 
-### Sample JWT
-::: details Click to view the sample JWT payload
+#### Sample JWT
 ```json
 {
   "sub": "00upkrte35fGaTMJi0h7",
@@ -158,52 +194,9 @@ How we configured Okta
   ]
 }
 ```
-:::
 
+### AuthZ
+Not only is the information contained in the above JWT used by the UI, it is also used for AuthZ purposes for our composite APIs. See [custom-authorizer](api-design.html#custom-authorizer) for more info.
 
-### Custom Authorizer
-
-
-In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of:
-```js
-// Everyone can read apps
-policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps");
-policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps/*");
-
-// Tenant admins can read/manage their own idp settings
-const tenants = jwt.claims.tenants;
-if (tenants && tenants.length > 0) {
-    policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps');
-    tenants.forEach((tenant)=>{
-        const parts = tenant.split(':');
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps/' + parts[0]);
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps/' + parts[0] + '/metadata.xml');
-        policy.allowMethod(AuthPolicy.HttpVerb.PUT, '/idps/' + parts[0]);
-    });            
-}
-
-if (jwt.claims.groups && jwt.claims.groups.includes('SUPERUSERS')) {
-    // Only superusers can manage tenants
-    policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants");
-    policy.allowMethod(AuthPolicy.HttpVerb.POST, "/tenants");
-    policy.allowMethod(AuthPolicy.HttpVerb.ALL, "/tenants/*");
-    // read admins
-    policy.allowMethod(AuthPolicy.HttpVerb.GET, "/admins/*");
-    // update app profile
-    policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/apps/*");
-} else {
-    jwt.claims.groups.forEach(grp=>{
-        if (grp.startsWith('ADMINS_')) {
-            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1]);
-            policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/tenants/" + grp.split('_')[1] + "/admins/*");
-            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1] + "/domains");
-            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1] + "/domains/*");
-            policy.allowMethod(AuthPolicy.HttpVerb.POST, "/tenants/" + grp.split('_')[1] + "/domains");
-            policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/tenants/" + grp.split('_')[1] + "/domains/*");
-            policy.allowMethod(AuthPolicy.HttpVerb.DELETE, "/tenants/" + grp.split('_')[1] + "/domains/*");
-        }
-    });
-}
-```
 
 ## Inbound Federation
