@@ -1,7 +1,7 @@
 # Configure Okta
 
 ## Terraform
-We use the [Okta Terraform Provider](https://www.terraform.io/docs/providers/okta/index.html) to automatically configure the Okta Org. Refer to the [setup](/setup/terraform.html) section for more information. 
+We use the [Okta Terraform Provider](https://www.terraform.io/docs/providers/okta/index.html) to automatically configure the Okta Org. Refer to the [terraform](terraform) section for more information. 
 
 If you're more comfortable configuring the org manually, Follow the steps below: 
 

@@ -7,76 +7,95 @@ collapsable: true
 ## Tenants
 
 ### Add Tenant
-__`POST`__`tenants/`
+| POST | `tenants/` |
+| ---- | --- |
 
-### Get Tenants by name
-__`GET`__`tenants/{tenant}`
+### Get Tenant
+| GET | `tenants/{tenant}` |
+| --- | --- |
 
 ### List Tenants (with Pagination)
-__`GET`__`tenants?after={after}`
+| GET | `tenants?after={after}`|
+| --- | --- |
 
 ### Search Tenants
-__`GET`__`tenants?search={search}`
-
+| GET | `tenants?search={search}` |
+| --- | --- |
 
 ## Tenant Apps
 ### List Tenant Apps
-__`GET`__`tenants/{tenant}/apps`
+| GET | `tenants/{tenant}/apps` |
+| --- | --- |
 
 ### Activate Tenant App
-__`PUT`__`tenants/{tenant}/apps/{appId}`
+| PUT | `tenants/{tenant}/apps/{appId}` |
+| --- | --- |
 
 ### Deactivate Tenant App
-__`DELETE`__`tenants/{tenant}/apps/{appId}`
+| DELETE | `tenants/{tenant}/apps/{appId}` |
+| ------ | --- |
 
 ## Tenant Admins
 ### Get Tenant Admin
-__`GET`__`tenants/{tenant}/admins`
+| GET | `tenants/{tenant}/admins` |
+| --- | --- |
 
 ### Assign Tenant Admin
-__`PUT`__`tenants/{tenant}/admins/{userId}`
+| PUT | `tenants/{tenant}/admins/{userId}` |
+| --- | --- |
 
 ## Tenant Domains
-### Add Tenant Domain
-__`POST`__`tenants/{tenant}/domains`
-
-### Delete Tenant Domain
-__`DELETE`__`tenants/{tenant}/domains/{domain}`
+### Get Verified or Unverified Tenant Domain
+| GET | `tenants/{tenant}/domains?verified=false | true` |
+| --- | --- |
 
 ### List Tenant Domains
-__`GET`__`tenants/{tenant}/domains`
+| GET | `tenants/{tenant}/domains` |
+| --- | --- |
 
-### Get Verified or Unverified Tenant Domain by name
-__`GET`__`tenants/{tenant}/domains?verified=false | true`
+### Add Tenant Domain
+| POST | `tenants/{tenant}/domains` |
+| ---- | --- |
 
-### Verify Domain
-__`PUT`__`tenants/{tenant}/domains/{domain}`
+### Delete Tenant Domain
+| DELETE | `tenants/{tenant}/domains/{domain}` |
+| ------ | --- |
+
+### Verify Tenant Domain
+| PUT |`tenants/{tenant}/domains/{domain}` |
+| --- | --- |
 
 ## Idps
-### List Idps
-__`GET`__`idps/`
-
 ### Get Idp
-__`GET`__`idps/{id}`
+| GET | `idps/{id}` |
+| --- | --- |
+
+### List Idps
+| GET | `idps/` |
+| --- | --- |
 
 ### Get Idp Metadata
-__`GET`__`idps/{id}/metadata.xml`
+| GET | `idps/{id}/metadata.xml` |
+| --- | --- |
 
 ### Update Idp
-__`PUT`__`idps/{id}`
+| PUT | `idps/{id}` |
+| --- | --- |
 
 ## Apps
+### Get App
+| GET | `apps/{id}` |
+| --- | --- |
 
 ### List Apps
-__`GET`__`apps/`
-
-### Get App
-__`GET`__`apps/{id}`
+| GET | `apps/` |
+| --- | --- |
 
 ### Update App
-__`PUT`__`apps/{id}`
+| PUT | `apps/{id}` |
+| --- | --- |
 
 ## Admins
-
 ### Get Admin
-__`GET`__`admins/{email}`
+| GET | `admins/{email}` |
+| --- | --- |

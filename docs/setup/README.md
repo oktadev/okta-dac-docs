@@ -1,13 +1,12 @@
 ---
-title: Installation
+title: Prereq
 # We can even add meta tags to the page! This sets the keywords meta tag.
 # <meta name="keywords" content="my SEO keywords"/>
 meta:
   - name: keywords
   - content: my SEO keywords
 ---
-
-# Setup and Installation
+# Install Dependencies
 
 The BYOB project will need to install custom serverless components within AWS and also refer to entities defined within the Okta tenant. BYOB leverages `terraform` and `serverless` to setup all the infrastructure as code.
 

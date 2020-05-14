@@ -23,7 +23,7 @@ Using native Okta capabilities, we:
 This App displays two different UX depending on the user's role, which can be one of either 2 (__Superusers__ or __Tenant Admin__)
 
 ### Superuser
-The Okta org must be configured to have a __SUPERUSERS__ group. Any user assigned to this group will see the superuser admin UI upon logging in to DAC:
+The Okta org must be configured to have a __SUPERUSERS__ group. Any user assigned to this group will see the superuser admin UI upon logging in to okta-dac:
 
 ![alt text](./images/dac-superuser.png)
 
@@ -55,3 +55,7 @@ The End-user Dashboard is the companion app to okta-dac. Users login to this app
     * Update profile
     * Change password
     * Enroll/unenroll other factors
+
+---
+# Next Steps
+These three user experiences may seem simple on the surface, but leverage very powerful Okta concepts and functionality that we will discuss in the next section. [Architecture ->](architecture.html)

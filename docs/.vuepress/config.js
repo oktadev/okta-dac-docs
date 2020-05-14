@@ -2,7 +2,7 @@ module.exports = {
   title: "Okta Multi Tenant Admin",
   description: "Identity Management for Multi-Tenant Applications",
   themeConfig: {
-    repo: "udplabs/mta-docs",
+    repo: "oktadeveloper/okta-dac-docs",
     logo:
       "https://www.okta.com/sites/all/themes/Okta/images/logos/developer/Dev_Logo-02_Large.png",
     lastUpdated: "Last Updated",
@@ -65,7 +65,7 @@ function getGuideSidebar() {
     {
       title: "Guide",
       collapsable: false,
-      children: ["", "architecture", "api-design", "org-setup"],
+      children: ["", "architecture", "api-design"],
     },
   ];
 }
@@ -75,7 +75,7 @@ function getSetupSidebar() {
     {
       title: "Setup",
       collapsable: false,
-      children: ["", "terraform"],
+      children: ["", "org-setup", "terraform"],
     },
   ];
 }
