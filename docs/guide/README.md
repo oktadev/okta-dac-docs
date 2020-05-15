@@ -20,14 +20,14 @@ Using native Okta capabilities, we:
     * We configure Okta to generate JWTs embedding tenant info; We design our API endpoints to implement tenant-namepsace in the request url; And we implement a custom authorizer to restrict access to the tenant-namepsaced route based on tenant info embedded in the JWT (the Bearer token of the API request).
 
 ## Delegated Admin Console
-This App displays two different UX depending on the user's role, which can be one of either 2 (__Superusers__ or __Tenant Admin__)
+This App displays two different UX depending on the user's role, which can be one of either 2 (__Super Admin__ or __Tenant Admin__)
 
-### Superuser
-The Okta org must be configured to have a __SUPERUSERS__ group. Any user assigned to this group will see the superuser admin UI upon logging in to okta-dac:
+### Super Admin
+The Okta org must be configured to have a __SUPERUSERS__ group. Any user assigned to this group will see the Super Admin UI upon logging in to okta-dac:
 
 ![alt text](./images/dac-superuser.png)
 
-__Superusers:__
+__Super Admins:__
 * Add new Tenants
 * Create the Tenants' first user (the first [Tenant Admin](#tenant-admin))
 * Designate which Apps the Tenant can access

@@ -68,7 +68,7 @@ With this naming convention in place, we've coerced our Okta org into a structur
 ![alt text](./images/multitenant.png)
 
 #### SUPERUSERS Group
-We mentioned "Superusers" before so lets go over how we modeled this in Okta. As previously described [here](/guide/#superuser), the "Superuser" __role__ allows access to the **okta-dac superuser UI**. We model this by creating a __SUPERUSERS__ group in our Okta Org, as illustrated in the diagram above. By simply adding a user into this group, they experience the Superusers UI when logging into otkta-dac. We [configure Okta](/guide/org-setup.html#_5-add-custom-claims) to include the list of groups memberships in users' JWT; And business logic coded in the okta-dac app interprets the JWT information to determine if the user is a superuser or not.
+We mentioned "Super Admins" before so lets go over how we modeled this in Okta. As previously described [here](/guide/#superuser), the "Super Admin" __role__ allows access to the **okta-dac Super Admin UI**. We model this by creating a __SUPERUSERS__ group in our Okta Org, as illustrated in the diagram above. By simply adding a user into this group, they see the Super Admin UI when logging into otkta-dac. We [configure Okta](/guide/org-setup.html#_5-add-custom-claims) to include the list of groups memberships in users' JWT; And business logic coded in the okta-dac app interprets the JWT information to determine if the user is a superuser or not.
 
 #### APPUSERS_ Groups
 Each tenant will of course have access to the suite of applications the SaaS provides, but not every tenant will have every application in the suite of products. We'll model this by setting up the `APPUSERS` group: For every app that a tenant is entitled to, a group `APPUSERS_${tenant}_${appId}` is created. These groups are assigned to the respective app. And in okta-dac, when we assign a user to an app using the UI, behind the scenes we use the Okta API to add the user to the group.
@@ -85,13 +85,13 @@ Read more about the different [Administrator Roles](https://help.okta.com/en/pro
 :::
 
 ## IdPs
-One key functionality of okta-dac is the ability for Tenant Admins to self configure their own IdPs for SAML authentication. Okta provides support for [External Identity Providers](https://developer.okta.com/docs/concepts/identity-providers/) out of the box. 
+One key functionality of okta-dac is the ability for Tenant Admins to self configure their own IdPs for SAML authentication. Okta already provided support for [External Identity Providers](https://developer.okta.com/docs/concepts/identity-providers/) out of the box. However, we are adding a custom tenant layer that isn't natively supported by Okta. So this means we'll be adding some more custom implementation.
 
-In okta-dac, we maintain a mandatory 1:1 mapping between a Tenant and its (potential) IdP (in Okta, we always create one IdP per Tenant regardless of whether the Tenant is going to use IdP authentication). IdP settings are simply set to `status=inactive` where the Tenant is not using IdP authentication.
+In okta-dac, we maintain a mandatory 1:1 mapping between a Tenant and an IdP. This means we always create one IdP per Tenant regardless of whether the Tenant is going to use IdP authentication; IdP settings are simply set to `status=inactive` where the Tenant is not using IdP authentication.
 
 The 1:1 mapping allows us to do a couple things:
-1. First, we overload IdP to be Tenant
-    * We use IdP id as Tenant id.
+1. First, it means we can overload IdP and treat it as THE Tenant
+    * This means we can use IdP id as Tenant id.
     * We store this id in the `profile.description` of the `ADMINS_` group as a JSON string:
     ```json{12}
     {
@@ -109,12 +109,22 @@ The 1:1 mapping allows us to do a couple things:
         }
     }
     ```
-2. Allows us to implement the [List Tenants](/api/#list-tenants-with-pagination) API. 
-    * We wrap around the [list identity providers](https://developer.okta.com/docs/reference/api/idps/#list-identity-providers) API (which supports pagination) and map its results to display them as Tenant info.
+2. Allows us to implement the [List Tenants](/api/#list-tenants-with-pagination) API: 
+    * This is done by wrapping the [list identity providers](https://developer.okta.com/docs/reference/api/idps/#list-identity-providers) API (which supports pagination). We simply map its results to display them as Tenant (instead of Idp)
         * This allows us to support reading back thousands of Tenants in paginated results.
         * We could have used [search groups](https://developer.okta.com/docs/reference/api/groups/#search-groups) to search the `ADMINS_` groups instead. But this API would not have given us pagination and is limited to 300 results.
 
-# Finally, our entity map looks like the following:
+# The Final Picture:
+Finally, this is how everything maps out:
 ![alt text](./images/dac-map.png)
+* Each Tenant is represented by excatly 1 Idp, 1 `ADMINS_${tenant}` group, and 1 `USERS_${tenant}` group, where:
+    * Idp represents the Tenant
+    * Users in the `ADMINS_${tenant}` group are Tenant Admins
+    * All users belonging to a tenant are members of `USERS_${tenant}`
+* For each App a tenant is entitled to, there is an `APPSUERS_${tenant}` group.
+* The `ADMINS_${tenant}` group posesses the __Group Admin role__. It targets itself, the `USERS_${tenant}`, and all the `APPUSERS_${tenant}` groups.
+* Super Admins belong to the `SUPERUSERS` group
 
+--- 
+# Next Steps
 __Head over to the [next ->](api-design) section for a discussion on the backend design.__

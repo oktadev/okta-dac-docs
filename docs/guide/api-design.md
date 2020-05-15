@@ -93,7 +93,7 @@ Embedding this value in the JWT provides okta-dac quick access to the tenant nam
 
 ### The `groups` claim
 We configure Okta to return the `groups` custom claim. See [steps](org-setup.html#_6-add-custom-claims). This allows the okta-dac to:
-* Differentiate Superusers from Tenant Admins. 
+* Differentiate Super Admins from Tenant Admins. 
 * For the Tenant Admins, provide the Tenant(s) info.
 * Which apps are available for Tenants.
 
@@ -196,7 +196,7 @@ Likewise, [Update Idp](/api/#update-idp) is:
 We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claims contains `SUPERUSERS`, then list all apps that `startsWith MTA_`. Else, list all apps that `startswith APPUSERS_${tenantName}`. For implementation details refer to the project source code.
 
 ### [Admins API](/api/#admins)
-We implemented a [Get Admin](/api/#get-admin) api so that okta-dac can throw UI errors if a Superuser attempts to add a user with an existing email. For implementation details refer to the project source code.
+We implemented a [Get Admin](/api/#get-admin) api so that okta-dac can throw UI errors if a Super Admin attempts to add a user with an existing email. For implementation details refer to the project source code.
 
 ### Custom Authorizer
 In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of:

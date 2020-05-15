@@ -19,7 +19,10 @@ Example
 }
 ```
 
-Response
+__Successful Reponse__
+
+Status: 201 Created
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 201 CREATED
 {
@@ -32,6 +35,7 @@ HTTP/1.1 201 CREATED
     "lastUpdated": "2020-05-14T06:29:07.000Z"
 }
 ```
+:::
 
 ### Get Tenant
 | GET | `tenants/${tenant}` |
@@ -42,7 +46,10 @@ __Request Parameters__
 | --- | :--- | --- | --- |
 | tenant | Name of the tenant | String | TRUE|
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -52,6 +59,11 @@ HTTP/1.1 200 OK
     "created": "2020-01-29T17:55:02.000Z"
 }
 ```
+:::
+
+__Exception Reponse__
+
+Status: 404 Not Found
 
 ### List Tenants (with Pagination)
 | GET | `tenants?after=${after}`|
@@ -62,7 +74,10 @@ __Request Parameters__
 | --- | :--- | --- | --- |
 | after | For pagination. Search results set return values "after" this tenant `id` | String | FALSE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -86,6 +101,7 @@ Link: <https://${apiUrl}/tenants?after=0oappepjgd1Jb1Bav0h7>; rel="next"
     }
 ]
 ```
+:::
 
 ### Search Tenants
 | GET | `tenants?search=${search}` |
@@ -94,9 +110,12 @@ Link: <https://${apiUrl}/tenants?after=0oappepjgd1Jb1Bav0h7>; rel="next"
 __Request Parameters__
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| search | Search string | String | FALSE |
+| search | Tenant name `startsWith` search operand | String | FALSE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 [
@@ -108,6 +127,7 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+:::
 
 ## Tenant Apps
 ### List Tenant Apps
@@ -119,7 +139,10 @@ __Request Parameters__
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 [
@@ -167,6 +190,7 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+:::
 
 ### Activate Tenant App
 | PUT | `tenants/${tenant}/apps/${appId}` |
@@ -176,9 +200,12 @@ __Request Parameters__
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
-| appId | id of the app | String | TRUE |
+| appId | `id` of the app | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -186,6 +213,11 @@ HTTP/1.1 200 OK
     "lastUpdated": "2020-05-14T06:54:56.000Z"
 }
 ```
+:::
+
+__Exception Reponse__
+
+Status: 404 Not Found
 
 ### Deactivate Tenant App
 | DELETE | `tenants/${tenant}/apps/${appId}` |
@@ -195,12 +227,19 @@ __Request Parameters__
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
-| appId | id of the app | String | TRUE |
+| appId | `id` of the app | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 204
+__Response__
 ```json
 HTTP/1.1 204 No Content
 ```
+
+__Exception Reponse__
+
+Status: 404 Not Found
 
 ## Tenant Admins
 ### Get Tenant Admin
@@ -212,7 +251,10 @@ __Request Parameters__
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 [
@@ -239,7 +281,7 @@ HTTP/1.1 200 OK
     }
 ]
 ```
-
+:::
 
 ### Assign Tenant Admin
 | PUT | `tenants/${tenant}/admins/${userId}` |
@@ -251,7 +293,10 @@ __Request Parameters__
 | tenant | Name of tenant | String | TRUE |
 | userId | `id` of user | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -259,6 +304,7 @@ HTTP/1.1 200 OK
     "lastUpdated": "2020-01-29T19:20:18.000Z"
 }
 ```
+:::
 
 ## Tenant Domains
 ### List Tenant Domain
@@ -268,9 +314,12 @@ HTTP/1.1 200 OK
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
-| verified | `true` or `false`. Defaults to `true` | String | FALSE |
+| verified | If not supplied returns both verified and unverified domains. If provided, valid values are `true` or `false` | String | FALSE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 [
@@ -297,6 +346,7 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+:::
 
 ### Add Tenant Domain
 | POST | `tenants/${tenant}/domains` |
@@ -315,14 +365,17 @@ Example
     "verified": true
 }
 ```
+__Successful Reponse__
 
-__Sample Response__
+Status: 201
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 201 Created
 {
     "domain": "spidermonkey.com"
 }
 ```
+:::
 
 ### Delete Tenant Domain
 | DELETE | `tenants/${tenant}/domains/${domain}` |
@@ -333,7 +386,10 @@ HTTP/1.1 201 Created
 | tenant | Name of tenant | String | TRUE |
 | domain | domain name | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 204
+__Response__
 ```json
 HTTP/1.1 204 No Content
 ```
@@ -355,8 +411,10 @@ Example
     "dnsVerificationString": "c0cced8f-072c-4c8e-99ac-239e0c2e6f95"
 }
 ```
+__Successful Reponse__
 
-__Sample Response__
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -364,7 +422,7 @@ HTTP/1.1 200 OK
     "verified": true
 }
 ```
-
+:::
 
 ## Idps
 ### Get Idp
@@ -375,7 +433,10 @@ HTTP/1.1 200 OK
 | --- | :--- | --- | --- |
 | id | `id` of the Idp | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -502,12 +563,20 @@ HTTP/1.1 200 OK
     ]
 }
 ```
+:::
+
+__Exception Reponse__
+
+Status: 404 Not Found
 
 ### List Idps
 | GET | `idps/` |
 | --- | --- |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -634,6 +703,7 @@ HTTP/1.1 200 OK
     ]
 }
 ```
+:::
 
 ### Get Idp Metadata
 | GET | `idps/${id}/metadata.xml` |
@@ -654,8 +724,7 @@ HTTP/1.1 200 OK
 
 __Request Body__
 
-Example
-
+::: details Example (Click to expand)
 ```json
 {
   "type": "SAML2",
@@ -730,14 +799,88 @@ Example
   },
 }
 ```
-__Sample Response__
+:::
+
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
-    ...truncated
+  "type": "SAML2",
+  "name": "Example SAML IdP",
+  "status": "INACTIVE",
+  "protocol": {
+    "type": "SAML2",
+    "endpoints": {
+      "sso": {
+        "url": "https://idp.example.com/saml2/sso",
+        "binding": "HTTP-REDIRECT",
+        "destination": "https://idp.example.com/saml2/sso"
+      },
+      "acs": {
+        "binding": "HTTP-POST",
+        "type": "INSTANCE"
+      }
+    },
+    "algorithms": {
+      "request": {
+        "signature": {
+          "algorithm": "SHA-256",
+          "scope": "REQUEST"
+        }
+      },
+      "response": {
+        "signature": {
+          "algorithm": "SHA-256",
+          "scope": "ANY"
+        }
+      }
+    },
+    "settings": {
+      "nameFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+    },
+    "credentials": {
+      "trust": {
+        "issuer": "https://idp.example.com",
+        "audience": "https://www.okta.com/saml2/service-provider/spCQJRNaaxs7ANqKBO7M",
+        "kid": "your-key-id"
+      }
+    }
+  },
+  "policy": {
+    "provisioning": {
+      "action": "AUTO",
+      "profileMaster": true,
+      "groups": {
+        "action": "NONE"
+      },
+      "conditions": {
+        "deprovisioned": {
+          "action": "NONE"
+        },
+        "suspended": {
+          "action": "NONE"
+        }
+      }
+    },
+    "accountLink": {
+      "filter": null,
+      "action": "AUTO"
+    },
+    "subject": {
+      "userNameTemplate": {
+        "template": "idpuser.subjectNameId"
+      },
+      "filter": null,
+      "matchType": "USERNAME"
+    },
+    "maxClockSkew": 120000
+  },
 }
 ```
-
+:::
 
 ## Apps
 ### Get App
@@ -748,7 +891,10 @@ HTTP/1.1 200 OK
 | --- | :--- | --- | --- |
 | id | `id` of app | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -765,12 +911,16 @@ HTTP/1.1 200 OK
     ]
 }
 ```
+:::
 
 ### List Apps
 | GET | `apps/` |
 | --- | --- |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 [
@@ -841,6 +991,7 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+:::
 
 ### Update App
 | PUT | `apps/${id}` |
@@ -850,7 +1001,10 @@ HTTP/1.1 200 OK
 | --- | :--- | --- | --- |
 | id | `id` of app | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -867,6 +1021,7 @@ HTTP/1.1 200 OK
     ]
 }
 ```
+:::
 
 ## Admins
 ### Get Admin
@@ -877,7 +1032,10 @@ HTTP/1.1 200 OK
 | --- | :--- | --- | --- |
 | email | User's email/username | String | TRUE |
 
-__Sample Response__
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
 {
@@ -902,3 +1060,4 @@ HTTP/1.1 200 OK
     }
 }
 ```
+:::
