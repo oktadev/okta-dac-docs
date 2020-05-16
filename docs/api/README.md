@@ -27,9 +27,9 @@ Status: 201 Created
 HTTP/1.1 201 CREATED
 {
     "id": "0oaphsztw1XNmNqbb0h7",
-    "adminsGroupId": "00griz62cg4YrBs0v0h7",
-    "usersGroupId": "00griz1rfjSqSxexz0h7",
-    "roleId": "KVJUKUS7IFCE2SKO",
+    "adminsGroupId": "00griz62cg4YrBs0v0h7", // FIXME: rename ADMINS_groupId
+    "usersGroupId": "00griz1rfjSqSxexz0h7",  // FIXME: rename USERS_groupId
+    "roleId": "KVJUKUS7IFCE2SKO",            // FIXME: rename ADMINS_roleId
     "name": "spidermonkey",
     "created": "2020-05-14T06:29:07.000Z",
     "lastUpdated": "2020-05-14T06:29:07.000Z"
@@ -55,7 +55,7 @@ HTTP/1.1 200 OK
 {
     "id": "0oaphsztw1XNmNqbb0h7",
     "name": "spidermonkey",
-    "groupId": "00gpht48f2bSI7jZw0h7",
+    "groupId": "00gpht48f2bSI7jZw0h7", // FIXME: rename ADMINS_groupId
     "created": "2020-01-29T17:55:02.000Z"
 }
 ```
@@ -85,7 +85,7 @@ Link: <https://${apiUrl}/tenants>; rel="self"
 Link: <https://${apiUrl}/tenants?after=0oappepjgd1Jb1Bav0h7>; rel="next"
 [
     {
-        "id": "0oaphsztw1XNmNqbb0h7",
+        "id": "0oaphsztw1XNmNqbb0h7", // TODO: Add ADMINS_groupId
         "name": "spidermonkey",
         "created": "2020-01-29T17:50:49.000Z"
     },
@@ -121,7 +121,7 @@ HTTP/1.1 200 OK
 [
     {
         "id": "0oaphsztw1XNmNqbb0h7",
-        "groupId": "00gpht48f2bSI7jZw0h7",
+        "groupId": "00gpht48f2bSI7jZw0h7", // FIXME: rename ADMINS_groupId
         "name": "spidermonkey",
         "created": "2020-01-29T17:55:02.000Z"
     }
@@ -148,7 +148,7 @@ HTTP/1.1 200 OK
 [
     {
         "id": "0oaphr2fltdBwkQHj0h7",
-        "groupId": "00gr8ltdvqFJRSRjk0h7",
+        "groupId": "00gr8ltdvqFJRSRjk0h7", // FIXME: rename APPUSERS_groupId
         "name": "MonkeyDynamics",
         "created": "2020-01-29T17:53:14.000Z",
         "lastUpdated": "2020-05-01T05:22:04.000Z",
@@ -210,7 +210,11 @@ Status: 200
 HTTP/1.1 200 OK
 {
     "id": "0oaq1xvxlfoEEbii40h7",
-    "lastUpdated": "2020-05-14T06:54:56.000Z"
+    "lastUpdated": "2020-05-14T06:54:56.000Z" 
+    // FIXME: {
+    //      tenantId:
+    //      appId:
+    // }
 }
 ```
 :::
@@ -267,15 +271,15 @@ HTTP/1.1 200 OK
         "lastLogin": "2020-05-07T23:03:20.000Z",
         "lastUpdated": "2020-03-17T04:40:52.000Z",
         "passwordChanged": "2020-01-29T19:20:19.000Z",
-        "type": {
+        "type": { // FIXME: remove
             "id": "otyp8q9xbeIPtCT140h7"
         },
         "profile": {
             "firstName": "Pamela",
             "lastName": "Landy",
-            "mobilePhone": null,
-            "secondEmail": null,
-            "login": "pamela.landy@byob.com",
+            "mobilePhone": null, // FIXME: remove
+            "secondEmail": null, // FIXME: remove
+            "login": "pamela.landy@byob.com",  // FIXME: remove
             "email": "pamela.landy@byob.com"
         }
     }
@@ -302,6 +306,11 @@ HTTP/1.1 200 OK
 {
     "id": "0oaphsztw1XNmNqbb0h7",
     "lastUpdated": "2020-01-29T19:20:18.000Z"
+     // FIXME: {
+     //    tenantId: 
+     //    userId:
+     //    date?        
+     // }
 }
 ```
 :::
@@ -522,7 +531,7 @@ HTTP/1.1 200 OK
         },
         "maxClockSkew": 300000
     },
-    "_links": {
+    "_links": { // FIXME: remove
         "metadata": {
             "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/metadata.xml",
             "type": "application/xml",
@@ -579,7 +588,8 @@ Status: 200
 ::: details Sample (Click to view)
 ```json
 HTTP/1.1 200 OK
-{
+[
+  {
     "id": "0oapi0vtwxmVdOywi0h7",
     "type": "SAML2",
     "name": "boeing",
@@ -662,7 +672,7 @@ HTTP/1.1 200 OK
         },
         "maxClockSkew": 300000
     },
-    "_links": {
+    "_links": { // FIXME: remove
         "metadata": {
             "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/metadata.xml",
             "type": "application/xml",
@@ -701,7 +711,9 @@ HTTP/1.1 200 OK
     "x5c": [
         "MIIDnjCCAoagAwIBAgIGAVzS5UBOMA0GCSqGSIb3DQEBCwUAMIGPMQswCQYDVQQGEwJVUzETMBEG\rA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU\rMBIGA1UECwwLU1NPUHJvdmlkZXIxEDAOBgNVBAMMB3plZWtob28xHDAaBgkqhkiG9w0BCQEWDWlu\rZm9Ab2t0YS5jb20wHhcNMTcwNjIzMDI1OTU4WhcNMjcwNjIzMDMwMDU4WjCBjzELMAkGA1UEBhMC\rVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNVBAoM\rBE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRAwDgYDVQQDDAd6ZWVraG9vMRwwGgYJKoZIhvcN\rAQkBFg1pbmZvQG9rdGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtrAO+BxT\rPPSJetJEXPQze8THcRLaD8aiTyCfV6NnZ/ERX85NJ6YpOarF82OecQp2LhaP4SnZfFYPS8kaltk0\rYjSlz206XcDysGaUWPsIbDdljtLMbb1QXht3b+/dA6ynPtk0p1NqLwXTWuhZo+VJ04vEFq0CbQom\rvhU7zHnIvGIiTjvhAxW2UI25bkW9K8jvyJ7NaNZ+5J5MsTlpdYWvibd2p6UvuTz4XhQW+AajAubB\rdOcyCfuvl61d7TCd9rT0sot1qrCWB77rCr6DcR2tonJ7FSUaPezCobm/OgWi5NoC/M5lgXhoG+Fw\rC6GqwiJwRpS9pI5dkmUudUDPVoh8bQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA/W5j1euP2nLhS\rqlrJYwMm/7XXCqnhu3eBLnzkgRqNH6khtX1spAhC3w5L0w0JF4SgfjXAbAsWn6a6YsicEQsrDGdp\r3deMiKkkS9loWsJRhZB+FYvkrGv/EDtF9p16K2hcDbNAXkV7mKRbWiKthzWJ4o72DyPfwlyq8bTq\rVDk5ymHBYu2taomgRSQq/E+vGU1XXK9mPBHOq+ZeIDr+g8zvZhsU0R1uH+jM9iniPVX7DirN0Nwr\rsYfl5mDCZTjCiA5sRnHN644s3Kw0GHbvEYsxfjQQm/FtPiVQzg2H8EygVTOnQnyt+5KMEeEz7OTB\rxmkn+qw/u2YTUuUiUAM7dwt5\r"
     ]
-}
+  },
+  ...
+]
 ```
 :::
 
@@ -1047,15 +1059,15 @@ HTTP/1.1 200 OK
     "lastLogin": "2020-05-07T23:03:20.000Z",
     "lastUpdated": "2020-03-17T04:40:52.000Z",
     "passwordChanged": "2020-01-29T19:20:19.000Z",
-    "type": {
+    "type": { // FIXME: remove
         "id": "otyp8q9xbeIPtCT140h7"
     },
     "profile": {
         "firstName": "Pamela",
         "lastName": "Landy",
-        "mobilePhone": null,
-        "secondEmail": null,
-        "login": "pamela.landy@byob.com",
+        "mobilePhone": null, // FIXME: remove
+        "secondEmail": null, // FIXME: remove
+        "login": "pamela.landy@byob.com", // FIXME: remove
         "email": "pamela.landy@byob.com"
     }
 }

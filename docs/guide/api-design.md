@@ -129,7 +129,7 @@ As mentioned, the `tenants` and `groups` claims are crucial for the proper funct
 ```
 * This JWT is for a Tenant Admin because there is no SUPERUSERS in the `groups` claim
 * The Tenant is "spidermonkey"
-* spidermonkey has access to 2 apps (appIds 0oaq1xvxlfoEEbii40h7 & 0oaphr8z83xlSeZAg0h7)
+* spidermonkey has access to 2 apps (Ids `0oaq1xvxlfoEEbii40h7` & `0oaphr8z83xlSeZAg0h7`)
 
 
 ### AuthZ
@@ -193,13 +193,19 @@ Likewise, [Update Idp](/api/#update-idp) is:
 3. Update Idp (by Id) from step #2
 
 ### [Apps API](/api/#apps)
-We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claims contains `SUPERUSERS`, then list all apps that `startsWith MTA_`. Else, list all apps that `startswith APPUSERS_${tenantName}`. For implementation details refer to the project source code.
+We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claims contains `SUPERUSERS`, then list all apps that **startsWith** `DAC_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
+
+::: tip NOTE
+To distinguish between SaaS provider products/apps and other apps in Okta, we simply prefix them with `DAC_`
+:::
 
 ### [Admins API](/api/#admins)
 We implemented a [Get Admin](/api/#get-admin) api so that okta-dac can throw UI errors if a Super Admin attempts to add a user with an existing email. For implementation details refer to the project source code.
 
 ### Custom Authorizer
-In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of:
+Amazon API Gateway supports custom authorizers where you can restrict access to the exact HTTP method and route. We rely heavily on this functionality to provide AuthZ functionality to our composite APIs.
+
+In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of. Recall that our JWT contains the `tenants` and `groups` claims, which gives us the AuthZ information that we need to generate the following policy:
 ```js
 // Everyone can read apps
 policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps");
