@@ -246,7 +246,7 @@ __Exception Reponse__
 Status: 404 Not Found
 
 ## Tenant Admins
-### Get Tenant Admin
+### List Tenant Admins
 | GET | `tenants/${tenant}/admins` |
 | --- | --- |
 
@@ -271,15 +271,9 @@ HTTP/1.1 200 OK
         "lastLogin": "2020-05-07T23:03:20.000Z",
         "lastUpdated": "2020-03-17T04:40:52.000Z",
         "passwordChanged": "2020-01-29T19:20:19.000Z",
-        "type": { // FIXME: remove
-            "id": "otyp8q9xbeIPtCT140h7"
-        },
         "profile": {
             "firstName": "Pamela",
             "lastName": "Landy",
-            "mobilePhone": null, // FIXME: remove
-            "secondEmail": null, // FIXME: remove
-            "login": "pamela.landy@byob.com",  // FIXME: remove
             "email": "pamela.landy@byob.com"
         }
     }
@@ -435,12 +429,12 @@ HTTP/1.1 200 OK
 
 ## Idps
 ### Get Idp
-| GET | `idps/${id}` |
+| GET | `idps/${idpId}` |
 | --- | --- |
 
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| id | `id` of the Idp | String | TRUE |
+| idpId | `id` of the Idp | String | TRUE |
 
 __Successful Reponse__
 
@@ -530,42 +524,6 @@ HTTP/1.1 200 OK
             "matchAttribute": null
         },
         "maxClockSkew": 300000
-    },
-    "_links": { // FIXME: remove
-        "metadata": {
-            "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/metadata.xml",
-            "type": "application/xml",
-            "hints": {
-                "allow": [
-                    "GET"
-                ]
-            }
-        },
-        "acs": {
-            "href": "https://byobrand.oktapreview.com/sso/saml2/0oapi0vtwxmVdOywi0h7",
-            "type": "application/xml",
-            "hints": {
-                "allow": [
-                    "POST"
-                ]
-            }
-        },
-        "users": {
-            "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/users",
-            "hints": {
-                "allow": [
-                    "GET"
-                ]
-            }
-        },
-        "deactivate": {
-            "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/lifecycle/deactivate",
-            "hints": {
-                "allow": [
-                    "POST"
-                ]
-            }
-        }
     },
     "x5c": [
         "MIIDnjCCAoagAwIBAgIGAVzS5UBOMA0GCSqGSIb3DQEBCwUAMIGPMQswCQYDVQQGEwJVUzETMBEG\rA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU\rMBIGA1UECwwLU1NPUHJvdmlkZXIxEDAOBgNVBAMMB3plZWtob28xHDAaBgkqhkiG9w0BCQEWDWlu\rZm9Ab2t0YS5jb20wHhcNMTcwNjIzMDI1OTU4WhcNMjcwNjIzMDMwMDU4WjCBjzELMAkGA1UEBhMC\rVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNVBAoM\rBE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRAwDgYDVQQDDAd6ZWVraG9vMRwwGgYJKoZIhvcN\rAQkBFg1pbmZvQG9rdGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtrAO+BxT\rPPSJetJEXPQze8THcRLaD8aiTyCfV6NnZ/ERX85NJ6YpOarF82OecQp2LhaP4SnZfFYPS8kaltk0\rYjSlz206XcDysGaUWPsIbDdljtLMbb1QXht3b+/dA6ynPtk0p1NqLwXTWuhZo+VJ04vEFq0CbQom\rvhU7zHnIvGIiTjvhAxW2UI25bkW9K8jvyJ7NaNZ+5J5MsTlpdYWvibd2p6UvuTz4XhQW+AajAubB\rdOcyCfuvl61d7TCd9rT0sot1qrCWB77rCr6DcR2tonJ7FSUaPezCobm/OgWi5NoC/M5lgXhoG+Fw\rC6GqwiJwRpS9pI5dkmUudUDPVoh8bQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA/W5j1euP2nLhS\rqlrJYwMm/7XXCqnhu3eBLnzkgRqNH6khtX1spAhC3w5L0w0JF4SgfjXAbAsWn6a6YsicEQsrDGdp\r3deMiKkkS9loWsJRhZB+FYvkrGv/EDtF9p16K2hcDbNAXkV7mKRbWiKthzWJ4o72DyPfwlyq8bTq\rVDk5ymHBYu2taomgRSQq/E+vGU1XXK9mPBHOq+ZeIDr+g8zvZhsU0R1uH+jM9iniPVX7DirN0Nwr\rsYfl5mDCZTjCiA5sRnHN644s3Kw0GHbvEYsxfjQQm/FtPiVQzg2H8EygVTOnQnyt+5KMEeEz7OTB\rxmkn+qw/u2YTUuUiUAM7dwt5\r"
@@ -672,42 +630,6 @@ HTTP/1.1 200 OK
         },
         "maxClockSkew": 300000
     },
-    "_links": { // FIXME: remove
-        "metadata": {
-            "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/metadata.xml",
-            "type": "application/xml",
-            "hints": {
-                "allow": [
-                    "GET"
-                ]
-            }
-        },
-        "acs": {
-            "href": "https://byobrand.oktapreview.com/sso/saml2/0oapi0vtwxmVdOywi0h7",
-            "type": "application/xml",
-            "hints": {
-                "allow": [
-                    "POST"
-                ]
-            }
-        },
-        "users": {
-            "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/users",
-            "hints": {
-                "allow": [
-                    "GET"
-                ]
-            }
-        },
-        "deactivate": {
-            "href": "https://byobrand.oktapreview.com/api/v1/idps/0oapi0vtwxmVdOywi0h7/lifecycle/deactivate",
-            "hints": {
-                "allow": [
-                    "POST"
-                ]
-            }
-        }
-    },
     "x5c": [
         "MIIDnjCCAoagAwIBAgIGAVzS5UBOMA0GCSqGSIb3DQEBCwUAMIGPMQswCQYDVQQGEwJVUzETMBEG\rA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU\rMBIGA1UECwwLU1NPUHJvdmlkZXIxEDAOBgNVBAMMB3plZWtob28xHDAaBgkqhkiG9w0BCQEWDWlu\rZm9Ab2t0YS5jb20wHhcNMTcwNjIzMDI1OTU4WhcNMjcwNjIzMDMwMDU4WjCBjzELMAkGA1UEBhMC\rVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNVBAoM\rBE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRAwDgYDVQQDDAd6ZWVraG9vMRwwGgYJKoZIhvcN\rAQkBFg1pbmZvQG9rdGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtrAO+BxT\rPPSJetJEXPQze8THcRLaD8aiTyCfV6NnZ/ERX85NJ6YpOarF82OecQp2LhaP4SnZfFYPS8kaltk0\rYjSlz206XcDysGaUWPsIbDdljtLMbb1QXht3b+/dA6ynPtk0p1NqLwXTWuhZo+VJ04vEFq0CbQom\rvhU7zHnIvGIiTjvhAxW2UI25bkW9K8jvyJ7NaNZ+5J5MsTlpdYWvibd2p6UvuTz4XhQW+AajAubB\rdOcyCfuvl61d7TCd9rT0sot1qrCWB77rCr6DcR2tonJ7FSUaPezCobm/OgWi5NoC/M5lgXhoG+Fw\rC6GqwiJwRpS9pI5dkmUudUDPVoh8bQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA/W5j1euP2nLhS\rqlrJYwMm/7XXCqnhu3eBLnzkgRqNH6khtX1spAhC3w5L0w0JF4SgfjXAbAsWn6a6YsicEQsrDGdp\r3deMiKkkS9loWsJRhZB+FYvkrGv/EDtF9p16K2hcDbNAXkV7mKRbWiKthzWJ4o72DyPfwlyq8bTq\rVDk5ymHBYu2taomgRSQq/E+vGU1XXK9mPBHOq+ZeIDr+g8zvZhsU0R1uH+jM9iniPVX7DirN0Nwr\rsYfl5mDCZTjCiA5sRnHN644s3Kw0GHbvEYsxfjQQm/FtPiVQzg2H8EygVTOnQnyt+5KMEeEz7OTB\rxmkn+qw/u2YTUuUiUAM7dwt5\r"
     ]
@@ -718,21 +640,21 @@ HTTP/1.1 200 OK
 :::
 
 ### Get Idp Metadata
-| GET | `idps/${id}/metadata.xml` |
+| GET | `idps/${idpId}/metadata.xml` |
 | --- | --- |
 
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| id | `id` of app | String | TRUE |
+| idpId | `id` of idp | String | TRUE |
 
 
 ### Update Idp
-| PUT | `idps/${id}` |
+| PUT | `idps/${idpId}` |
 | --- | --- |
 
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| id | `id` of app | String | TRUE |
+| idpId | `id` of idp | String | TRUE |
 
 __Request Body__
 
@@ -895,13 +817,13 @@ HTTP/1.1 200 OK
 :::
 
 ## Apps
-### Get App
-| GET | `apps/${id}` |
+<!-- ### Get App
+| GET | `apps/${appId}` |
 | --- | --- |
 
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| id | `id` of app | String | TRUE |
+| appId | `id` of app | String | TRUE |
 
 __Successful Reponse__
 
@@ -923,7 +845,7 @@ HTTP/1.1 200 OK
     ]
 }
 ```
-:::
+::: -->
 
 ### List Apps
 | GET | `apps/` |
@@ -1005,13 +927,13 @@ HTTP/1.1 200 OK
 ```
 :::
 
-### Update App
-| PUT | `apps/${id}` |
+<!-- ### Update App
+| PUT | `apps/${appId}` |
 | --- | --- |
 
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| id | `id` of app | String | TRUE |
+| appId | `id` of app | String | TRUE |
 
 __Successful Reponse__
 
@@ -1033,16 +955,18 @@ HTTP/1.1 200 OK
     ]
 }
 ```
-:::
+::: -->
 
-## Admins
-### Get Admin
-| GET | `admins/${email}` |
+## Org-wide Resources
+### Get Org User
+| GET | `org/users/${username}` |
 | --- | --- |
+
+Search the whole Org for existing username
 
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| email | User's email/username | String | TRUE |
+| username | Searches for users where username/email matches `username` | String | TRUE |
 
 __Successful Reponse__
 
@@ -1059,15 +983,9 @@ HTTP/1.1 200 OK
     "lastLogin": "2020-05-07T23:03:20.000Z",
     "lastUpdated": "2020-03-17T04:40:52.000Z",
     "passwordChanged": "2020-01-29T19:20:19.000Z",
-    "type": { // FIXME: remove
-        "id": "otyp8q9xbeIPtCT140h7"
-    },
     "profile": {
         "firstName": "Pamela",
         "lastName": "Landy",
-        "mobilePhone": null, // FIXME: remove
-        "secondEmail": null, // FIXME: remove
-        "login": "pamela.landy@byob.com", // FIXME: remove
         "email": "pamela.landy@byob.com"
     }
 }
