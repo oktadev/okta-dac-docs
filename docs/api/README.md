@@ -27,9 +27,9 @@ Status: 201 Created
 HTTP/1.1 201 CREATED
 {
     "id": "0oaphsztw1XNmNqbb0h7",
-    "adminsGroupId": "00griz62cg4YrBs0v0h7", // FIXME: rename ADMINS_groupId
-    "usersGroupId": "00griz1rfjSqSxexz0h7",  // FIXME: rename USERS_groupId
-    "roleId": "KVJUKUS7IFCE2SKO",            // FIXME: rename ADMINS_roleId
+    "ADMINS_groupId": "00griz62cg4YrBs0v0h7",
+    "USERS_groupId": "00griz1rfjSqSxexz0h7",
+    "ADMINS_roleId": "KVJUKUS7IFCE2SKO",
     "name": "spidermonkey",
     "created": "2020-05-14T06:29:07.000Z",
     "lastUpdated": "2020-05-14T06:29:07.000Z"
@@ -55,7 +55,7 @@ HTTP/1.1 200 OK
 {
     "id": "0oaphsztw1XNmNqbb0h7",
     "name": "spidermonkey",
-    "groupId": "00gpht48f2bSI7jZw0h7", // FIXME: rename ADMINS_groupId
+    "ADMINS_groupId": "00gpht48f2bSI7jZw0h7",
     "created": "2020-01-29T17:55:02.000Z"
 }
 ```
@@ -121,8 +121,8 @@ HTTP/1.1 200 OK
 [
     {
         "id": "0oaphsztw1XNmNqbb0h7",
-        "groupId": "00gpht48f2bSI7jZw0h7", // FIXME: rename ADMINS_groupId
         "name": "spidermonkey",
+        "ADMINS_groupId": "00gpht48f2bSI7jZw0h7",
         "created": "2020-01-29T17:55:02.000Z"
     }
 ]
@@ -148,7 +148,7 @@ HTTP/1.1 200 OK
 [
     {
         "id": "0oaphr2fltdBwkQHj0h7",
-        "groupId": "00gr8ltdvqFJRSRjk0h7", // FIXME: rename APPUSERS_groupId
+        "APPUSERS_groupId": "00gr8ltdvqFJRSRjk0h7",
         "name": "MonkeyDynamics",
         "created": "2020-01-29T17:53:14.000Z",
         "lastUpdated": "2020-05-01T05:22:04.000Z",
@@ -162,7 +162,7 @@ HTTP/1.1 200 OK
     },
     {
         "id": "0oaphr8z83xlSeZAg0h7",
-        "groupId": "00gq6yr99ofXpUAfv0h7",
+        "APPUSERS_groupId": "00gq6yr99ofXpUAfv0h7",
         "name": "Spyderware",
         "created": "2020-01-29T17:53:29.000Z",
         "lastUpdated": "2020-05-01T04:47:50.000Z",
@@ -176,7 +176,7 @@ HTTP/1.1 200 OK
     },
     {
         "id": "0oaq1xvxlfoEEbii40h7",
-        "groupId": "00gq6z45p6WQApZ5P0h7",
+        "APPUSERS_groupId": "00gq6z45p6WQApZ5P0h7",
         "name": "Umbrella",
         "created": "2020-03-04T00:06:52.000Z",
         "lastUpdated": "2020-05-01T05:11:50.000Z",
@@ -209,12 +209,9 @@ Status: 200
 ```json
 HTTP/1.1 200 OK
 {
-    "id": "0oaq1xvxlfoEEbii40h7",
-    "lastUpdated": "2020-05-14T06:54:56.000Z" 
-    // FIXME: {
-    //      tenantId:
-    //      appId:
-    // }
+    "tenant": "spidermonkey",
+    "appId": "0oaq1xvxlfoEEbii40h7",
+    "lastUpdated": "2020-05-14T06:54:56.000Z"
 }
 ```
 :::
@@ -298,13 +295,9 @@ Status: 200
 ```json
 HTTP/1.1 200 OK
 {
-    "id": "0oaphsztw1XNmNqbb0h7",
-    "lastUpdated": "2020-01-29T19:20:18.000Z"
-     // FIXME: {
-     //    tenantId: 
-     //    userId:
-     //    date?        
-     // }
+    "tenant": "spidermonkey",
+    "userId": "0oaphsztw1XNmNqbb0h7",
+    "assigned": "2020-01-29T19:20:18.000Z"
 }
 ```
 :::
@@ -525,6 +518,17 @@ HTTP/1.1 200 OK
         },
         "maxClockSkew": 300000
     },
+    "_links": {
+        "acs": {
+            "href": "https://zeekhoo.okta.com/sso/saml2/0oapi0vtwxmVdOywi0h7",
+            "type": "application/xml",
+            "hints": {
+                "allow": [
+                    "POST"
+                ]
+            }
+        }
+    },    
     "x5c": [
         "MIIDnjCCAoagAwIBAgIGAVzS5UBOMA0GCSqGSIb3DQEBCwUAMIGPMQswCQYDVQQGEwJVUzETMBEG\rA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU\rMBIGA1UECwwLU1NPUHJvdmlkZXIxEDAOBgNVBAMMB3plZWtob28xHDAaBgkqhkiG9w0BCQEWDWlu\rZm9Ab2t0YS5jb20wHhcNMTcwNjIzMDI1OTU4WhcNMjcwNjIzMDMwMDU4WjCBjzELMAkGA1UEBhMC\rVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNVBAoM\rBE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRAwDgYDVQQDDAd6ZWVraG9vMRwwGgYJKoZIhvcN\rAQkBFg1pbmZvQG9rdGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtrAO+BxT\rPPSJetJEXPQze8THcRLaD8aiTyCfV6NnZ/ERX85NJ6YpOarF82OecQp2LhaP4SnZfFYPS8kaltk0\rYjSlz206XcDysGaUWPsIbDdljtLMbb1QXht3b+/dA6ynPtk0p1NqLwXTWuhZo+VJ04vEFq0CbQom\rvhU7zHnIvGIiTjvhAxW2UI25bkW9K8jvyJ7NaNZ+5J5MsTlpdYWvibd2p6UvuTz4XhQW+AajAubB\rdOcyCfuvl61d7TCd9rT0sot1qrCWB77rCr6DcR2tonJ7FSUaPezCobm/OgWi5NoC/M5lgXhoG+Fw\rC6GqwiJwRpS9pI5dkmUudUDPVoh8bQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA/W5j1euP2nLhS\rqlrJYwMm/7XXCqnhu3eBLnzkgRqNH6khtX1spAhC3w5L0w0JF4SgfjXAbAsWn6a6YsicEQsrDGdp\r3deMiKkkS9loWsJRhZB+FYvkrGv/EDtF9p16K2hcDbNAXkV7mKRbWiKthzWJ4o72DyPfwlyq8bTq\rVDk5ymHBYu2taomgRSQq/E+vGU1XXK9mPBHOq+ZeIDr+g8zvZhsU0R1uH+jM9iniPVX7DirN0Nwr\rsYfl5mDCZTjCiA5sRnHN644s3Kw0GHbvEYsxfjQQm/FtPiVQzg2H8EygVTOnQnyt+5KMEeEz7OTB\rxmkn+qw/u2YTUuUiUAM7dwt5\r"
     ]
@@ -630,6 +634,17 @@ HTTP/1.1 200 OK
         },
         "maxClockSkew": 300000
     },
+    "_links": {
+        "acs": {
+            "href": "https://zeekhoo.okta.com/sso/saml2/0oapi0vtwxmVdOywi0h7",
+            "type": "application/xml",
+            "hints": {
+                "allow": [
+                    "POST"
+                ]
+            }
+        }
+    },    
     "x5c": [
         "MIIDnjCCAoagAwIBAgIGAVzS5UBOMA0GCSqGSIb3DQEBCwUAMIGPMQswCQYDVQQGEwJVUzETMBEG\rA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU\rMBIGA1UECwwLU1NPUHJvdmlkZXIxEDAOBgNVBAMMB3plZWtob28xHDAaBgkqhkiG9w0BCQEWDWlu\rZm9Ab2t0YS5jb20wHhcNMTcwNjIzMDI1OTU4WhcNMjcwNjIzMDMwMDU4WjCBjzELMAkGA1UEBhMC\rVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNVBAoM\rBE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRAwDgYDVQQDDAd6ZWVraG9vMRwwGgYJKoZIhvcN\rAQkBFg1pbmZvQG9rdGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtrAO+BxT\rPPSJetJEXPQze8THcRLaD8aiTyCfV6NnZ/ERX85NJ6YpOarF82OecQp2LhaP4SnZfFYPS8kaltk0\rYjSlz206XcDysGaUWPsIbDdljtLMbb1QXht3b+/dA6ynPtk0p1NqLwXTWuhZo+VJ04vEFq0CbQom\rvhU7zHnIvGIiTjvhAxW2UI25bkW9K8jvyJ7NaNZ+5J5MsTlpdYWvibd2p6UvuTz4XhQW+AajAubB\rdOcyCfuvl61d7TCd9rT0sot1qrCWB77rCr6DcR2tonJ7FSUaPezCobm/OgWi5NoC/M5lgXhoG+Fw\rC6GqwiJwRpS9pI5dkmUudUDPVoh8bQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA/W5j1euP2nLhS\rqlrJYwMm/7XXCqnhu3eBLnzkgRqNH6khtX1spAhC3w5L0w0JF4SgfjXAbAsWn6a6YsicEQsrDGdp\r3deMiKkkS9loWsJRhZB+FYvkrGv/EDtF9p16K2hcDbNAXkV7mKRbWiKthzWJ4o72DyPfwlyq8bTq\rVDk5ymHBYu2taomgRSQq/E+vGU1XXK9mPBHOq+ZeIDr+g8zvZhsU0R1uH+jM9iniPVX7DirN0Nwr\rsYfl5mDCZTjCiA5sRnHN644s3Kw0GHbvEYsxfjQQm/FtPiVQzg2H8EygVTOnQnyt+5KMEeEz7OTB\rxmkn+qw/u2YTUuUiUAM7dwt5\r"
     ]
@@ -853,6 +868,7 @@ HTTP/1.1 200 OK
 
 __Successful Reponse__
 
+**IF SUPERUSERS**
 Status: 200
 ::: details Sample (Click to view)
 ```json
@@ -927,6 +943,58 @@ HTTP/1.1 200 OK
 ```
 :::
 
+**ELSE**
+Status: 200
+::: details Sample (Click to view)
+```json
+HTTP/1.1 200 OK
+[
+    {
+        "id": "0oaphr2fltdBwkQHj0h7",
+        "APPUSERS_groupId": "00gr8ltdvqFJRSRjk0h7",
+        "name": "MonkeyDynamics",
+        "created": "2020-01-29T17:53:14.000Z",
+        "lastUpdated": "2020-05-01T05:22:04.000Z",
+        "logo": [
+            {
+                "name": "medium",
+                "href": "https://op1static.oktacdn.com/fs/bco/4/fs0radz6ecFvmO7Hv0h7",
+                "type": "image/png"
+            }
+        ]
+    },
+    {
+        "id": "0oaphr8z83xlSeZAg0h7",
+        "APPUSERS_groupId": "00gq6yr99ofXpUAfv0h7",
+        "name": "Spyderware",
+        "created": "2020-01-29T17:53:29.000Z",
+        "lastUpdated": "2020-05-01T04:47:50.000Z",
+        "logo": [
+            {
+                "name": "medium",
+                "href": "https://op1static.oktacdn.com/fs/bco/4/fs0raa8zay8W8cCu10h7",
+                "type": "image/png"
+            }
+        ]
+    },
+    {
+        "id": "0oaq1xvxlfoEEbii40h7",
+        "APPUSERS_groupId": "00gq6z45p6WQApZ5P0h7",
+        "name": "Umbrella",
+        "created": "2020-03-04T00:06:52.000Z",
+        "lastUpdated": "2020-05-01T05:11:50.000Z",
+        "logo": [
+            {
+                "name": "medium",
+                "href": "https://op1static.oktacdn.com/fs/bco/4/fs0rac9h6cchMqovu0h7",
+                "type": "image/png"
+            }
+        ]
+    }
+]
+```
+:::
+
 <!-- ### Update App
 | PUT | `apps/${appId}` |
 | --- | --- |
@@ -957,16 +1025,16 @@ HTTP/1.1 200 OK
 ```
 ::: -->
 
-## Org-wide Resources
+<!-- ## Org-wide Resources
 ### Get Org User
 | GET | `org/users/${username}` |
 | --- | --- |
 
-Search the whole Org for existing username
+Match a username in the Okta Org (not tenant)
 
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
-| username | Searches for users where username/email matches `username` | String | TRUE |
+| username | users with username/email eq `username` | String | TRUE |
 
 __Successful Reponse__
 
@@ -990,4 +1058,4 @@ HTTP/1.1 200 OK
     }
 }
 ```
-:::
+::: -->

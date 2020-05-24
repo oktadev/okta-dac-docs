@@ -71,8 +71,8 @@ The `APPLICATION_ENTITLEMENT_POLICY` **feature flag** must be enabled for the Ok
 :::
 
 We configure Okta to store a Group Attribute called "Tenants" and display its value in a custom claim called `tenants`. See:
-* Custom App Profile Attribute. [Config steps](org-setup.html#_4-add-custom-app-profile-attribute).
-* The `tenants` custom claim. [Config steps](org-setup.html#_6-add-custom-claims).
+* Custom App Profile Attribute. [Config steps](/setup/org-setup.html#_4-add-custom-app-profile-attribute).
+* The `tenants` custom claim. [Config steps](/setup/org-setup.html#_6-add-custom-claims).
 
 We populate `tenants` using a special format: `${tenantId}:${tenantName}:${usersGroupId}`. This is done inside our [Add Tenant](/api/#add-tenant) API code by calling *__`PUT`__`apps/${appId}/groups/${groupId}`* to update the AppProfile.
 
@@ -92,7 +92,7 @@ await axios.put(
 Embedding this value in the JWT provides okta-dac quick access to the tenant name and id, and its associated USERS_ group id without making additional requests to the Okta API.
 
 ### The `groups` claim
-We configure Okta to return the `groups` custom claim. See [steps](org-setup.html#_6-add-custom-claims). This allows the okta-dac to:
+We configure Okta to return the `groups` custom claim. See [steps](/setup/org-setup.html#_6-add-custom-claims). This allows the okta-dac to:
 * Differentiate Super Admins from Tenant Admins. 
 * For the Tenant Admins, provide the Tenant(s) info.
 * Which apps are available for Tenants.

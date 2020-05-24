@@ -68,9 +68,9 @@ So with this naming convention in place, we coerced our Okta org into a structur
 ![alt text](./images/multitenant.png)
 
 #### SUPERUSERS Group
-We mentioned "Super Admins" before so lets go over how we modeled this in Okta. As previously described [here](/guide/#superuser), the "Super Admin" __role__ allows access to the **okta-dac Super Admin UI**. As shown in the diagram above, this is simply a __SUPERUSERS__ group. The way okta-dac is implemented, if a user belongs to this group, they will see the Super Admin UI when logging into otkta-dac. On the other hand, if they are not in this group, they will see the Tenant Admin UI.
+We mentioned "Super Admins" before so lets go over how we modeled this in Okta. As previously described [here](/guide/#super-admin), the "Super Admin" __role__ allows access to the **okta-dac Super Admin UI**. As shown in the diagram above, this is simply a __SUPERUSERS__ group. The way okta-dac is implemented, if a user belongs to this group, they will see the Super Admin UI when logging into otkta-dac. On the other hand, if they are not in this group, they will see the Tenant Admin UI.
 
-How does okta-dac know which UI to present? We [configure Okta](/guide/org-setup.html#_5-add-custom-claims) to include the list of groups memberships in users' JWTs. Then, business logic implemented by the okta-dac app inpspects the JWT information to determine if the user is a super admin or not.
+How does okta-dac know which UI to present? We [configure Okta](/setup/org-setup.html#_6-add-custom-claims) to include the list of groups memberships in users' JWTs. Then, business logic implemented by the okta-dac app inpspects the JWT information to determine if the user is a super admin or not.
 
 #### APPUSERS_ Groups
 Another concept of okta-dac is that each tenant has access to a number products that the SaaS provider provides, but not always to all products (For example, Tenant_A only purchased Product_A, whereas Tenant_B purchased Product_A, Product_B and Product_C). So we model this by setting up the `APPUSERS` group. For every app/product that a tenant is entitled to, a group `APPUSERS_${tenant}_${appId}` is created. These groups are assigned to the respective app. 
