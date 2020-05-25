@@ -199,9 +199,6 @@ We implemented a [List Apps](/api/#list-apps) API which is context sensitive to 
 To distinguish between SaaS provider products/apps and other apps in Okta, we simply prefix them with `DAC_`
 :::
 
-### [Admins API](/api/#admins)
-We implemented a [Get Admin](/api/#get-admin) api so that okta-dac can throw UI errors if a Super Admin attempts to add a user with an existing email. For implementation details refer to the project source code.
-
 ### Custom Authorizer
 Amazon API Gateway supports custom authorizers where you can restrict access to the exact HTTP method and route. We rely heavily on this functionality to provide AuthZ functionality to our composite APIs.
 
