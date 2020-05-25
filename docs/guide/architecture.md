@@ -6,7 +6,7 @@ sidebarDepth: 3
 
 ## Okta Basics: Users, Groups & Apps
 
-* An Okta Org supports having only one directory of users, who belong to one or more groups. 
+* An Okta Org supports having only one directory of users, and those users belong to one or more groups.
 * Groups in Okta are flat, but users can belong to any number of groups. 
 * Users are *assigned* to apps. 
 * Groups can also be assigned to apps (When a group is assigned to an app, all users of the group are assigned to the app). 
@@ -16,7 +16,7 @@ sidebarDepth: 3
 ![alt text](./images/okta-entities.png)
 
 ## Groups
-Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. **A key feature of Okta groups which allows us to do this is the groups API [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) that supports *startsWith***. Lets illustrate with a couple examples, below.
+Although Groups in Okta are flat in structure and only store name and description, it is acceptable practice to use naming convention and/or namespacing to simulate group-types, group hierarchy or nested group structures. **A key feature of Okta groups which allows us to do this is the groups API [search](https://developer.okta.com/docs/reference/api/groups/#search-groups) that supports *startsWith***. Let's illustrate with a couple examples, below.
 
 ### Example 1: Group Hierarchy
 
@@ -68,12 +68,12 @@ So with this naming convention in place, we coerced our Okta org into a structur
 ![alt text](./images/multitenant.png)
 
 #### SUPERUSERS Group
-We mentioned "Super Admins" before so lets go over how we modeled this in Okta. As previously described [here](/guide/#super-admin), the "Super Admin" __role__ allows access to the **okta-dac Super Admin UI**. As shown in the diagram above, this is simply a __SUPERUSERS__ group. The way okta-dac is implemented, if a user belongs to this group, they will see the Super Admin UI when logging into otkta-dac. On the other hand, if they are not in this group, they will see the Tenant Admin UI.
+We mentioned "Super Admins" before so let's go over how we modeled this in Okta. As previously described [here](/guide/#super-admin), the "Super Admin" __role__ allows access to the **okta-dac Super Admin UI**. As shown in the diagram above, this is simply a __SUPERUSERS__ group. The way okta-dac is implemented, if a user belongs to this group, they will see the Super Admin UI when logging into otkta-dac. On the other hand, if they are not in this group, they will see the Tenant Admin UI.
 
 How does okta-dac know which UI to present? We [configure Okta](/setup/org-setup.html#_6-add-custom-claims) to include the list of groups memberships in users' JWTs. Then, business logic implemented by the okta-dac app inpspects the JWT information to determine if the user is a super admin or not.
 
 #### APPUSERS_ Groups
-Another concept of okta-dac is that each tenant has access to a number products that the SaaS provider provides, but not always to all products (For example, Tenant_A only purchased Product_A, whereas Tenant_B purchased Product_A, Product_B and Product_C). So we model this by setting up the `APPUSERS` group. For every app/product that a tenant is entitled to, a group `APPUSERS_${tenant}_${appId}` is created. These groups are assigned to the respective app. 
+Another concept of okta-dac is that each tenant has access to a number of products that the SaaS provider provides, but not always to all products (For example, Tenant_A only purchased Product_A, whereas Tenant_B purchased Product_A, Product_B and Product_C). So we model this by setting up the `APPUSERS` group. For every app/product that a tenant is entitled to, a group `APPUSERS_${tenant}_${appId}` is created. These groups are assigned to the respective app. 
 
 So how does okta-dac implement assigning a user to an app/product? Simple: When we assign a user to an app we are simply just adding the user to the group.
 
@@ -115,8 +115,8 @@ The 1:1 mapping allows us to do a couple things:
     ```
 2. Allows us to implement the [List Tenants](/api/#list-tenants-with-pagination) API: 
     * This is done by wrapping the [list identity providers](https://developer.okta.com/docs/reference/api/idps/#list-identity-providers) API, **which supports pagination**. We simply map its results to display them as Tenant (instead of Idp)
-        * Now we can implement reading back thousands of Tenants in paginated results.
-            * We could have used [search groups](https://developer.okta.com/docs/reference/api/groups/#search-groups) to search the `ADMINS_` groups instead. But this API would not have given us pagination and is limited to 300 results.
+    * Now we can implement reading back thousands of Tenants in paginated results.
+    * We could have used [search groups](https://developer.okta.com/docs/reference/api/groups/#search-groups) to search the `ADMINS_` groups instead. But this API would not have given us pagination and is limited to 300 results.
 
 # The Final Picture:
 Finally, this is how everything maps out:
