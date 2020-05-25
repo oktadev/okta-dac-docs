@@ -6,9 +6,15 @@ We use the [Okta Terraform Provider](https://www.terraform.io/docs/providers/okt
 If you're more comfortable configuring the org manually, Follow the steps below: 
 
 ## Manual Config
-#### 1. Add SUPERUSERS Group
+#### 1. Add SUPERUSERS Group and Role
+##### Add A Group:
 * Name: __SUPERUSERS__
 * Description: (optional)
+##### Add An Administrator Role:
+* From Security > Administrators, Click [Add Administrator Group]
+    * Grant administrator role to `SUPERUSERS`
+    * Administrator roles: **Super Administrator**
+
 #### 2. Add byob-dashboard app
 * Application type: __Single Page App (SPA)__
 * Allowed grand types: __Authorization Code__
