@@ -121,12 +121,12 @@ The 1:1 mapping allows us to do a couple things:
 # The Final Picture:
 Finally, this is how everything maps out:
 ![alt text](./images/dac-map.png)
-* Each Tenant is represented by excatly 1 Idp, 1 `ADMINS_${tenant}` group, and 1 `USERS_${tenant}` group, where:
+* Each Tenant is represented by exactly 1 Idp, 1 `ADMINS_${tenant}` group, and 1 `USERS_${tenant}` group, where:
     * Idp represents the Tenant
     * Users in the `ADMINS_${tenant}` group are Tenant Admins
     * All users belonging to a tenant are members of `USERS_${tenant}`
-* For each App a tenant is entitled to, there is an `APPSUERS_${tenant}` group.
-* The `ADMINS_${tenant}` group posesses the __Group Admin role__. It targets itself, the `USERS_${tenant}`, and all the `APPUSERS_${tenant}` groups.
+* For each App a tenant is entitled to, there is an `APPSUSERS_${tenant}` group.
+* The `ADMINS_${tenant}` group possesses the __Group Admin role__. It targets itself, the `USERS_${tenant}`, and all the `APPUSERS_${tenant}` groups.
 * Super Admins belong to the `SUPERUSERS` group
 
 --- 
