@@ -14,7 +14,7 @@ The [scopes](https://developer.okta.com/docs/guides/implement-oauth-for-okta/sco
 
 ***If you are a Group Admin and obtain an access_token from Okta with the above scopes, you can use it on the [users](https://developer.okta.com/docs/reference/api/users/) and [groups](https://developer.okta.com/docs/reference/api/groups/) APIs. Most importantly, the API responses are automatically filtered according to your Group Admin privileges.*** For example, calling __`GET`__`/users` will return only users in the groups you manage; Calling __`GET`__`/groups` will only return groups you manage, etc.
 
-In order to get an access_token with these scopes, we rely on the okta session.
+In order to get an access_token with these scopes, we rely on the Okta session.
 
 ### Okta session
 Okta uses a cookie-based authentication mechanism to maintain a user's authentication [session](https://developer.okta.com/docs/reference/api/sessions/) across web requests.
@@ -59,18 +59,18 @@ Once we get the access_token we use it to implement list/search users, add users
 
 
 ## API Access Management
-Because we synthetically created a Tenants structure in the Okta org, we need to write our own [Tenants API](/api/#tenants) to wraparound the Okta CRUD APIs and perform custom filtering of the CRUD API's results.  
+Because we synthetically created a Tenants structure in the Okta org, we need to write our own [Tenants API](/api/#tenants) to wrap around the Okta CRUD APIs and perform custom filtering of the CRUD API's results.  
 
 Over here, we leverage [API Access Management](https://developer.okta.com/docs/concepts/api-access-management/) – Okta's implementation of the OAuth 2.0 standard – to secure our "wrapper APIs", which implement the business logic abstraction layer that generates our "tenant" structure in the Okta org. (Please refer to [composite APIs](/api/#composite-apis) for documentation).
 
-**Crucial to the proper functioning of okta-dac are a couple of custom claims. Okta's API Access Management makes it easy to generate JWTs and embed custom claims:**
+**Couple of custom claims are essential to the proper functioning of okta-dac. Okta's API Access Management makes it easy to generate JWTs and embed custom claims:**
 
 ### The `tenants` claim
 ::: warning NOTE
 The `APPLICATION_ENTITLEMENT_POLICY` **feature flag** must be enabled for the Okta Org
 :::
 
-We configure Okta to store a Group Attribute called "Tenants" and display its value in a custom claim called `tenants`. See:
+We configure Okta to store a User App Attribute called "Tenants" and display its value in a custom claim called `tenants`. See:
 * Custom App Profile Attribute. [Config steps](/setup/org-setup.html#_4-add-custom-app-profile-attribute).
 * The `tenants` custom claim. [Config steps](/setup/org-setup.html#_6-add-custom-claims).
 
@@ -178,7 +178,7 @@ Refer to the source code for implementation details
 :::
 
 ### [IdPs API](/api/#idps)
-Recall that we store the IdP Id in the `ADMINS_${tenantName}` group's `profile.description` as the "tenantId":
+Keep in mind that we store the IdP Id in the `ADMINS_${tenantName}` group's `profile.description` as the "tenantId":
 ```json
 {"tenantId": "${id-from-step-#1}"}
 ```
@@ -187,13 +187,13 @@ This allows us to implement the [Get Idp](/api/#get-idp) composite API:
 2. Parse the `profile.description` for the "tenantId" 
 3. Read back the Idp (by Id) from step #2
 
-Likewise, [Update Idp](/api/#update-idp) is:
+Similarly, [Update Idp](/api/#update-idp) triggers:
 1. Search Groups with `q=ADMINS_${tenantName}`
 2. Parse the `profile.description` for the "tenantId" 
 3. Update Idp (by Id) from step #2
 
 ### [Apps API](/api/#apps)
-We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claims contains `SUPERUSERS`, then list all apps that **startsWith** `DAC_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
+We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claim contains `SUPERUSERS`, then list all apps that **startsWith** `DAC_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
 
 ::: tip NOTE
 To distinguish between SaaS provider products/apps and other apps in Okta, we simply prefix them with `DAC_`
@@ -205,7 +205,7 @@ We implemented a [Get Admin](/api/#get-admin) api so that okta-dac can throw UI 
 ### Custom Authorizer
 Amazon API Gateway supports custom authorizers where you can restrict access to the exact HTTP method and route. We rely heavily on this functionality to provide AuthZ functionality to our composite APIs.
 
-In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of. Recall that our JWT contains the `tenants` and `groups` claims, which gives us the AuthZ information that we need to generate the following policy:
+In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of. Keep in mind that our JWT contains the `tenants` and `groups` claims, which give us the AuthZ information that we need to generate the following policy:
 ```js
 // Everyone can read apps
 policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps");
