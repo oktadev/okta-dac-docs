@@ -17,7 +17,7 @@ Using native Okta capabilities, we:
     * Users in any particular tenant can have 1 of 2 roles: *User* and *Tenant Admin*. Tenant Admins can access the **Delegated Admin Console** app. And all users can access the **End-user Dashboard** app.
 3. __Support "bring your own IdP"__ using Okta's [Inbound Federation](https://developer.okta.com/docs/concepts/identity-providers/) functionality
 4. __Protect API resources__ with Okta's [API Access Management](/guide/api-design.html#api-access-management)
-    * We configure Okta to generate JWTs embedding tenant info; We design our API endpoints to implement tenant-namepsace in the request url; And we implement a custom authorizer to restrict access to the tenant-namepsaced route based on tenant info embedded in the JWT (the Bearer token of the API request).
+    * We configure Okta to generate JWTs embedding tenant info; We design our API endpoints to implement tenant-namespace in the request url; And we implement a custom authorizer to restrict access to the tenant-namespaced route based on tenant info embedded in the JWT (the Bearer token of the API request).
 
 ## Delegated Admin Console
 This App displays two different UX depending on the user's role, which can be one of either 2 (__Super Admin__ or __Tenant Admin__)
