@@ -1,6 +1,6 @@
 ---
 sidebarDepth: 3
-title: About
+title: Concepts and Use Cases
 # We can even add meta tags to the page! This sets the keywords meta tag.
 # <meta name="keywords" content="my SEO keywords"/>
 meta:
