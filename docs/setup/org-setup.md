@@ -39,7 +39,7 @@ This feature flag, when enabled allows configuration of app profile attributes t
 * Attribute type: __Group__
 * Group Priority: __Combine values across groups__
 
-![alt text](./images/setup/ProfileAttribute_Tenants.png)
+![alt text](./images/setup/AppSchema.png)
 
 #### 5. Add custom `dac.admins` scope to the `default` AuthorizationServer
 ![alt text](./images/setup/CustomScope.png)
