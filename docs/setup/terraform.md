@@ -13,6 +13,7 @@ org_name       = "mytenant"
 base_url       = "okta.com"
 api_token      = "<OKTA_API_TOKEN>"
 app_url        = "http://localhost:8080"
+superuser_id   = ""
 environment    = "dev"
 aws_region     = "us-east-2"
 aws_profile    = "dac-serverless-admin"
@@ -27,6 +28,7 @@ This is a description of the variables:
 | base_url       |                                         Base URL for Okta tenant                                          |              "okta.com" |
 | api_token      |                                              Okta API token                                               |                         |
 | app_url        |                                     Base URL for DAC Single Page App.                                     | "http://localhost:8080" |
+| superuser_id   |                               Okta User ID to be configured as a SUPERUSER                                |                      "" |
 | environment    |                             Stage configured in API Gateway (dev, prod, ...)                              |                   "dev" |
 | aws_region     | Region to deploy AWS components. See <https://aws.amazon.com/about-aws/global-infrastructure/regions_az/> | "http://localhost:8080" |
 | aws_profile    |                                       Profile configured in AWS CLI                                       |  "dac-serverless-admin" |
@@ -60,6 +62,8 @@ There are several targets specified in the Makefile.
 ### Target - okta
 
 This configures the Okta tenant with all the components specified in the terraform script.
+
+::: Sample output
 
 ```
 $ make okta
@@ -106,12 +110,16 @@ Terraform will perform the following actions:
 
 ```
 
+:::
+
 ### Target - api
 
 This configures AWS with the API Gateway and backing lambda functions.
 
+::: Sample output
+
 ```
-make api
+$ make api
 
 npm WARN serverless-offline@6.1.7 requires a peer of serverless@>=1.60.0 but none is installed. You must install peer dependencies yourself.
 npm WARN dac-api-tenants@1.0.0 No description
@@ -341,9 +349,15 @@ UpdateIdpLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:funct
 Serverless: Run the "serverless" command to setup monitoring, troubleshooting and testing.
 ```
 
+:::
+
 ### Target - spa
 
-_Experimental_. This configures AWS with the S3 buckets.
+::: warning
+This is a work-in-progresss
+:::
+
+This configures AWS with the S3 buckets.
 
 ### Target - destroyOkta
 
@@ -355,4 +369,7 @@ This removes the API Gateway and lambda functions from the configured AWS accoun
 
 ### Target - removeSpa
 
-_Experimental_. This removes the S3 bucket and other assets from the configured AWS account and region.
+::: warning
+This is a work-in-progresss
+:::
+This removes the S3 bucket and other assets from the configured AWS account and region.
