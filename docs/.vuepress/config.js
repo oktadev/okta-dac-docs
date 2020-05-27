@@ -15,7 +15,8 @@ module.exports = {
     nav: require("./nav/en"),
     sidebar: {
       "/guide/": getGuideSidebar(),
-      "/setup/": getSetupSidebar()
+      "/setup/": getSetupSidebar(),
+      "/api/": getApiSidebar()
     },
     /*algolia: {
       apiKey: "191db45e6f87475d6a1256d5a4298324",
@@ -78,4 +79,14 @@ function getSetupSidebar() {
     },
   ];
 }
+
+function getApiSidebar() {
+    return [
+      {
+        title: "API",
+        collapsable: false,
+        children: [""],
+      },
+    ];
+  }
   
