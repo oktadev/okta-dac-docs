@@ -63,7 +63,7 @@ There are several targets specified in the Makefile.
 
 This configures the Okta tenant with all the components specified in the terraform script.
 
-::: Sample output
+::: details Sample output
 
 ```
 $ make okta
@@ -116,7 +116,7 @@ Terraform will perform the following actions:
 
 This configures AWS with the API Gateway and backing lambda functions.
 
-::: Sample output
+::: details Sample output
 
 ```
 $ make api
