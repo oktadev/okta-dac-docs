@@ -1,15 +1,3 @@
-## BYOB Okta Org configuration for:
-#    Oauth2 SPA
-#    Custom authorization server for SPA
-# TF Variables
-variable "org_name" {
-}
-variable "api_token" {
-}
-variable "base_url" {
-}
-variable "app_url" {
-}
 # Setup Okta Tenant
 provider "okta" {
   org_name  = var.org_name
@@ -17,121 +5,168 @@ provider "okta" {
   base_url  = var.base_url
   version   = "~> 3.0"
 }
-#provider "aws" {
-#  region                  = "us-west-2"
-#  shared-credentials-file = "~/.aws/creds"
-#  profile                 = "udp-admin"
-#}
-# BYOB Users - Everyone 
-resource "okta_group" "byob-users" {
+
+# Local variables
+locals {
+  app_name = "dac-admin"
+}
+
+# dac Users - Everyone 
+data "okta_group" "dac-users" {
   name = "Everyone"
 }
+
+data "okta_user" "dac-superuser" {
+  search {
+    name  = "profile.email"
+    value = var.superuser_email
+  }
+}
+
+# dac Users - Everyone 
+resource "okta_group" "dac-superusers" {
+  name = "SUPERUSERS"
+
+  users = [
+    data.okta_user.dac-superuser.id
+  ]
+}
+
+resource "okta_group_roles" "dac-superusers" {
+  group_id    = okta_group.dac-superusers.id
+  admin_roles = ["SUPER_ADMIN"]
+}
+
+# Get default IDP Policy
+data "okta_policy" "idp_policy" {
+  name = "Idp Discovery Policy"
+  type = "IDP_DISCOVERY"
+}
+
 # Create OAuth2 SPA App
-resource "okta_app_oauth" "okta-byob" {
+resource "okta_app_oauth" "okta-dac" {
   label                      = local.app_name
   type                       = "browser"
-  redirect_uris              = ["${var.app_url}/implicit/callback", "${var.app_url}/pkce/callback"]
+  redirect_uris              = ["${var.app_url}/oauth/callback"]
+  post_logout_redirect_uris  = ["${var.app_url}"]
   grant_types                = ["authorization_code"]
   response_types             = ["code"]
   token_endpoint_auth_method = "none"
   issuer_mode                = "ORG_URL"
+  consent_method             = "TRUSTED"
 }
+
+resource "okta_app_user_schema" "okta-dac-tenants" {
+  app_id      = okta_app_oauth.okta-dac.id
+  index       = "tenants"
+  title       = "Tenants"
+  type        = "array"
+  array_type  = "string"
+  description = "Tenants App Profile Attribute"
+  master      = "OKTA"
+  scope       = "NONE"
+  permissions = "READ_WRITE"
+}
+
 # Create the App Assignment
-resource "okta_app_group_assignment" "okta-byob" {
-  app_id   = okta_app_oauth.okta-byob.id
-  group_id = okta_group.byob-users.id
+resource "okta_app_group_assignment" "okta-dac" {
+  app_id   = okta_app_oauth.okta-dac.id
+  group_id = okta_group.dac-superusers.id
 }
+
 # Create Trusted Origin for the APP
-resource "okta_trusted_origin" "okta-byob" {
-  name   = "BYOB Dashboard"
+resource "okta_trusted_origin" "okta-dac" {
+  name   = "DAC SPA"
   origin = var.app_url
   scopes = ["CORS", "REDIRECT"]
 }
+
 # Create Custom Authorization Server
-resource "okta_auth_server" "okta-byob" {
+resource "okta_auth_server" "okta-dac" {
   audiences   = ["api://${local.app_name}"]
-  description = "Okta BYOB Authorization Server"
+  description = "Okta DAC Authorization Server"
   name        = local.app_name
 }
+
 ## Create scope in custom authorization server
-# resource "okta_auth_server_scope" "okta-byob" {
-#   auth_server_id   = okta_auth_server.okta-byob.id
-#   metadata_publish = "ALL_CLIENTS"
-#   name             = "read:okta-byob"
-#   description      = "Read okta-byob"
-#   consent          = "IMPLICIT"
-# }
+resource "okta_auth_server_scope" "okta-dac" {
+  auth_server_id   = okta_auth_server.okta-dac.id
+  metadata_publish = "ALL_CLIENTS"
+  name             = "dac.admin"
+  description      = "Scope for accessing the okta-dac App"
+  consent          = "IMPLICIT"
+}
+
 # Create policy in custom authorization server
-resource "okta_auth_server_policy" "okta-byob" {
-  auth_server_id   = okta_auth_server.okta-byob.id
+resource "okta_auth_server_policy" "okta-dac" {
+  auth_server_id   = okta_auth_server.okta-dac.id
   status           = "ACTIVE"
-  name             = "okta-byob"
-  description      = "okta-byob policy"
+  name             = "okta-dac"
+  description      = "okta-dac policy"
   priority         = 1
-  client_whitelist = [okta_app_oauth.okta-byob.client_id]
+  client_whitelist = [okta_app_oauth.okta-dac.client_id]
 }
-# Create tokens claim in custom authorization server
-resource "okta_auth_server_claim" "okta-byob-tenants-at" {
-  auth_server_id = okta_auth_server.okta-byob.id
+
+## Create tokens claim in custom authorization server
+resource "okta_auth_server_claim" "okta-dac-tenants-at" {
+  auth_server_id = okta_auth_server.okta-dac.id
   name           = "tenants"
   value          = "appuser.tenants"
   value_type     = "EXPRESSION"
-  ## Not Tied to Any scope
-  #scopes         = [okta_auth_server_scope.okta-byob.name]
-  claim_type = "RESOURCE"
+  scopes         = [okta_auth_server_scope.okta-dac.name]
+  claim_type     = "RESOURCE"
 }
-resource "okta_auth_server_claim" "okta-byob-tenants-id" {
-  auth_server_id = okta_auth_server.okta-byob.id
+
+resource "okta_auth_server_claim" "okta-dac-tenants-id" {
+  auth_server_id = okta_auth_server.okta-dac.id
   name           = "tenants"
   value          = "appuser.tenants"
   value_type     = "EXPRESSION"
-  ## Not Tied to Any scope
-  #scopes         = [okta_auth_server_scope.okta-byob.name]
-  claim_type = "IDENTITY"
+  claim_type     = "IDENTITY"
+  scopes         = [okta_auth_server_scope.okta-dac.name]
 }
-resource "okta_auth_server_claim" "okta-byob-groups-at" {
-  auth_server_id    = okta_auth_server.okta-byob.id
+
+resource "okta_auth_server_claim" "okta-dac-groups-at" {
+  auth_server_id    = okta_auth_server.okta-dac.id
   name              = "groups"
   value             = ".*"
   value_type        = "GROUPS"
   group_filter_type = "REGEX"
-  ## Not Tied to Any scope
-  #scopes         = [okta_auth_server_scope.okta-byob.name]
-  claim_type = "RESOURCE"
+  claim_type        = "RESOURCE"
+  scopes            = [okta_auth_server_scope.okta-dac.name]
 }
-# resource "okta_auth_server_claim" "okta-byob-groups-id" {
-#   auth_server_id    = okta_auth_server.okta-byob.id
-#   name              = "groups"
-#   value             = ".*"
-#   value_type        = "GROUPS"
-#   group_filter_type = "REGEX"
-#   ## Not Tied to Any scope
-#   #scopes         = [okta_auth_server_scope.okta-byob.name]
-#   claim_type = "RESOURCE"
-# }
+
+resource "okta_auth_server_claim" "okta-dac-groups-id" {
+  auth_server_id    = okta_auth_server.okta-dac.id
+  name              = "groups"
+  value             = ".*"
+  value_type        = "GROUPS"
+  group_filter_type = "REGEX"
+  claim_type        = "IDENTITY"
+  scopes            = [okta_auth_server_scope.okta-dac.name]
+}
+
 # Create policy rule in custom authorization server
-resource "okta_auth_server_policy_rule" "okta-byob" {
-  auth_server_id                = okta_auth_server.okta-byob.id
-  policy_id                     = okta_auth_server_policy.okta-byob.id
+resource "okta_auth_server_policy_rule" "okta-dac" {
+  auth_server_id                = okta_auth_server.okta-dac.id
+  policy_id                     = okta_auth_server_policy.okta-dac.id
   status                        = "ACTIVE"
-  name                          = "okta byob rule"
+  name                          = "DAC Users"
   priority                      = 1
   grant_type_whitelist          = ["authorization_code"]
-  scope_whitelist               = ["*"]
-  group_whitelist               = [okta_group.byob-users.id]
+  scope_whitelist               = ["openid", "profile", "email", "address", "phone", "offline_access"]
+  group_whitelist               = [data.okta_group.dac-users.id]
   access_token_lifetime_minutes = 60
 }
-# Outputs
-output "okta_app_oauth_client_id" {
-  value = okta_app_oauth.okta-byob.client_id
-}
-output "okta_auth_server_id" {
-  value = okta_auth_server.okta-byob.id
-}
-output "okta_auth_server_issuer_uri" {
-  value = "https://${var.org_name}.${var.base_url}/oauth2/${okta_auth_server.okta-byob.id}"
-}
-# Local variables
-locals {
-  app_name = "byob-dashboard"
+
+resource "okta_auth_server_policy_rule" "okta-dac-catch-all" {
+  auth_server_id                = okta_auth_server.okta-dac.id
+  policy_id                     = okta_auth_server_policy.okta-dac.id
+  status                        = "ACTIVE"
+  name                          = "Everyone Else"
+  priority                      = 2
+  grant_type_whitelist          = ["authorization_code"]
+  scope_whitelist               = ["*"]
+  group_whitelist               = [data.okta_group.dac-users.id]
+  access_token_lifetime_minutes = 60
 }

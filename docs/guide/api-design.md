@@ -193,10 +193,10 @@ Similarly, [Update Idp](/api/#update-idp) triggers:
 3. Update Idp (by Id) from step #2
 
 ### [Apps API](/api/#apps)
-We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claim contains `SUPERUSERS`, then list all apps that **startsWith** `DAC_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
+We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claim contains `SUPERUSERS`, then list all apps that **startsWith** `MTA_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
 
 ::: tip NOTE
-To distinguish between SaaS provider products/apps and other apps in Okta, we simply prefix them with `DAC_`
+To distinguish between SaaS provider products/apps and other apps in Okta, we simply prefix them with `MTA_`
 :::
 
 ### Custom Authorizer
@@ -205,41 +205,36 @@ Amazon API Gateway supports custom authorizers where you can restrict access to 
 In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of. Keep in mind that our JWT contains the `tenants` and `groups` claims, which give us the AuthZ information that we need to generate the following policy:
 ```js
 // Everyone can read apps
-policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps");
-policy.allowMethod(AuthPolicy.HttpVerb.GET, "/apps/*");
+policy.allowMethod(AuthPolicy.HttpVerb.GET, 'apps');
+policy.allowMethod(AuthPolicy.HttpVerb.GET, 'apps/*');
 
-// Tenant admins can read/manage their own idp settings
-const tenants = jwt.claims.tenants;
-if (tenants && tenants.length > 0) {
-    policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps');
-    tenants.forEach((tenant)=>{
-        const parts = tenant.split(':');
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps/' + parts[0]);
-        policy.allowMethod(AuthPolicy.HttpVerb.GET, '/idps/' + parts[0] + '/metadata.xml');
-        policy.allowMethod(AuthPolicy.HttpVerb.PUT, '/idps/' + parts[0]);
-    });            
+// Only superusers can read and add tenants
+if (jwt.claims.groups && jwt.claims.groups.includes('SUPERUSERS')) {
+    policy.allowMethod(AuthPolicy.HttpVerb.GET, 'tenants');
+    policy.allowMethod(AuthPolicy.HttpVerb.POST, 'tenants');
+    policy.allowMethod(AuthPolicy.HttpVerb.ALL, 'tenants/*');
 }
 
-if (jwt.claims.groups && jwt.claims.groups.includes('SUPERUSERS')) {
-    // Only superusers can manage tenants
-    policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants");
-    policy.allowMethod(AuthPolicy.HttpVerb.POST, "/tenants");
-    policy.allowMethod(AuthPolicy.HttpVerb.ALL, "/tenants/*");
-    // read admins
-    policy.allowMethod(AuthPolicy.HttpVerb.GET, "/admins/*");
-    // update app profile
-    policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/apps/*");
-} else {
-    jwt.claims.groups.forEach(grp=>{
-        if (grp.startsWith('ADMINS_')) {
-            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1]);
-            policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/tenants/" + grp.split('_')[1] + "/admins/*");
-            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1] + "/domains");
-            policy.allowMethod(AuthPolicy.HttpVerb.GET, "/tenants/" + grp.split('_')[1] + "/domains/*");
-            policy.allowMethod(AuthPolicy.HttpVerb.POST, "/tenants/" + grp.split('_')[1] + "/domains");
-            policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/tenants/" + grp.split('_')[1] + "/domains/*");
-            policy.allowMethod(AuthPolicy.HttpVerb.DELETE, "/tenants/" + grp.split('_')[1] + "/domains/*");
-        }
-    });
+const tenants = jwt.claims.tenants;
+if (tenants && tenants.length > 0) {
+    policy.allowMethod(AuthPolicy.HttpVerb.GET, 'idps');
+    tenants.forEach((tenant)=>{
+        const parts = tenant.split(':');
+        // Tenant Admins can read and update their own idp settings
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, 'idps/' + parts[0]);
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, 'idps/' + parts[0] + '/metadata.xml');
+        policy.allowMethod(AuthPolicy.HttpVerb.PUT, 'idps/' + parts[0]);   
+
+        // Read own tenants     
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, 'tenants/' + parts[1]);
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, 'tenants/' + parts[1] + '/domains');
+        policy.allowMethod(AuthPolicy.HttpVerb.GET, 'tenants/' + parts[1] + '/domains/*');
+
+        policy.allowMethod(AuthPolicy.HttpVerb.PUT, 'tenants/' + parts[1] + '/admins/*');    // Assign Tenant Admins
+        policy.allowMethod(AuthPolicy.HttpVerb.POST, 'tenants/' + parts[1] + '/domains');    // Register Tenant Domains
+        policy.allowMethod(AuthPolicy.HttpVerb.PUT, 'tenants/' + parts[1] + '/domains/*');   // Verify Tenant Domains
+        policy.allowMethod(AuthPolicy.HttpVerb.DELETE,'tenants/' + parts[1] + '/domains/*'); // De-register Tenant Domains
+        policy.allowMethod(AuthPolicy.HttpVerb.PUT, 'tenants/' + parts[1] + '/apps/*');      // Assign all tenant users to app
+    });            
 }
 ```

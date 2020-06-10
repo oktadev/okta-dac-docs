@@ -202,6 +202,9 @@ __Request Parameters__
 | tenant | Name of tenant | String | TRUE |
 | appId | `id` of the app | String | TRUE |
 
+__Request Body__
+None
+
 __Successful Reponse__
 
 Status: 200
@@ -237,6 +240,75 @@ __Response__
 ```json
 HTTP/1.1 204 No Content
 ```
+
+__Exception Reponse__
+
+Status: 404 Not Found
+
+### Assign All Users To App
+| PUT | `tenants/${tenant}/apps/${appId}` |
+| --- | --- |
+
+__Request Parameters__
+| Parameter | Description | Type | Required |
+| --- | :--- | --- | --- |
+| tenant | Name of tenant | String | TRUE |
+| appId | `id` of the app | String | TRUE |
+
+__Request Body__
+```json
+{
+    "allUsers": "true"
+}
+```
+
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
+```json
+HTTP/1.1 200 OK
+{
+    "tenant": "spidermonkey",
+    "appId": "0oaq1xvxlfoEEbii40h7",
+    "lastUpdated": "2020-05-14T06:54:56.000Z"
+}
+```
+:::
+
+__Exception Reponse__
+
+Status: 404 Not Found
+
+### Unassign All Users To App
+| PUT | `tenants/${tenant}/apps/${appId}` |
+| --- | --- |
+
+__Request Parameters__
+| Parameter | Description | Type | Required |
+| --- | :--- | --- | --- |
+| tenant | Name of tenant | String | TRUE |
+| appId | `id` of the app | String | TRUE |
+
+__Request Body__
+```json
+{
+    "allUsers": "false"
+}
+```
+
+__Successful Reponse__
+
+Status: 200
+::: details Sample (Click to view)
+```json
+HTTP/1.1 200 OK
+{
+    "tenant": "spidermonkey",
+    "appId": "0oaq1xvxlfoEEbii40h7"
+}
+```
+:::
 
 __Exception Reponse__
 
@@ -961,7 +1033,10 @@ HTTP/1.1 200 OK
                 "href": "https://op1static.oktacdn.com/fs/bco/4/fs0radz6ecFvmO7Hv0h7",
                 "type": "image/png"
             }
-        ]
+        ],
+        "settings": {
+            "allUsers": false
+        }
     },
     {
         "id": "0oaphr8z83xlSeZAg0h7",
@@ -975,7 +1050,10 @@ HTTP/1.1 200 OK
                 "href": "https://op1static.oktacdn.com/fs/bco/4/fs0raa8zay8W8cCu10h7",
                 "type": "image/png"
             }
-        ]
+        ],
+        "settings": {
+            "allUsers": false
+        }
     },
     {
         "id": "0oaq1xvxlfoEEbii40h7",
@@ -989,7 +1067,10 @@ HTTP/1.1 200 OK
                 "href": "https://op1static.oktacdn.com/fs/bco/4/fs0rac9h6cchMqovu0h7",
                 "type": "image/png"
             }
-        ]
+        ],
+        "settings": {
+            "allUsers": false
+        }
     }
 ]
 ```
