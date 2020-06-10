@@ -9,30 +9,30 @@ The `terraform` directory in `okta-dac` contains a `terraform.tfvars.template` f
 You will need to copy the template file as `terraform.tfvars` and specify/override the values for the different input variables, as shown below.
 
 ```
-org_name       = "mytenant"
-base_url       = "okta.com"
-api_token      = "<OKTA_API_TOKEN>"
-app_url        = "http://localhost:8080"
-superuser_id   = ""
-environment    = "dev"
-aws_region     = "us-east-2"
-aws_profile    = "dac-serverless-admin"
-aws_ssm_prefix = "dac"
+org_name        = "mytenant"
+base_url        = "okta.com"
+api_token       = "<OKTA_API_TOKEN>"
+app_url         = "http://localhost:8080"
+superuser_email = ""
+environment     = "dev"
+aws_region      = "us-east-2"
+aws_profile     = "dac-serverless-admin"
+aws_ssm_prefix  = "dac"
 ```
 
 This is a description of the variables:
 
-| Variable       |                                                Description                                                |           Default Value |
-| -------------- | :-------------------------------------------------------------------------------------------------------: | ----------------------: |
-| org_name       |                                                Okta tenant                                                |                      "" |
-| base_url       |                                         Base URL for Okta tenant                                          |              "okta.com" |
-| api_token      |                                              Okta API token                                               |                         |
-| app_url        |                                     Base URL for DAC Single Page App.                                     | "http://localhost:8080" |
-| superuser_id   |                               Okta User ID to be configured as a SUPERUSER                                |                      "" |
-| environment    |                             Stage configured in API Gateway (dev, prod, ...)                              |                   "dev" |
-| aws_region     | Region to deploy AWS components. See <https://aws.amazon.com/about-aws/global-infrastructure/regions_az/> | "http://localhost:8080" |
-| aws_profile    |                                       Profile configured in AWS CLI                                       |  "dac-serverless-admin" |
-| aws_ssm_prefix |                           Prefix for parameters created in AWS Parameter Store                            |                   "dac" |
+| Variable        |                                                Description                                                |           Default Value |
+| --------------- | :-------------------------------------------------------------------------------------------------------: | ----------------------: |
+| org_name        |                                                Okta tenant                                                |                      "" |
+| base_url        |                                         Base URL for Okta tenant                                          |              "okta.com" |
+| api_token       |                                              Okta API token                                               |                         |
+| app_url         |                                     Base URL for DAC Single Page App.                                     | "http://localhost:8080" |
+| superuser_email |                  Email address of an existing Okta User to be configured as a SUPERUSER.                  |                      "" |
+| environment     |                             Stage configured in API Gateway (dev, prod, ...)                              |                   "dev" |
+| aws_region      | Region to deploy AWS components. See <https://aws.amazon.com/about-aws/global-infrastructure/regions_az/> | "http://localhost:8080" |
+| aws_profile     |                                       Profile configured in AWS CLI                                       |  "dac-serverless-admin" |
+| aws_ssm_prefix  |                           Prefix for parameters created in AWS Parameter Store                            |                   "dac" |
 
 # Using make to Automate Further
 
