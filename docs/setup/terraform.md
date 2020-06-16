@@ -8,45 +8,45 @@ The `terraform` directory in `okta-dac` contains a `terraform.tfvars.template` f
 
 You will need to copy the template file as `terraform.tfvars` and specify/override the values for the different input variables, as shown below.
 
-```
+```sh
 org_name        = "mytenant"
 base_url        = "okta.com"
 api_token       = "<OKTA_API_TOKEN>"
 app_url         = "http://localhost:8080"
 superuser_email = ""
 environment     = "dev"
-aws_region      = "us-east-2"
-aws_profile     = "dac-serverless-admin"
+aws_region      = "us-east-1"
+aws_profile     = "serverless-okta"
 aws_ssm_prefix  = "dac"
 ```
 
 This is a description of the variables:
 
-| Variable        |                                                Description                                                |           Default Value |
-| --------------- | :-------------------------------------------------------------------------------------------------------: | ----------------------: |
-| org_name        |                                                Okta tenant                                                |                      "" |
-| base_url        |                                         Base URL for Okta tenant                                          |              "okta.com" |
-| api_token       |                                              Okta API token                                               |                         |
-| app_url         |                                     Base URL for DAC Single Page App.                                     | "http://localhost:8080" |
-| superuser_email |                  Email address of an existing Okta User to be configured as a SUPERUSER.                  |                      "" |
-| environment     |                             Stage configured in API Gateway (dev, prod, ...)                              |                   "dev" |
-| aws_region      | Region to deploy AWS components. See <https://aws.amazon.com/about-aws/global-infrastructure/regions_az/> | "http://localhost:8080" |
-| aws_profile     |                                       Profile configured in AWS CLI                                       |  "dac-serverless-admin" |
-| aws_ssm_prefix  |                           Prefix for parameters created in AWS Parameter Store                            |                   "dac" |
+| Variable | Description | Default Value |
+| -------- | :---------: | ------------: |
+| org_name | Okta tenant | "" |
+| base_url | Base URL for Okta tenant | "okta.com" |
+| api_token | Okta API token | |
+| app_url | Base URL for DAC Single Page App. | "http://localhost:8080" |
+| superuser_email | Email address of an existing Okta User to be configured as a SUPERUSER. | "" |
+| environment | Stage configured in API Gateway (dev, prod, ...) | "dev" |
+| aws_region | Region to deploy AWS components. See <https://aws.amazon.com/about-aws/global-infrastructure/regions_az/> | "us-east-1" |
+| aws_profile | Profile configured in AWS CLI | "serverless-okta" |
+| aws_ssm_prefix | Prefix for parameters created in AWS Parameter Store | "dac" |
 
-# Using make to Automate Further
+## Using make to Automate Further
 
 The DAC project also includes a `Makefile` that you can use to automate these tasks using `make`.
 
 See installation instructions for your Operating System <https://www.gnu.org/software/make/>
 
-## Check Dependencies
+### Check Dependencies
 
 In a terminal, run `make check` from the okta-dac directory. This checks for all the dependencies and prints out the version information.
 
 This is the output in macOS Catalina.
 
-```
+```sh
 $ make check
 
 Found Terraform v0.12.25
@@ -55,17 +55,17 @@ Found aws-cli/2.0.8 Python/3.7.4 Darwin/19.4.0 botocore/2.0.0dev12
 Found terraform.tfvars
 ```
 
-## Run Targets
+### Run Targets
 
 There are several targets specified in the Makefile.
 
-### Target - okta
+#### Target - okta
 
 This configures the Okta tenant with all the components specified in the terraform script.
 
 ::: details Sample output
 
-```
+```sh
 $ make okta
 
 Initializing the backend...
@@ -112,13 +112,13 @@ Terraform will perform the following actions:
 
 :::
 
-### Target - api
+#### Target - api
 
 This configures AWS with the API Gateway and backing lambda functions.
 
 ::: details Sample output
 
-```
+```sh
 $ make api
 
 npm WARN serverless-offline@6.1.7 requires a peer of serverless@>=1.60.0 but none is installed. You must install peer dependencies yourself.
@@ -351,25 +351,25 @@ Serverless: Run the "serverless" command to setup monitoring, troubleshooting an
 
 :::
 
-### Target - spa
+#### Target - spa
 
 ::: warning
-This is a work-in-progresss
+This is a work-in-progress
 :::
 
 This configures AWS with the S3 buckets.
 
-### Target - destroyOkta
+#### Target - destroyOkta
 
-This tears down the components setup by terrarform in the Okta tenant.
+This tears down the components setup by  in the Okta tenant.
 
-### Target - removeApi
+#### Target - removeApi
 
 This removes the API Gateway and lambda functions from the configured AWS account and region.
 
-### Target - removeSpa
+#### Target - removeSpa
 
 ::: warning
-This is a work-in-progresss
+This is a work-in-progress
 :::
 This removes the S3 bucket and other assets from the configured AWS account and region.
