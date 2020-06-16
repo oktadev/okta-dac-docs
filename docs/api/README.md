@@ -7,12 +7,14 @@ collapsable: true
 ## Tenants
 
 ### Add Tenant
+
 | POST | `tenants/` |
 | ---- | --- |
 
 __Request Body__
 
 Example
+
 ```json
 {
     "name": "spidermonkey"
@@ -23,6 +25,7 @@ __Successful Reponse__
 
 Status: 201 Created
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 201 CREATED
 {
@@ -35,13 +38,16 @@ HTTP/1.1 201 CREATED
     "lastUpdated": "2020-05-14T06:29:07.000Z"
 }
 ```
+
 :::
 
 ### Get Tenant
+
 | GET | `tenants/${tenant}` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of the tenant | String | TRUE|
@@ -50,6 +56,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -59,6 +66,7 @@ HTTP/1.1 200 OK
     "created": "2020-01-29T17:55:02.000Z"
 }
 ```
+
 :::
 
 __Exception Reponse__
@@ -66,10 +74,12 @@ __Exception Reponse__
 Status: 404 Not Found
 
 ### List Tenants (with Pagination)
+
 | GET | `tenants?after=${after}`|
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | after | For pagination. Search results set return values "after" this tenant `id` | String | FALSE |
@@ -78,6 +88,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -101,13 +112,16 @@ Link: <https://${apiUrl}/tenants?after=0oappepjgd1Jb1Bav0h7>; rel="next"
     }
 ]
 ```
+
 :::
 
 ### Search Tenants
+
 | GET | `tenants?search=${search}` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | search | Tenant name `startsWith` search operand | String | FALSE |
@@ -116,6 +130,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 [
@@ -127,14 +142,18 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+
 :::
 
 ## Tenant Apps
+
 ### List Tenant Apps
+
 | GET | `tenants/${tenant}/apps` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
@@ -143,6 +162,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 [
@@ -190,13 +210,16 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+
 :::
 
 ### Activate Tenant App
+
 | PUT | `tenants/${tenant}/apps/${appId}` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
@@ -209,6 +232,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -217,6 +241,7 @@ HTTP/1.1 200 OK
     "lastUpdated": "2020-05-14T06:54:56.000Z"
 }
 ```
+
 :::
 
 __Exception Reponse__
@@ -224,10 +249,12 @@ __Exception Reponse__
 Status: 404 Not Found
 
 ### Deactivate Tenant App
+
 | DELETE | `tenants/${tenant}/apps/${appId}` |
 | ------ | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
@@ -236,7 +263,9 @@ __Request Parameters__
 __Successful Reponse__
 
 Status: 204
+
 __Response__
+
 ```json
 HTTP/1.1 204 No Content
 ```
@@ -246,16 +275,19 @@ __Exception Reponse__
 Status: 404 Not Found
 
 ### Assign All Users To App
+
 | PUT | `tenants/${tenant}/apps/${appId}` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
 | appId | `id` of the app | String | TRUE |
 
 __Request Body__
+
 ```json
 {
     "allUsers": "true"
@@ -266,6 +298,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -274,6 +307,7 @@ HTTP/1.1 200 OK
     "lastUpdated": "2020-05-14T06:54:56.000Z"
 }
 ```
+
 :::
 
 __Exception Reponse__
@@ -281,16 +315,19 @@ __Exception Reponse__
 Status: 404 Not Found
 
 ### Unassign All Users To App
+
 | PUT | `tenants/${tenant}/apps/${appId}` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
 | appId | `id` of the app | String | TRUE |
 
 __Request Body__
+
 ```json
 {
     "allUsers": "false"
@@ -301,6 +338,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -308,6 +346,7 @@ HTTP/1.1 200 OK
     "appId": "0oaq1xvxlfoEEbii40h7"
 }
 ```
+
 :::
 
 __Exception Reponse__
@@ -315,11 +354,14 @@ __Exception Reponse__
 Status: 404 Not Found
 
 ## Tenant Admins
+
 ### List Tenant Admins
+
 | GET | `tenants/${tenant}/admins` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
@@ -328,6 +370,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 [
@@ -348,13 +391,16 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+
 :::
 
 ### Assign Tenant Admin
+
 | PUT | `tenants/${tenant}/admins/${userId}` |
 | --- | --- |
 
 __Request Parameters__
+
 | Parameter | Description | Type | Required |
 | --- | :--- | --- | --- |
 | tenant | Name of tenant | String | TRUE |
@@ -364,6 +410,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -372,10 +419,13 @@ HTTP/1.1 200 OK
     "assigned": "2020-01-29T19:20:18.000Z"
 }
 ```
+
 :::
 
 ## Tenant Domains
+
 ### List Tenant Domain
+
 | GET | `tenants/${tenant}/domains?verified=false | true` |
 | --- | --- |
 
@@ -388,6 +438,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 [
@@ -414,9 +465,11 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+
 :::
 
 ### Add Tenant Domain
+
 | POST | `tenants/${tenant}/domains` |
 | ---- | --- |
 
@@ -427,25 +480,30 @@ HTTP/1.1 200 OK
 __Request Body__
 
 Example
+
 ```json
 {
     "domain": "spidermonkey.com",
     "verified": true
 }
 ```
+
 __Successful Reponse__
 
 Status: 201
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 201 Created
 {
     "domain": "spidermonkey.com"
 }
 ```
+
 :::
 
 ### Delete Tenant Domain
+
 | DELETE | `tenants/${tenant}/domains/${domain}` |
 | ------ | --- |
 
@@ -458,11 +516,13 @@ __Successful Reponse__
 
 Status: 204
 __Response__
+
 ```json
 HTTP/1.1 204 No Content
 ```
 
 ### Verify Tenant Domain
+
 | PUT |`tenants/${tenant}/domains/${domain}` |
 | --- | --- |
 
@@ -474,15 +534,18 @@ HTTP/1.1 204 No Content
 __Request Body__
 
 Example
+
 ```json
 {
     "dnsVerificationString": "c0cced8f-072c-4c8e-99ac-239e0c2e6f95"
 }
 ```
+
 __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -490,10 +553,13 @@ HTTP/1.1 200 OK
     "verified": true
 }
 ```
+
 :::
 
 ## Idps
+
 ### Get Idp
+
 | GET | `idps/${idpId}` |
 | --- | --- |
 
@@ -505,6 +571,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -600,12 +667,13 @@ HTTP/1.1 200 OK
                 ]
             }
         }
-    },    
+    },
     "x5c": [
         "MIIDnjCCAoagAwIBAgIGAVzS5UBOMA0GCSqGSIb3DQEBCwUAMIGPMQswCQYDVQQGEwJVUzETMBEG\rA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU\rMBIGA1UECwwLU1NPUHJvdmlkZXIxEDAOBgNVBAMMB3plZWtob28xHDAaBgkqhkiG9w0BCQEWDWlu\rZm9Ab2t0YS5jb20wHhcNMTcwNjIzMDI1OTU4WhcNMjcwNjIzMDMwMDU4WjCBjzELMAkGA1UEBhMC\rVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNVBAoM\rBE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRAwDgYDVQQDDAd6ZWVraG9vMRwwGgYJKoZIhvcN\rAQkBFg1pbmZvQG9rdGEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtrAO+BxT\rPPSJetJEXPQze8THcRLaD8aiTyCfV6NnZ/ERX85NJ6YpOarF82OecQp2LhaP4SnZfFYPS8kaltk0\rYjSlz206XcDysGaUWPsIbDdljtLMbb1QXht3b+/dA6ynPtk0p1NqLwXTWuhZo+VJ04vEFq0CbQom\rvhU7zHnIvGIiTjvhAxW2UI25bkW9K8jvyJ7NaNZ+5J5MsTlpdYWvibd2p6UvuTz4XhQW+AajAubB\rdOcyCfuvl61d7TCd9rT0sot1qrCWB77rCr6DcR2tonJ7FSUaPezCobm/OgWi5NoC/M5lgXhoG+Fw\rC6GqwiJwRpS9pI5dkmUudUDPVoh8bQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA/W5j1euP2nLhS\rqlrJYwMm/7XXCqnhu3eBLnzkgRqNH6khtX1spAhC3w5L0w0JF4SgfjXAbAsWn6a6YsicEQsrDGdp\r3deMiKkkS9loWsJRhZB+FYvkrGv/EDtF9p16K2hcDbNAXkV7mKRbWiKthzWJ4o72DyPfwlyq8bTq\rVDk5ymHBYu2taomgRSQq/E+vGU1XXK9mPBHOq+ZeIDr+g8zvZhsU0R1uH+jM9iniPVX7DirN0Nwr\rsYfl5mDCZTjCiA5sRnHN644s3Kw0GHbvEYsxfjQQm/FtPiVQzg2H8EygVTOnQnyt+5KMEeEz7OTB\rxmkn+qw/u2YTUuUiUAM7dwt5\r"
     ]
 }
 ```
+
 :::
 
 __Exception Reponse__
@@ -613,6 +681,7 @@ __Exception Reponse__
 Status: 404 Not Found
 
 ### List Idps
+
 | GET | `idps/` |
 | --- | --- |
 
@@ -620,6 +689,7 @@ __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 [
@@ -724,9 +794,11 @@ HTTP/1.1 200 OK
   ...
 ]
 ```
+
 :::
 
 ### Get Idp Metadata
+
 | GET | `idps/${idpId}/metadata.xml` |
 | --- | --- |
 
@@ -734,8 +806,8 @@ HTTP/1.1 200 OK
 | --- | :--- | --- | --- |
 | idpId | `id` of idp | String | TRUE |
 
-
 ### Update Idp
+
 | PUT | `idps/${idpId}` |
 | --- | --- |
 
@@ -746,6 +818,7 @@ HTTP/1.1 200 OK
 __Request Body__
 
 ::: details Example (Click to expand)
+
 ```json
 {
   "type": "SAML2",
@@ -820,12 +893,14 @@ __Request Body__
   },
 }
 ```
+
 :::
 
 __Successful Reponse__
 
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 {
@@ -901,9 +976,11 @@ HTTP/1.1 200 OK
   },
 }
 ```
+
 :::
 
 ## Apps
+
 <!-- ### Get App
 | GET | `apps/${appId}` |
 | --- | --- |
@@ -935,6 +1012,7 @@ HTTP/1.1 200 OK
 ::: -->
 
 ### List Apps
+
 | GET | `apps/` |
 | --- | --- |
 
@@ -943,6 +1021,7 @@ __Successful Reponse__
 **IF SUPERUSERS**
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 [
@@ -1013,11 +1092,13 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+
 :::
 
 **ELSE**
 Status: 200
 ::: details Sample (Click to view)
+
 ```json
 HTTP/1.1 200 OK
 [
@@ -1074,6 +1155,7 @@ HTTP/1.1 200 OK
     }
 ]
 ```
+
 :::
 
 <!-- ### Update App

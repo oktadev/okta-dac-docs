@@ -3,21 +3,25 @@ sidebarDepth: 3
 ---
 # API
 
-This section discusses the design for okta-dac [APIs](/api). 
+This section discusses the design for okta-dac [APIs](/api).
 
 ## OAuth for Okta
+
 With [OAuth for Okta](https://developer.okta.com/docs/guides/implement-oauth-for-okta/overview/), you are able to interact with Okta APIs using scoped OAuth 2.0 access tokens. Each access token enables the bearer to perform specific actions on specific Okta endpoints, with that ability controlled by which scopes the access token contains.
 
 The [scopes](https://developer.okta.com/docs/guides/implement-oauth-for-okta/scopes/) that we request are:
+
 * `okta.users.manage` so that we can read, add, and update users
 * `okta.groups.manage` so that we can read and update groups
 
-***If you are a Group Admin and obtain an access_token from Okta with the above scopes, you can use it on the [users](https://developer.okta.com/docs/reference/api/users/) and [groups](https://developer.okta.com/docs/reference/api/groups/) APIs. Most importantly, the API responses are automatically filtered according to your Group Admin privileges.*** For example, calling __`GET`__`/users` will return only users in the groups you manage; Calling __`GET`__`/groups` will only return groups you manage, etc.
+***If you are a Group Admin and obtain an access_token from Okta with the above scopes, you can use it on the [users](https://developer.okta.com/docs/reference/api/users/) and [groups](https://developer.okta.com/docs/reference/api/groups/) APIs. Most importantly, the API responses are automatically filtered according to your Group Admin privileges.*** For example, calling `GET /users` will return only users in the groups you manage; Calling `GET /groups` will only return groups you manage, etc.
 
 In order to get an access_token with these scopes, we rely on the Okta session.
 
 ### Okta session
+
 Okta uses a cookie-based authentication mechanism to maintain a user's authentication [session](https://developer.okta.com/docs/reference/api/sessions/) across web requests.
+
 * When a user signs into okta-dac, a session is created in Okta and persisted on the browser with a cookie.
 * Leveraging this existing session, we can then **fetch the bearer token** without the need to re-authenticate. We use the [Okta Auth JavaScript SDK](https://github.com/okta/okta-auth-js) `getWithoutPrompt` function to silently get this token. Below is the sample code:
 
@@ -48,6 +52,7 @@ if (exists) {
     }
 }
 ```
+
 * [`authJs.session.exists()`](https://github.com/okta/okta-auth-js#sessionexists) checks to see if user has logged-in (i.e. an Okta session exists)
 * [`authJs.token.getWithoutPrompt()`](https://github.com/okta/okta-auth-js#tokengetwithoutpromptoptions) makes an OAuth [authorize](https://developer.okta.com/docs/reference/api/oidc/#authorize) request with [`&prompt=none`](https://developer.okta.com/docs/reference/api/oidc/#parameter-details). As a session cookie is present in the request, the user does not need to authenticate again.
 
@@ -57,8 +62,8 @@ Once we get the access_token we use it to implement list/search users, add users
 
 ![alt text](./images/dac-demo.gif)
 
-
 ## API Access Management
+
 Because we synthetically created a Tenants structure in the Okta org, we need to write our own [Tenants API](/api/#tenants) to wrap around the Okta CRUD APIs and perform custom filtering of the CRUD API's results.  
 
 Over here, we leverage [API Access Management](https://developer.okta.com/docs/concepts/api-access-management/) – Okta's implementation of the OAuth 2.0 standard – to secure our "wrapper APIs", which implement the business logic abstraction layer that generates our "tenant" structure in the Okta org. (Please refer to [composite APIs](/api/#composite-apis) for documentation).
@@ -66,11 +71,13 @@ Over here, we leverage [API Access Management](https://developer.okta.com/docs/c
 **Couple of custom claims are essential to the proper functioning of okta-dac. Okta's API Access Management makes it easy to generate JWTs and embed custom claims:**
 
 ### The `tenants` claim
+
 ::: warning NOTE
 The `APPLICATION_ENTITLEMENT_POLICY` **feature flag** must be enabled for the Okta Org
 :::
 
 We configure Okta to store a User App Attribute called "Tenants" and display its value in a custom claim called `tenants`. See:
+
 * Custom App Profile Attribute. [Config steps](/setup/org-setup.html#_4-add-custom-app-profile-attribute).
 * The `tenants` custom claim. [Config steps](/setup/org-setup.html#_6-add-custom-claims).
 
@@ -92,13 +99,17 @@ await axios.put(
 Embedding this value in the JWT provides okta-dac quick access to the tenant name and id, and its associated USERS_ group id without making additional requests to the Okta API.
 
 ### The `groups` claim
+
 We configure Okta to return the `groups` custom claim. See [steps](/setup/org-setup.html#_6-add-custom-claims). This allows the okta-dac to:
+
 * Differentiate Super Admins from Tenant Admins. 
 * For the Tenant Admins, provide the Tenant(s) info.
 * Which apps are available for Tenants.
 
 #### Sample JWT
+
 As mentioned, the `tenants` and `groups` claims are crucial for the proper functioning of okta-dac. To illustrate how they're used, take a look at the sample below:
+
 ```json
 {
   "sub": "00upkrte35fGaTMJi0h7",
@@ -127,22 +138,23 @@ As mentioned, the `tenants` and `groups` claims are crucial for the proper funct
   ]
 }
 ```
+
 * This JWT is for a Tenant Admin because there is no SUPERUSERS in the `groups` claim
 * The Tenant is "spidermonkey"
 * spidermonkey has access to 2 apps (Ids `0oaq1xvxlfoEEbii40h7` & `0oaphr8z83xlSeZAg0h7`)
 
-
 ### AuthZ
+
 The information in the above JWT is used by okta-dac to display the proper UX to the user. Not only that, it is also used to authorize access for our wrapper APIs. See [custom-authorizer](#custom-authorizer) for more info.
 
-
-
 ## okta-dac Composite APIs
+
 ::: tip
 Refer to the [okta-dac-api](https://github.com/oktadeveloper/okta-dac-api) serverless project for source code and issue tracking.
 :::
 
 ### [Tenants API](/api/#tenants)
+
 Implementing the Tenants endpoint is a practice of stitching together a series of Okta API operations. We illustrate with a few examples:
 
 * __Example 1__: 
@@ -178,21 +190,27 @@ Refer to the source code for implementation details
 :::
 
 ### [IdPs API](/api/#idps)
+
 Keep in mind that we store the IdP Id in the `ADMINS_${tenantName}` group's `profile.description` as the "tenantId":
+
 ```json
 {"tenantId": "${id-from-step-#1}"}
 ```
+
 This allows us to implement the [Get Idp](/api/#get-idp) composite API:
+
 1. Search Groups with `q=ADMINS_${tenantName}`
-2. Parse the `profile.description` for the "tenantId" 
+2. Parse the `profile.description` for the "tenantId"
 3. Read back the Idp (by Id) from step #2
 
 Similarly, [Update Idp](/api/#update-idp) triggers:
+
 1. Search Groups with `q=ADMINS_${tenantName}`
-2. Parse the `profile.description` for the "tenantId" 
+2. Parse the `profile.description` for the "tenantId"
 3. Update Idp (by Id) from step #2
 
 ### [Apps API](/api/#apps)
+
 We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claim contains `SUPERUSERS`, then list all apps that **startsWith** `MTA_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
 
 ::: tip NOTE
@@ -200,9 +218,11 @@ To distinguish between SaaS provider products/apps and other apps in Okta, we si
 :::
 
 ### Custom Authorizer
+
 Amazon API Gateway supports custom authorizers where you can restrict access to the exact HTTP method and route. We rely heavily on this functionality to provide AuthZ functionality to our composite APIs.
 
 In the custom authorizer, we restrict access to the tenant-namespaced route based on which tenant the user is an ADMIN of. Keep in mind that our JWT contains the `tenants` and `groups` claims, which give us the AuthZ information that we need to generate the following policy:
+
 ```js
 // Everyone can read apps
 policy.allowMethod(AuthPolicy.HttpVerb.GET, 'apps');
@@ -225,7 +245,7 @@ if (tenants && tenants.length > 0) {
         policy.allowMethod(AuthPolicy.HttpVerb.GET, 'idps/' + parts[0] + '/metadata.xml');
         policy.allowMethod(AuthPolicy.HttpVerb.PUT, 'idps/' + parts[0]);   
 
-        // Read own tenants     
+        // Read own tenants
         policy.allowMethod(AuthPolicy.HttpVerb.GET, 'tenants/' + parts[1]);
         policy.allowMethod(AuthPolicy.HttpVerb.GET, 'tenants/' + parts[1] + '/domains');
         policy.allowMethod(AuthPolicy.HttpVerb.GET, 'tenants/' + parts[1] + '/domains/*');
@@ -235,6 +255,6 @@ if (tenants && tenants.length > 0) {
         policy.allowMethod(AuthPolicy.HttpVerb.PUT, 'tenants/' + parts[1] + '/domains/*');   // Verify Tenant Domains
         policy.allowMethod(AuthPolicy.HttpVerb.DELETE,'tenants/' + parts[1] + '/domains/*'); // De-register Tenant Domains
         policy.allowMethod(AuthPolicy.HttpVerb.PUT, 'tenants/' + parts[1] + '/apps/*');      // Assign all tenant users to app
-    });            
+    });
 }
 ```
