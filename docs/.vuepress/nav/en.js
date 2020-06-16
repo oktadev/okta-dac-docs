@@ -11,8 +11,4 @@ module.exports = [
     text: "API Reference",
     link: "/api/",
   },
-  {
-    text: "Demo",
-    link: "https://okta-mta.idp.rocks",
-  },
 ];
