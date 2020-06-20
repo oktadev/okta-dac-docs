@@ -9,7 +9,7 @@ meta:
 
 # Install Dependencies
 
-The BYOB project will need to install custom serverless components within AWS and also refer to entities defined within the Okta tenant. BYOB leverages `terraform` and `serverless` to setup all the infrastructure as code.
+The [okta-dac](https://github.com/oktadeveloper/okta-dac) and [byob-dashboard](https://github.com/oktadeveloper/byob-dashboard) projects will need to install custom serverless components within AWS and also refer to entities defined within the Okta tenant. These projects leverage `terraform` and `serverless` to setup all the infrastructure as code.
 
 ## Install Terraform
 

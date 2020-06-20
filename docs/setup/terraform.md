@@ -353,11 +353,17 @@ Serverless: Run the "serverless" command to setup monitoring, troubleshooting an
 
 #### Target - spa
 
-::: warning
-This is a work-in-progress
-:::
+This generates the local `env` files for the SPA
 
-This configures AWS with the S3 buckets.
+
+## (Required) Manual Steps
+Terraform currently does not support granting Okta API Scopes to Apps or updating email templates. You MUST complete the following 2 steps manually.
+1. [Enable OAuth grants](/setup/org-setup.html#_9-enable-oauth-grants)
+2. [Update User Activation Email Template](/setup/org-setup.html#_10-update-user-activation-email-template)
+
+
+## Supplemental Make targets
+
 
 #### Target - destroyOkta
 
@@ -367,9 +373,11 @@ This tears down the components setup by  in the Okta tenant.
 
 This removes the API Gateway and lambda functions from the configured AWS account and region.
 
-#### Target - removeSpa
+<!-- #### Target - removeSpa
 
 ::: warning
 This is a work-in-progress
 :::
-This removes the S3 bucket and other assets from the configured AWS account and region.
+This removes the S3 bucket and other assets from the configured AWS account and region. -->
+
+

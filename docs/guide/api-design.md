@@ -159,7 +159,7 @@ Implementing the Tenants endpoint is a practice of stitching together a series o
 
 * __Example 1__: 
     When we [add a tenant](/api/#add-tenant), what the client sees as one API call is actually 8 API requests:
-    1. [Add Identity Provider](https://developer.okta.com/docs/reference/api/idps/#add-identity-provider) with naming convention `MTA_${tenantName}`
+    1. [Add Identity Provider](https://developer.okta.com/docs/reference/api/idps/#add-identity-provider) with naming convention `DAC_${tenantName}`
     2. [Add `USERS_${tenantName}` group](https://developer.okta.com/docs/reference/api/groups/#add-group)
     3. Add `ADMINS_${tenantName}`. Set `profile.description`=
     ```json
@@ -211,10 +211,10 @@ Similarly, [Update Idp](/api/#update-idp) triggers:
 
 ### [Apps API](/api/#apps)
 
-We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claim contains `SUPERUSERS`, then list all apps that **startsWith** `MTA_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
+We implemented a [List Apps](/api/#list-apps) API which is context sensitive to the Bearer token of the request. If the token's `groups` claim contains `SUPERUSERS`, then list all apps that **startsWith** `DAC_`. Else, list all apps that **startswith** `APPUSERS_${tenantName}`. For implementation details refer to the project source code.
 
 ::: tip NOTE
-To distinguish between SaaS provider products/apps and other apps in Okta, we simply prefix them with `MTA_`
+To distinguish between SaaS provider products/apps and other apps in Okta, we simply prefix them with `DAC_`
 :::
 
 ### Custom Authorizer
@@ -258,3 +258,8 @@ if (tenants && tenants.length > 0) {
     });
 }
 ```
+
+---
+
+## Next Steps
+If you're ready to test out the sample project(s), head over to the [Setup](/setup/) section to get started.
