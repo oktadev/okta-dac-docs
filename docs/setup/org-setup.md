@@ -45,12 +45,17 @@ This feature flag, when enabled allows configuration of app profile attributes t
 ![alt text](./images/setup/CustomScope.png)
 
 #### 6. Add custom claims
+Setup default `groups` claim:
+
+| claim | expression | scope | token |
+| ----- | ---------- | ----- | ----- |
+| `groups` | `groups matches .*` | `Any` | id_token & access_token |
+
 Setup claims bound to the custom scope `dac.admin` with the following values:
 
 | claim | expression | scope | token |
 | ----- | ---------- | ----- | ----- |
-| tenants | appuser.tenants | dac.admin | id_token & access_token |
-| groups | groups matches .* | dac.admin | id_token & access_token |
+| `tenants` | `appuser.tenants` | `dac.admin` | id_token & access_token |
 
 ![alt text](./images/setup/CustomClaims.png)
 
