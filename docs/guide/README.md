@@ -10,7 +10,7 @@ meta:
 
 # Introduction
 
-This is the design architecture documentation for the "__Delegated Admin Console__" aka [okta-dac](https://github.com/oktadeveloper/okta-dac) open source project *and its companion project, "__End-user Dashboard__" aka [byob-dashboard](https://github.com/oktadeveloper/byob-dashboard)*.
+This is the design architecture documentation for the "__Delegated Admin Console__" aka [okta-dac](https://github.com/oktadeveloper/okta-dac) sample project *and its companion project: "__End-user Dashboard__" aka [byob-dashboard](https://github.com/oktadeveloper/byob-dashboard)*.
 
 Using native Okta capabilities, we:
 
