@@ -19,12 +19,14 @@ If you're more comfortable configuring the org manually, Follow the steps below:
 * Application type: __Single Page App (SPA)__
 * Allowed grand types: __Authorization Code__
 * Login redirect URIs: __http://localhost:8081/oauth/callback__
+* Logout redirect URIs: __http://localhost:8081__
 * Client authentication: __Use PKCE (for public clients)__
 
 #### 3. Add okta-dac app
 * Application type: __Single Page App (SPA)__
 * Allowed grand types: __Authorization Code__
 * Login redirect URIs: __http://localhost:8080/oauth/callback__
+* Logout redirect URIs: __http://localhost:8080__
 * Client authentication: __Use PKCE (for public clients)__
 
 #### 4. Add custom app profile attribute
