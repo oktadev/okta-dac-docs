@@ -2,12 +2,13 @@ module.exports = {
   title: "Okta Multi Tenant Admin",
   description: "Identity Management for Multi-Tenant Applications",
   themeConfig: {
-    repo: "oktadeveloper/okta-dac-docs",
+    // repo: "oktadeveloper/okta-dac-docs",
+    repo: "oktadeveloper/okta-dac",
     logo:
       "https://www.okta.com/sites/all/themes/Okta/images/logos/developer/Dev_Logo-02_Large.png",
     lastUpdated: "Last Updated",
     // defaults to false, set to true to enable
-    editLinks: true,
+    editLinks: false,
     // custom text for edit link. Defaults to "Edit this page"
     editLinkText: "Edit this page on GitHub",
     docsDir: "docs",
