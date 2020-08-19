@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vuepress dev docs -p 8082",
-    "prep": "cp docs/.vuepress/public/tf/sample.tf ./docs/guide/sample.hcl",    
+    "prep": "cp docs/.vuepress/public/tf/sample.tf ./docs/guide/sample.hcl",
     "build": "vuepress build docs"
   },
   "dependencies": {
