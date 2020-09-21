@@ -17,11 +17,21 @@ Terraform is used to setup Okta.
 
 See installation instructions here for your operating system: <https://learn.hashicorp.com/terraform/getting-started/install.html>
 
+```bash
+# e.g. Mac OS X homebrew:
+$ brew install hashicorp/tap/terraform
+```
+
 ## Install Serverless
 
 Serverless is used to setup AWS.
 
 See installation instructions here for your operating system: <https://www.serverless.com/framework/docs/getting-started/>
+
+```bash
+# e.g. Mac OS X via npm:
+$ npm install -g serverless
+```
 
 ## Install AWS CLI
 
@@ -73,16 +83,17 @@ Once the user is created, you can download the csv with the `Access Key ID` and 
 
 The terraform and serverless scripts will use credentials defined in the named profile `serverless-okta`.
 
-Follow the steps to configure the profile <https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html> using the credentials - `Access Key ID` and `Secret access key` from the previous step.
-
-```
+Using the credentials - `Access Key ID` and `Secret access key` from the previous step, configure an aws profile with the following command:
+```bash
 serverless config credentials --provider aws --key  <AWS_ACCESS_KEY_ID> --secret <AWS_SECRET_ACCESS_KEY> --profile serverless-okta
 ```
+For more info about the above command see [cli-configure-profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
+
 
 You can verify the presence of the named profile in the `.aws/credentials` file.
 
-```
-more ~/.aws/credentials
+```bash
+cat ~/.aws/credentials
 ```
 
 See the terminal console output below:
