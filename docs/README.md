@@ -9,7 +9,7 @@ features:
     details: Enable customers that have their own IdPs to self configure their tenant for IdP authentication.
   - title: Configure Entitlements
     details: Enable customers to self-manage users in their own tenants.
-footer: <TBD> Copyright Info
+footer: MIT Licensed | Created by [@zeekhoo](https://github.com/zeekhoo) and [@maneeshsahu](https://github.com/maneeshsahu)
 ---
 
 # Introduction
