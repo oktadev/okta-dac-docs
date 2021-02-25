@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Terraform | Okta Multi Tenant Admin</title>
+    <meta name="generator" content="VuePress 1.4.1">
+    
+    <meta name="description" content="Identity Management for Multi-Tenant Applications">
+    <link rel="preload" href="/assets/css/0.styles.647b89b9.css" as="style"><link rel="preload" href="/assets/js/app.450515ec.js" as="script"><link rel="preload" href="/assets/js/2.7119a548.js" as="script"><link rel="preload" href="/assets/js/14.4f1def24.js" as="script"><link rel="prefetch" href="/assets/js/10.6f6f30df.js"><link rel="prefetch" href="/assets/js/11.2e3204a8.js"><link rel="prefetch" href="/assets/js/12.71d99b0e.js"><link rel="prefetch" href="/assets/js/13.8760065f.js"><link rel="prefetch" href="/assets/js/15.9fb2c3c4.js"><link rel="prefetch" href="/assets/js/3.eed724d4.js"><link rel="prefetch" href="/assets/js/4.4123bd0c.js"><link rel="prefetch" href="/assets/js/5.8f22c7be.js"><link rel="prefetch" href="/assets/js/6.33805e7e.js"><link rel="prefetch" href="/assets/js/7.3fc291a8.js"><link rel="prefetch" href="/assets/js/8.6ba0f06d.js"><link rel="prefetch" href="/assets/js/9.18c1fe6e.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.647b89b9.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="https://www.okta.com/sites/all/themes/Okta/images/logos/developer/Dev_Logo-02_Large.png" alt="Okta Multi Tenant Admin" class="logo"> <span class="site-name can-hide">Okta Multi Tenant Admin</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/setup/" class="nav-link router-link-active">
+  Setup
+</a></div><div class="nav-item"><a href="/api/" class="nav-link">
+  API Reference
+</a></div> <a href="https://github.com/oktadeveloper/okta-dac" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/setup/" class="nav-link router-link-active">
+  Setup
+</a></div><div class="nav-item"><a href="/api/" class="nav-link">
+  API Reference
+</a></div> <a href="https://github.com/oktadeveloper/okta-dac" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Setup</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/setup/" aria-current="page" class="sidebar-link">Prereq</a></li><li><a href="/setup/org-setup.html" class="sidebar-link">Configure Okta</a></li><li><a href="/setup/terraform.html" aria-current="page" class="active sidebar-link">Terraform</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/setup/terraform.html#setup-inputs-for-terraform" class="sidebar-link">Setup Inputs for Terraform</a></li><li class="sidebar-sub-header"><a href="/setup/terraform.html#using-make-to-automate-further" class="sidebar-link">Using make to Automate Further</a></li><li class="sidebar-sub-header"><a href="/setup/terraform.html#required-manual-steps" class="sidebar-link">(Required) Manual Steps</a></li><li class="sidebar-sub-header"><a href="/setup/terraform.html#supplemental-make-targets" class="sidebar-link">Supplemental Make targets</a></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="terraform"><a href="#terraform" class="header-anchor">#</a> Terraform</h1> <p>We use the <a href="https://www.terraform.io/docs/providers/okta/index.html" target="_blank" rel="noopener noreferrer">Okta Terraform Provider<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> to automatically configure the Okta Org.</p> <h2 id="setup-inputs-for-terraform"><a href="#setup-inputs-for-terraform" class="header-anchor">#</a> Setup Inputs for Terraform</h2> <p>The <code>terraform</code> directory in <code>okta-dac</code> contains a <code>terraform.tfvars.template</code> file with information that you need to fill in for your environment.</p> <p>You will need to copy the template file as <code>terraform.tfvars</code> and specify/override the values for the different input variables, as shown below.</p> <div class="language-sh extra-class"><pre class="language-sh"><code>org_name        <span class="token operator">=</span> <span class="token string">&quot;mytenant&quot;</span>
+base_url        <span class="token operator">=</span> <span class="token string">&quot;okta.com&quot;</span>
+api_token       <span class="token operator">=</span> <span class="token string">&quot;&lt;OKTA_API_TOKEN&gt;&quot;</span>
+app_url         <span class="token operator">=</span> <span class="token string">&quot;http://localhost:8080&quot;</span>
+superuser_email <span class="token operator">=</span> <span class="token string">&quot;&quot;</span>
+environment     <span class="token operator">=</span> <span class="token string">&quot;dev&quot;</span>
+aws_region      <span class="token operator">=</span> <span class="token string">&quot;us-east-1&quot;</span>
+aws_profile     <span class="token operator">=</span> <span class="token string">&quot;serverless-okta&quot;</span>
+aws_ssm_prefix  <span class="token operator">=</span> <span class="token string">&quot;dac&quot;</span>
+</code></pre></div><p>This is a description of the variables:</p> <table><thead><tr><th>Variable</th> <th style="text-align:center;">Description</th> <th style="text-align:right;">Default Value</th></tr></thead> <tbody><tr><td>org_name</td> <td style="text-align:center;">Okta tenant</td> <td style="text-align:right;">&quot;&quot;</td></tr> <tr><td>base_url</td> <td style="text-align:center;">Base URL for Okta tenant</td> <td style="text-align:right;">&quot;okta.com&quot;</td></tr> <tr><td>api_token</td> <td style="text-align:center;">Okta API token</td> <td style="text-align:right;"></td></tr> <tr><td>app_url</td> <td style="text-align:center;">Base URL for DAC Single Page App.</td> <td style="text-align:right;">&quot;http://localhost:8080&quot;</td></tr> <tr><td>superuser_email</td> <td style="text-align:center;">Email address of an existing Okta User to be configured as a SUPERUSER.</td> <td style="text-align:right;">&quot;&quot;</td></tr> <tr><td>environment</td> <td style="text-align:center;">Stage configured in API Gateway (dev, prod, ...)</td> <td style="text-align:right;">&quot;dev&quot;</td></tr> <tr><td>aws_region</td> <td style="text-align:center;">Region to deploy AWS components. See <a href="https://aws.amazon.com/about-aws/global-infrastructure/regions_az/" target="_blank" rel="noopener noreferrer">https://aws.amazon.com/about-aws/global-infrastructure/regions_az/<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></td> <td style="text-align:right;">&quot;us-east-1&quot;</td></tr> <tr><td>aws_profile</td> <td style="text-align:center;">Profile configured in AWS CLI</td> <td style="text-align:right;">&quot;serverless-okta&quot;</td></tr> <tr><td>aws_ssm_prefix</td> <td style="text-align:center;">Prefix for parameters created in AWS Parameter Store</td> <td style="text-align:right;">&quot;dac&quot;</td></tr></tbody></table> <h2 id="using-make-to-automate-further"><a href="#using-make-to-automate-further" class="header-anchor">#</a> Using make to Automate Further</h2> <p>The DAC project also includes a <code>Makefile</code> that you can use to automate these tasks using <code>make</code>.</p> <p>See installation instructions for your Operating System <a href="https://www.gnu.org/software/make/" target="_blank" rel="noopener noreferrer">https://www.gnu.org/software/make/<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <h3 id="check-dependencies"><a href="#check-dependencies" class="header-anchor">#</a> Check Dependencies</h3> <p>In a terminal, run <code>make check</code> from the okta-dac directory. This checks for all the dependencies and prints out the version information.</p> <p>This is the output in macOS Catalina.</p> <div class="language-sh extra-class"><pre class="language-sh"><code>$ <span class="token function">make</span> check
+
+Found Terraform v0.12.25
+Found Serverless: Framework Core: <span class="token number">1.71</span>.1 Plugin: <span class="token number">3.6</span>.12 SDK: <span class="token number">2.3</span>.0 Components: <span class="token number">2.30</span>.10
+Found aws-cli/2.0.8 Python/3.7.4 Darwin/19.4.0 botocore/2.0.0dev12
+Found terraform.tfvars
+</code></pre></div><h3 id="run-targets"><a href="#run-targets" class="header-anchor">#</a> Run Targets</h3> <p>There are several targets specified in the Makefile.</p> <h4 id="target-okta"><a href="#target-okta" class="header-anchor">#</a> Target - okta</h4> <p>This configures the Okta tenant with all the components specified in the terraform script.</p> <details class="custom-block details"><summary>Sample output</summary> <div class="language-sh extra-class"><pre class="language-sh"><code>$ <span class="token function">make</span> okta
+
+Initializing the backend<span class="token punctuation">..</span>.
+
+Initializing provider plugins<span class="token punctuation">..</span>.
+
+The following providers <span class="token keyword">do</span> not have any version constraints <span class="token keyword">in</span> configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to <span class="token function">add</span> version <span class="token operator">=</span> <span class="token string">&quot;...&quot;</span> constraints to the
+corresponding provider blocks <span class="token keyword">in</span> configuration, with the constraint strings
+suggested below.
+
+* provider.aws: version <span class="token operator">=</span> <span class="token string">&quot;~&gt; 2.63&quot;</span>
+
+Terraform has been successfully initialized<span class="token operator">!</span>
+
+You may now begin working with Terraform. Try running <span class="token string">&quot;terraform plan&quot;</span> to see
+any changes that are required <span class="token keyword">for</span> your infrastructure. All Terraform commands
+should now work.
+
+If you ever <span class="token builtin class-name">set</span> or change modules or backend configuration <span class="token keyword">for</span> Terraform,
+rerun this <span class="token builtin class-name">command</span> to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to <span class="token keyword">do</span> so <span class="token keyword">if</span> necessary.
+Refreshing Terraform state in-memory prior to plan<span class="token punctuation">..</span>.
+The refreshed state will be used to calculate this plan, but will not be
+persisted to <span class="token builtin class-name">local</span> or remote state storage.
+
+data.okta_group.dac-users: Refreshing state<span class="token punctuation">..</span>.
+data.okta_policy.idp_policy: Refreshing state<span class="token punctuation">..</span>.
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+<span class="token punctuation">..</span>.
+
+</code></pre></div></details> <h4 id="target-api"><a href="#target-api" class="header-anchor">#</a> Target - api</h4> <p>This configures AWS with the API Gateway and backing lambda functions.</p> <details class="custom-block details"><summary>Sample output</summary> <div class="language-sh extra-class"><pre class="language-sh"><code>$ <span class="token function">make</span> api
+
+<span class="token function">npm</span> WARN serverless-offline@6.1.7 requires a peer of serverless@<span class="token operator">&gt;</span><span class="token operator">=</span><span class="token number">1.60</span>.0 but none is installed. You must <span class="token function">install</span> peer dependencies yourself.
+<span class="token function">npm</span> WARN dac-api-tenants@1.0.0 No description
+<span class="token function">npm</span> WARN dac-api-tenants@1.0.0 No repository field.
+
+audited <span class="token number">297</span> packages <span class="token keyword">in</span> <span class="token number">1</span>.699s
+
+<span class="token number">24</span> packages are looking <span class="token keyword">for</span> funding
+  run <span class="token variable"><span class="token variable">`</span><span class="token function">npm</span> fund<span class="token variable">`</span></span> <span class="token keyword">for</span> details
+
+found <span class="token number">0</span> vulnerabilities
+
+Serverless: Packaging service<span class="token punctuation">..</span>.
+Serverless: Excluding development dependencies<span class="token punctuation">..</span>.
+Serverless: Uploading CloudFormation <span class="token function">file</span> to S3<span class="token punctuation">..</span>.
+Serverless: Uploading artifacts<span class="token punctuation">..</span>.
+Serverless: Uploading <span class="token function">service</span> okta-dac-api.zip <span class="token function">file</span> to S3 <span class="token punctuation">(</span><span class="token number">2.54</span> MB<span class="token punctuation">)</span><span class="token punctuation">..</span>.
+Serverless: Validating template<span class="token punctuation">..</span>.
+Serverless: Updating Stack<span class="token punctuation">..</span>.
+Serverless: Checking Stack update progress<span class="token punctuation">..</span>.
+CloudFormation - UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - okta-dac-api-dev
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - ListTenantAppsLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - ActivateTenantAppLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - ProxyLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - GetTenantLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - AssignTenantAdminLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - ListAppsLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - VerifyTenantDomainLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - ListIdpsLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - AddTenantDomainLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - ListTenantDomainsLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - DeleteTenantDomainLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - UpdateTenantLambdaFunction
+CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - ListTenantsLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ListTenantAdminsLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - DeleteTenantLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - GetIdpLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - GetIdpMetadataLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - OktaAuthLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - AddTenantLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - DeactivateTenantAppLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ActivateTenantAppLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ListTenantAppsLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ListAppsLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - UpdateIdpLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - VerifyTenantDomainLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - AssignTenantAdminLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ProxyLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - DeleteTenantDomainLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - GetTenantLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - AddTenantDomainLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ListIdpsLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - UpdateTenantLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ListTenantDomainsLambdaFunction
+CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - ListTenantsLambdaFunction
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - OktaAuthLambdaVersionSInSW5MJwZIqiEyHPaq7PmgtR5E5miHnVOa8O0mpMb0
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - OktaAuthLambdaVersionSInSW5MJwZIqiEyHPaq7PmgtR5E5miHnVOa8O0mpMb0
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - AddTenantLambdaVersionWtU4msMxkOSW0BTB4gd42I5UwsEVGOL8QDAp1cvBU
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ProxyLambdaVersionYYeao8mHFrGcIM7AyhixVveeqfsJ7bSvY4MNKXC19tA
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - GetIdpMetadataLambdaVersionXjlDT0RRHUY4OT5yy6xNx9ffShHRGorzh56dQfoS0Io
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - GetIdpLambdaVersionQVeqQPna89VazNKPGpuXINCda7NTiy27BiBsjGh7o
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - DeleteTenantLambdaVersionVJIk7OSLWIHrY8z2zfzgRm3kjatBF1brJWiqHBaaX0
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - UpdateIdpLambdaVersionsZGMauNVzCkaZaOuhEz4S7xRausM6j241FzjSjBMpds
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantAdminsLambdaVersion1RyrFvdQBygoiie2swg48zIhFTHScnQBj9gzoCfZoKo
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - OktaAuthLambdaVersionSInSW5MJwZIqiEyHPaq7PmgtR5E5miHnVOa8O0mpMb0
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - DeleteTenantDomainLambdaVersionVikmozKStuYoWSA3Qc0TZTbcYdzkBbbeNV0PBdGZQRw
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantDomainsLambdaVersionSQxKqYvfvDRisBpIzHj1Sq8clAsb3mzIfV0asjM
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ActivateTenantAppLambdaVersion0Ncc2JLbfp2m7XDHh3m0D38ULe3OrCLLlDyepbQJYM4
+CloudFormation - CREATE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1590607994202
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - AddTenantLambdaVersionWtU4msMxkOSW0BTB4gd42I5UwsEVGOL8QDAp1cvBU
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - AddTenantDomainLambdaVersionrekkXfIYeCi2RE09XgtlDfLv7Ogmis07tyZW5nUA
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ProxyLambdaVersionYYeao8mHFrGcIM7AyhixVveeqfsJ7bSvY4MNKXC19tA
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - GetIdpLambdaVersionQVeqQPna89VazNKPGpuXINCda7NTiy27BiBsjGh7o
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - DeactivateTenantAppLambdaVersionmwpbGEsYA6JdwI0GMMiLJ94NcDsE1FkecIiF1TKTB4
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - GetIdpMetadataLambdaVersionXjlDT0RRHUY4OT5yy6xNx9ffShHRGorzh56dQfoS0Io
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - AssignTenantAdminLambdaVersion1qZ1pwnUsHWJ6mAaXAY863pPmeA6FBjMW0roHevFDlA
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantsLambdaVersionPW5q4susNL0NauGCxHe8g5LYRRU64W77E2OcMbbVl8
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - VerifyTenantDomainLambdaVersion5INSWagJMr9e1H56iGTN67X3JlVFh3ZVmqwotA8s
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - DeleteTenantLambdaVersionVJIk7OSLWIHrY8z2zfzgRm3kjatBF1brJWiqHBaaX0
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - UpdateTenantLambdaVersionFLz7ytwUTJtXEJHLD9m74CDYUDEnQJEyqp3iN61vFY
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantAppsLambdaVersionvuElJ6DQrFZHT5oPtApnb1VeZUfxzUAmiq5qkBlMO8
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListIdpsLambdaVersionaFNE6Pp3q5UjAfgkGiVry9kFwdqct4kkqDIr7wfY
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListAppsLambdaVersionzIZaSHZYQ6LwYkHLal3CbiUHUjtJa9Mrp2CRjBLJLpQ
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - GetTenantLambdaVersionkXEtgGuF4APNSFtew3kW0B9KlV2VdbUL4oAyGg0Dfk
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantAdminsLambdaVersion1RyrFvdQBygoiie2swg48zIhFTHScnQBj9gzoCfZoKo
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - UpdateIdpLambdaVersionsZGMauNVzCkaZaOuhEz4S7xRausM6j241FzjSjBMpds
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - AddTenantLambdaVersionWtU4msMxkOSW0BTB4gd42I5UwsEVGOL8QDAp1cvBU
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantDomainsLambdaVersionSQxKqYvfvDRisBpIzHj1Sq8clAsb3mzIfV0asjM
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - GetIdpLambdaVersionQVeqQPna89VazNKPGpuXINCda7NTiy27BiBsjGh7o
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - DeleteTenantDomainLambdaVersionVikmozKStuYoWSA3Qc0TZTbcYdzkBbbeNV0PBdGZQRw
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ProxyLambdaVersionYYeao8mHFrGcIM7AyhixVveeqfsJ7bSvY4MNKXC19tA
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - GetIdpMetadataLambdaVersionXjlDT0RRHUY4OT5yy6xNx9ffShHRGorzh56dQfoS0Io
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ActivateTenantAppLambdaVersion0Ncc2JLbfp2m7XDHh3m0D38ULe3OrCLLlDyepbQJYM4
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - DeleteTenantLambdaVersionVJIk7OSLWIHrY8z2zfzgRm3kjatBF1brJWiqHBaaX0
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ListTenantAdminsLambdaVersion1RyrFvdQBygoiie2swg48zIhFTHScnQBj9gzoCfZoKo
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - UpdateIdpLambdaVersionsZGMauNVzCkaZaOuhEz4S7xRausM6j241FzjSjBMpds
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - VerifyTenantDomainLambdaVersion5INSWagJMr9e1H56iGTN67X3JlVFh3ZVmqwotA8s
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - DeactivateTenantAppLambdaVersionmwpbGEsYA6JdwI0GMMiLJ94NcDsE1FkecIiF1TKTB4
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantAppsLambdaVersionvuElJ6DQrFZHT5oPtApnb1VeZUfxzUAmiq5qkBlMO8
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - AddTenantDomainLambdaVersionrekkXfIYeCi2RE09XgtlDfLv7Ogmis07tyZW5nUA
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - AssignTenantAdminLambdaVersion1qZ1pwnUsHWJ6mAaXAY863pPmeA6FBjMW0roHevFDlA
+CloudFormation - CREATE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1590607994202
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - DeleteTenantDomainLambdaVersionVikmozKStuYoWSA3Qc0TZTbcYdzkBbbeNV0PBdGZQRw
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListTenantsLambdaVersionPW5q4susNL0NauGCxHe8g5LYRRU64W77E2OcMbbVl8
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - UpdateTenantLambdaVersionFLz7ytwUTJtXEJHLD9m74CDYUDEnQJEyqp3iN61vFY
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ListTenantDomainsLambdaVersionSQxKqYvfvDRisBpIzHj1Sq8clAsb3mzIfV0asjM
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListAppsLambdaVersionzIZaSHZYQ6LwYkHLal3CbiUHUjtJa9Mrp2CRjBLJLpQ
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - ListIdpsLambdaVersionaFNE6Pp3q5UjAfgkGiVry9kFwdqct4kkqDIr7wfY
+CloudFormation - CREATE_IN_PROGRESS - AWS::Lambda::Version - GetTenantLambdaVersionkXEtgGuF4APNSFtew3kW0B9KlV2VdbUL4oAyGg0Dfk
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ActivateTenantAppLambdaVersion0Ncc2JLbfp2m7XDHh3m0D38ULe3OrCLLlDyepbQJYM4
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - VerifyTenantDomainLambdaVersion5INSWagJMr9e1H56iGTN67X3JlVFh3ZVmqwotA8s
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ListTenantAppsLambdaVersionvuElJ6DQrFZHT5oPtApnb1VeZUfxzUAmiq5qkBlMO8
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - DeactivateTenantAppLambdaVersionmwpbGEsYA6JdwI0GMMiLJ94NcDsE1FkecIiF1TKTB4
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - AddTenantDomainLambdaVersionrekkXfIYeCi2RE09XgtlDfLv7Ogmis07tyZW5nUA
+CloudFormation - CREATE_COMPLETE - AWS::ApiGateway::Deployment - ApiGatewayDeployment1590607994202
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ListTenantsLambdaVersionPW5q4susNL0NauGCxHe8g5LYRRU64W77E2OcMbbVl8
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - UpdateTenantLambdaVersionFLz7ytwUTJtXEJHLD9m74CDYUDEnQJEyqp3iN61vFY
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - AssignTenantAdminLambdaVersion1qZ1pwnUsHWJ6mAaXAY863pPmeA6FBjMW0roHevFDlA
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ListIdpsLambdaVersionaFNE6Pp3q5UjAfgkGiVry9kFwdqct4kkqDIr7wfY
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - GetTenantLambdaVersionkXEtgGuF4APNSFtew3kW0B9KlV2VdbUL4oAyGg0Dfk
+CloudFormation - CREATE_COMPLETE - AWS::Lambda::Version - ListAppsLambdaVersionzIZaSHZYQ6LwYkHLal3CbiUHUjtJa9Mrp2CRjBLJLpQ
+CloudFormation - UPDATE_COMPLETE_CLEANUP_IN_PROGRESS - AWS::CloudFormation::Stack - okta-dac-api-dev
+CloudFormation - DELETE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1590556562668
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - VerifyTenantDomainLambdaVersionSb2M1T4s9h0Nc3vHQBxrc4acFKiCn1axIcTjApj87c
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - UpdateTenantLambdaVersionb7LxnS6IAptUVlq4BgubXLH2xNOO2qliRMnthYCWkEI
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ListTenantAdminsLambdaVersionMiYrHHXstqBysbVqM3TAaCNWItxPn8djm9oz43H80
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - AddTenantLambdaVersionn2yZNUrQNfMHYHnBZRRRmt8yCYx0voQ8ogFNiwdI
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - GetTenantLambdaVersionjObHIDeZHArrVeSqgdjLPigSUpYaSEw1qXMzirRCkKs
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ListIdpsLambdaVersion8vOTi7DTWt3z6wzJDXHKxjKkmmzCZyBOXA5CFxu410
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - OktaAuthLambdaVersioneD7UxZ2tX0LLm9ptlIZeTkksLa9y23aJDZORkd1SH8g
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - GetIdpLambdaVersion2kDrokxhqKhx92vVHhhfsOCBrRXlkmyjKztjwyOHmI
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ListTenantAppsLambdaVersionOQjIXoTYxuEO2fREGFoabVpNCPUpj21RDgSQTkOvU
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ProxyLambdaVersionJnVz3kjsRH00VZoHavGlY96aUvQ5UT4FAzFoPEk2s
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - UpdateIdpLambdaVersioncbVrg0swzhMao3ekKLyMR6chwMUB1x4kSzAk68Z7bE
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ListAppsLambdaVersion5eetQuFqirdOPkBo9kbcHqb2nPAwQKO4sHY8pE79FE
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - DeactivateTenantAppLambdaVersionhhnYKmB4X6iBj2sNBEZUn9zuLf5023PYKpm985QI
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ListTenantsLambdaVersionBOwU9WttVDXHyb1c7vfuFIWyfaxBOWoG9KPRji5nw
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ActivateTenantAppLambdaVersionrs6SeQ0xInwV7o08rEi8PYMAAzBXksXyShpSegcXM
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - DeleteTenantLambdaVersionmFweEJiddrpKFSZ5NQVcZYT7SYIs3bGJZ79jd7XO4U
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - ListTenantDomainsLambdaVersion61VlLLFphKAaieggdgAmYiKl6VFO7MWW70MsVDFH8
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - DeleteTenantDomainLambdaVersionup6mf5WHG5jML2D8CHBdF0JhHNodOinTpYrH97xhb50
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - GetIdpMetadataLambdaVersionUoPecP8mfau3TyAApqFZ37szvVY0g00506nWIEOqDWY
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - AddTenantDomainLambdaVersionnqRyY23aw8slxTanly0KQh9REAjTOM6Av3swy8YOOc
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - AssignTenantAdminLambdaVersion8DcBzO6Km00rskqdhNftJNTEWmQ6qhJGtIMVRnyfo
+CloudFormation - DELETE_COMPLETE - AWS::ApiGateway::Deployment - ApiGatewayDeployment1590556562668
+CloudFormation - UPDATE_COMPLETE - AWS::CloudFormation::Stack - okta-dac-api-dev
+Serverless: Stack update finished<span class="token punctuation">..</span>.
+Service Information
+service: okta-dac-api
+stage: dev
+region: us-east-2
+stack: okta-dac-api-dev
+resources: <span class="token number">138</span>
+api keys:
+  None
+endpoints:
+  POST - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>
+  DELETE - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>
+  PUT - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/apps
+  PUT - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/apps/<span class="token punctuation">{</span>appId<span class="token punctuation">}</span>
+  DELETE - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/apps/<span class="token punctuation">{</span>appId<span class="token punctuation">}</span>
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/admins
+  PUT - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/admins/<span class="token punctuation">{</span>userId<span class="token punctuation">}</span>
+  POST - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/domains
+  DELETE - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/domains/<span class="token punctuation">{</span>domain<span class="token punctuation">}</span>
+  PUT - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/domains/<span class="token punctuation">{</span>domain<span class="token punctuation">}</span>
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/tenants/<span class="token punctuation">{</span>tenant<span class="token punctuation">}</span>/domains
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/apps
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/idps/<span class="token punctuation">{</span>idpId<span class="token punctuation">}</span>
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/idps
+  GET - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/idps/<span class="token punctuation">{</span>idpId<span class="token punctuation">}</span>/metadata.xml
+  PUT - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/idps/<span class="token punctuation">{</span>idpId<span class="token punctuation">}</span>
+  ANY - https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev/api/v1/<span class="token punctuation">{</span>proxy+<span class="token punctuation">}</span>
+functions:
+  oktaAuth: okta-dac-api-dev-oktaAuth
+  addTenant: okta-dac-api-dev-addTenant
+  getTenant: okta-dac-api-dev-getTenant
+  deleteTenant: okta-dac-api-dev-deleteTenant
+  updateTenant: okta-dac-api-dev-updateTenant
+  listTenants: okta-dac-api-dev-listTenants
+  listTenantApps: okta-dac-api-dev-listTenantApps
+  activateTenantApp: okta-dac-api-dev-activateTenantApp
+  deactivateTenantApp: okta-dac-api-dev-deactivateTenantApp
+  listTenantAdmins: okta-dac-api-dev-listTenantAdmins
+  assignTenantAdmin: okta-dac-api-dev-assignTenantAdmin
+  addTenantDomain: okta-dac-api-dev-addTenantDomain
+  deleteTenantDomain: okta-dac-api-dev-deleteTenantDomain
+  verifyTenantDomain: okta-dac-api-dev-verifyTenantDomain
+  listTenantDomains: okta-dac-api-dev-listTenantDomains
+  listApps: okta-dac-api-dev-listApps
+  getIdp: okta-dac-api-dev-getIdp
+  listIdps: okta-dac-api-dev-listIdps
+  getIdpMetadata: okta-dac-api-dev-getIdpMetadata
+  updateIdp: okta-dac-api-dev-updateIdp
+  proxy: okta-dac-api-dev-proxy
+layers:
+  None
+
+Stack Outputs
+DeleteTenantDomainLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-deleteTenantDomain:4
+OktaAuthLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-oktaAuth:4
+DeactivateTenantAppLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-deactivateTenantApp:4
+ListTenantAppsLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-listTenantApps:4
+GetIdpMetadataLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-getIdpMetadata:4
+AddTenantLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-addTenant:4
+DeleteTenantLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-deleteTenant:4
+ListTenantDomainsLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-listTenantDomains:4
+AddTenantDomainLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-addTenantDomain:4
+ListTenantsLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-listTenants:4
+AssignTenantAdminLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-assignTenantAdmin:4
+VerifyTenantDomainLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-verifyTenantDomain:4
+ServerlessDeploymentBucketName: okta-dac-api-dev-serverlessdeploymentbucket-t1pzgi2kjtfq
+ListAppsLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-listApps:4
+ListTenantAdminsLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-listTenantAdmins:4
+ListIdpsLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-listIdps:4
+ProxyLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-proxy:4
+UpdateTenantLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-updateTenant:4
+GetIdpLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-getIdp:4
+ActivateTenantAppLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-activateTenantApp:4
+GetTenantLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-getTenant:4
+ServiceEndpoint: https://57dzkihqmh.execute-api.us-east-2.amazonaws.com/dev
+UpdateIdpLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-2:661666207641:function:okta-dac-api-dev-updateIdp:4
+
+Serverless: Run the <span class="token string">&quot;serverless&quot;</span> <span class="token builtin class-name">command</span> to setup monitoring, troubleshooting and testing.
+</code></pre></div></details> <h4 id="target-spa"><a href="#target-spa" class="header-anchor">#</a> Target - spa</h4> <p>This generates the local <code>env</code> files for the SPA</p> <h2 id="required-manual-steps"><a href="#required-manual-steps" class="header-anchor">#</a> (Required) Manual Steps</h2> <p>Terraform currently does not support granting Okta API Scopes to Apps or updating email templates. You MUST complete the following 2 steps manually.</p> <ol><li><a href="/setup/org-setup.html#_9-enable-oauth-grants">Enable OAuth grants</a></li> <li><a href="/setup/org-setup.html#_10-update-user-activation-email-template">Update User Activation Email Template</a></li></ol> <h2 id="supplemental-make-targets"><a href="#supplemental-make-targets" class="header-anchor">#</a> Supplemental Make targets</h2> <h4 id="target-destroyokta"><a href="#target-destroyokta" class="header-anchor">#</a> Target - destroyOkta</h4> <p>This tears down the components setup by  in the Okta tenant.</p> <h4 id="target-removeapi"><a href="#target-removeapi" class="header-anchor">#</a> Target - removeApi</h4> <p>This removes the API Gateway and lambda functions from the configured AWS account and region.</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">6/19/2020, 5:49:34 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/setup/org-setup.html" class="prev">
+        Configure Okta
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.450515ec.js" defer></script><script src="/assets/js/2.7119a548.js" defer></script><script src="/assets/js/14.4f1def24.js" defer></script>
+  </body>
+</html>
