@@ -1,4 +1,5 @@
 module.exports = {
+  base: "/",
   title: "Okta Multi Tenant Admin",
   description: "Identity Management for Multi-Tenant Applications",
   themeConfig: {
