@@ -9,7 +9,6 @@ features:
     details: Enable customers that have their own IdPs to self configure their tenant for IdP authentication.
   - title: Configure Entitlements
     details: Enable customers to self-manage users in their own tenants.
-footer: MIT Licensed | Created by [@zeekhoo](https://github.com/zeekhoo) and [@maneeshsahu](https://github.com/maneeshsahu)
 ---
 
 # Introduction
@@ -30,3 +29,5 @@ The okta-dac project serves as a Sample Application, that you can tweak or compl
 
 It is recommended that you collaborate with your preferred [Okta Solution Provider](https://www.okta.com/partners/meet-our-partners/?field_partner_type_tid=8101&field_solutions_target_id=6061) to implement and adapt this app code sample within your existing portal. This app features frontend and backend components and like any web app hosted and running on your side, you should perform a code review, as well as security and scalability tests.
 :::
+
+<Footer/>
