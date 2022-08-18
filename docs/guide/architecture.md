@@ -73,7 +73,7 @@ So with this naming convention in place, we coerced our Okta org into a structur
 
 #### SUPERUSERS Group
 
-We mentioned "Super Admins" before so let's go over how we modeled this in Okta. As previously described [here](/guide/#super-admin), the "Super Admin" __role__ allows access to the **okta-dac Super Admin UI**. As shown in the diagram above, this is simply a __SUPERUSERS__ group. The way okta-dac is implemented, if a user belongs to this group, they will see the Super Admin UI when logging into otkta-dac. On the other hand, if they are not in this group, they will see the Tenant Admin UI.
+We mentioned "Super Admins" before so let's go over how we modeled this in Okta. As previously described [here](/guide/#super-admin), the "Super Admin" __role__ allows access to the **okta-dac Super Admin UI**. As shown in the diagram above, this is simply a __SUPERUSERS__ group. The way okta-dac is implemented, if a user belongs to this group, they will see the Super Admin UI when logging into okta-dac. On the other hand, if they are not in this group, they will see the Tenant Admin UI.
 
 How does okta-dac know which UI to present? We [configure Okta](/setup/org-setup.html#_6-add-custom-claims) to include the list of groups memberships in users' JWTs. Then, business logic implemented by the okta-dac app inspects the JWT information to determine if the user is a super admin or not.
 
